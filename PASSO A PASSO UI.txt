@@ -461,7 +461,6 @@ Fonte: conversa com o Copilot, 15/11/2024
 
 
 npm run build:dev
-
-
+ 
 docker-compose build
 docker-compose up
