@@ -1,22 +1,26 @@
 .nav-item.dropdown:hover .dropdown-menu {
   display: block;
   background-color: #343a40; /* Cor preta do menu */
+  color: #ffffff!important;;
 }
 
 .dropdown-menu {
   background-color: #343a40; /* Cor preta do menu */
   border: none;
   margin-top: 0;
+  color: #ffffff!important;;
 }
 
 .dropdown-item {
-  color: #ffffff; /* Cor do texto para o dropdown item */
+  color: #ffffff!important;; /* Cor do texto para o dropdown item */
 }
 
 .dropdown-item:hover {
   background-color: #495057; /* Cor de fundo ao passar o mouse */
+  color: #f00202!important;;
 }
 
 .dropdown-divider {
   border-top: 1px solid #6c757d;
+  color: #ffffff!important;;
 }
