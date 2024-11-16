@@ -24,6 +24,8 @@
 
 [LINK API](https://hotelwiseapi-hbcca8d5a7fae7hp.brazilsouth-01.azurewebsites.net/swagger/index.html)
 
+[LINK UI](https://hotelwiseui-f7a7b5gqf0amdfdg.brazilsouth-01.azurewebsites.net/)
+
 <h2>Tecnologias Utilizadas</h2>
 <h3>Frontend</h3>
 <ul>
