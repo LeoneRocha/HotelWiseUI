@@ -21,6 +21,9 @@
     <li><strong>Qualidade de Código:</strong> Análise contínua do código com SonarCloud.</li>
 </ul>
 
+
+[LINK API](https://hotelwiseapi-hbcca8d5a7fae7hp.brazilsouth-01.azurewebsites.net/swagger/index.html)
+
 <h2>Tecnologias Utilizadas</h2>
 <h3>Frontend</h3>
 <ul>
