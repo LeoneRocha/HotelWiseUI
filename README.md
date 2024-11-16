@@ -14,8 +14,7 @@
 <h2>Funcionalidades Principais</h2>
 <ul>
     <li><strong>Busca "Humanizada" de Hotéis:</strong> Utiliza IA e Semantic Kernel para oferecer uma experiência de busca intuitiva e inteligente.</li>
-    <li><strong>Gestão de Hotéis:</strong> Adicionar, editar e remover hotéis.</li>
-    <li><strong>Reservas:</strong> Funcionalidades de reserva e gestão de reservas.</li>
+    <li><strong>Gestão de Hotéis:</strong> Adicionar, editar e remover hotéis.</li>    
     <li><strong>Autenticação e Autorização:</strong> Sistema de login seguro para usuários e administradores.</li>
     <li><strong>Integração com Docker:</strong> Facilita a criação e implantação de containers.</li>
     <li><strong>Pipeline de DevOps:</strong> Implementação de CI/CD com Git pipeline.</li>
@@ -26,9 +25,7 @@
 <h3>Frontend</h3>
 <ul>
     <li>React</li>
-    <li>TypeScript</li>
-    <li>Semantic UI / Material-UI (ou outro framework de UI)</li>
-    <li>Redux (para gerenciamento de estado)</li>
+    <li>TypeScript</li>  
 </ul>
 
 <h3>Backend</h3>
