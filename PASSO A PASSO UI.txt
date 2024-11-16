@@ -75,6 +75,7 @@ export default HotelList;
 ### 4. Criando Serviços
 
 Agora, vamos criar um serviço para se comunicar com a API. Crie um arquivo `hotelService.ts` dentro da pasta `services`:
+npm install axios
 
 ```ts
 import axios from 'axios';
@@ -456,7 +457,3 @@ Fonte: conversa com o Copilot, 15/11/2024
 (9) github.com. https://github.com/coderile/todo-frontend/tree/bce0e14dbfe0e72db561c668752f8b79a6abd002/src%2Findex.js.
 (10) github.com. https://github.com/Gopika2514/react-portfolio/tree/6a7516f043a74d82ff131c6cff2ea9ccb96c59bb/src%2Findex.js.
 (11) github.com. https://github.com/Lee8150951/React-Learning/tree/188e0fcb6f3ebea6e1feec19a90413c600dcf932/readme.md.
-
-
-npm install bootstrap
-npm install @fortawesome/fontawesome-free

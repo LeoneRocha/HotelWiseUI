@@ -6,6 +6,7 @@ import './HotelList.css'; // Adicione um arquivo CSS para customizações adicio
 
 interface HotelListTemplateProps {
   hotels: IHotel[];
+  totalHotels: number;
   currentPage: number;
   hotelsPerPage: number;
   handleDelete: (id: number) => void;
@@ -14,6 +15,7 @@ interface HotelListTemplateProps {
 
 const HotelListTemplate: React.FC<HotelListTemplateProps> = ({
   hotels,
+  totalHotels,
   currentPage,
   hotelsPerPage,
   handleDelete,
@@ -51,7 +53,7 @@ const HotelListTemplate: React.FC<HotelListTemplateProps> = ({
         ))}
       </div>
       <Pagination className="justify-content-center mt-4">
-        {Array.from({ length: Math.ceil(hotels.length / hotelsPerPage) }, (_, index) => (
+        {Array.from({ length: Math.ceil(totalHotels / hotelsPerPage) }, (_, index) => (
           <Pagination.Item key={index + 1} active={index + 1 === currentPage} onClick={() => paginate(index + 1)}>
             {index + 1}
           </Pagination.Item>

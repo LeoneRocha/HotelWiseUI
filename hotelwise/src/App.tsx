@@ -8,8 +8,7 @@ import Navbar from './components/Navbar';
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <Navbar />
+    <Router> 
       <div className="container-fluid p-0">
         <header className="bg-primary text-white text-center py-3">
           <h1>Gerenciamento de Hotéis</h1>
@@ -23,6 +22,7 @@ const App: React.FC = () => {
             </a>
           </div>
         </header>
+        <Navbar />
         <main className="container-fluid">
           <AppRoutes />
         </main>

@@ -30,6 +30,7 @@ const HotelList: React.FC = () => {
   return (
     <HotelListTemplate
       hotels={currentHotels}
+      totalHotels={hotels.length}
       currentPage={currentPage}
       hotelsPerPage={hotelsPerPage}
       handleDelete={handleDelete}
