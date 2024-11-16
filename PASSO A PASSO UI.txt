@@ -1,0 +1,458 @@
+Para criar um projeto em React JS usando TypeScript e padrões de projetos, você pode seguir os passos abaixo. Vou incluir um exemplo básico de como configurar um projeto React com TypeScript e como estruturar os componentes e serviços para se comunicar com o seu controller de API.
+
+### 1. Configurando o Projeto
+
+Primeiro, vamos criar um novo projeto React com TypeScript usando o Vite, que é uma ferramenta moderna e rápida para configurar projetos:
+
+```bash
+npm create vite@latest my-react-app -- --template react-ts
+
+npm create vite@latest hotelwiseui --template react-ts
+
+
+cd hotelwiseui
+npm install
+npm run dev
+```
+
+### 2. Estrutura do Projeto
+
+A estrutura básica do projeto será algo assim:
+
+```
+my-react-app/
+├── public/
+├── src/
+│   ├── components/
+│   ├── services/
+│   ├── App.tsx
+│   ├── main.tsx
+│   └── ...
+├── package.json
+└── tsconfig.json
+```
+
+
+cd src/components
+touch HotelList.tsx
+
+
+
+### 3. Criando Componentes
+
+Vamos criar um componente para listar os hotéis. Crie um arquivo `HotelList.tsx` dentro da pasta `components`:
+
+```tsx
+import React, { useEffect, useState } from 'react';
+import { getAllHotels } from '../services/hotelService';
+
+const HotelList: React.FC = () => {
+  const [hotels, setHotels] = useState<Hotel[]>([]);
+
+  useEffect(() => {
+    const fetchHotels = async () => {
+      const hotels = await getAllHotels();
+      setHotels(hotels);
+    };
+    fetchHotels();
+  }, []);
+
+  return (
+    <div>
+      <h1>Lista de Hotéis</h1>
+      <ul>
+        {hotels.map(hotel => (
+          <li key={hotel.hotelId}>{hotel.hotelName}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default HotelList;
+```
+
+### 4. Criando Serviços
+
+Agora, vamos criar um serviço para se comunicar com a API. Crie um arquivo `hotelService.ts` dentro da pasta `services`:
+
+```ts
+import axios from 'axios';
+
+export interface Hotel {
+  hotelId: number;
+  hotelName: string;
+  description: string;
+  tags: string[];
+  stars: number;
+  initialRoomPrice: number;
+  zipCode: string;
+  location: string;
+  city: string;
+  stateCode: string;
+  score: number;
+}
+
+const api = axios.create({
+  baseURL: 'http://localhost:5000/api/hotels/v1',
+});
+
+export const getAllHotels = async (): Promise<Hotel[]> => {
+  const response = await api.get<Hotel[]>('/');
+  return response.data;
+};
+
+export const getHotelById = async (id: number): Promise<Hotel> => {
+  const response = await api.get<Hotel>(`/${id}`);
+  return response.data;
+};
+
+// Outros métodos como createHotel, updateHotel, deleteHotel podem ser adicionados aqui
+```
+
+### 5. Integrando o Componente no App
+
+Finalmente, vamos integrar o componente `HotelList` no nosso `App.tsx`:
+
+```tsx
+import React from 'react';
+import HotelList from './components/HotelList';
+
+const App: React.FC = () => {
+  return (
+    <div>
+      <HotelList />
+    </div>
+  );
+};
+
+export default App;
+```
+
+### 6. Executando o Projeto
+
+Execute o projeto com:
+
+```bash
+npm run dev
+```
+
+Isso deve iniciar o servidor de desenvolvimento e abrir o projeto no navegador. Agora você tem um projeto React com TypeScript que se comunica com a API baseada no controller fornecido.
+
+Se precisar de mais alguma coisa ou tiver dúvidas, estou aqui para ajudar! 😊
+
+Fonte: conversa com o Copilot, 15/11/2024
+(1) PROJETO de React JS para INICIANTES - Faça uma To Do List do zero!. https://www.youtube.com/watch?v=YVEVrigByKY.
+(2) PROJETO COM REACT JS, TYPESCRIPT E TAILWIND - FORMULÁRIO DE NEWSLETTER. https://www.youtube.com/watch?v=fCXek3APADc.
+(3) Esqueça o "Create React App"! Crie Projetos React Assim.... https://www.youtube.com/watch?v=yx6bt-LSKq8.
+(4) Configurando um projeto React com Typescript - DEV Community. https://dev.to/christiantld/configurando-um-projeto-react-com-typescript-3kg.
+(5) Como criar um projeto em React com o Create React App em 10 passos. https://www.freecodecamp.org/portuguese/news/como-criar-um-projeto-em-react-com-o-create-react-app-em-10-passos/.
+(6) Como utilizar TypeScript no desenvolvimento de projetos react!. https://www.escoladnc.com.br/blog/como-utilizar-typescript-no-desenvolvimento-de-projetos-react/.
+(7) Componentes React com TypeScript - Alura. https://www.alura.com.br/artigos/componentes-react-typescript.
+(8) Como Utilizar TypeScript no Desenvolvimento de Projetos React. https://www.escoladnc.com.br/blog/como-utilizar-typescript-no-desenvolvimento-de-projetos-react-2/.
+(9) undefined. https://www.udemy.com/course/20-projetos-em-react-js-aprenda-redux-bootstrap-apis/?couponCode=LANCOUPROJS11.
+(10) undefined. https://horadecodar.com.br/cursos-horadecodar/.
+
+
+
+
+
+
+
+
+Vamos melhorar o projeto adicionando as funcionalidades de cadastro, listagem, edição, exclusão e busca semântica, utilizando Bootstrap para estilização. Aqui está um guia passo a passo:
+
+### 1. Configurando o Bootstrap
+
+Primeiro, vamos instalar o Bootstrap no projeto:
+
+```bash
+npm install bootstrap
+```
+
+Em seguida, importe o CSS do Bootstrap no arquivo `main.tsx`:
+
+```tsx
+import 'bootstrap/dist/css/bootstrap.min.css';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+);
+```
+
+### 2. Estrutura do Projeto
+
+A estrutura do projeto será algo assim:
+
+```
+my-react-app/
+├── public/
+├── src/
+│   ├── components/
+│   │   ├── HotelForm.tsx
+│   │   ├── HotelList.tsx
+│   │   ├── HotelSearch.tsx
+│   ├── services/
+│   │   ├── hotelService.ts
+│   ├── App.tsx
+│   ├── main.tsx
+│   └── ...
+├── package.json
+└── tsconfig.json
+```
+
+### 3. Criando Componentes
+
+#### HotelForm.tsx
+
+Este componente será usado para criar e editar hotéis:
+
+```tsx
+import React, { useState } from 'react';
+import { Hotel, createHotel, updateHotel } from '../services/hotelService';
+
+interface HotelFormProps {
+  hotel?: Hotel;
+  onSave: () => void;
+}
+
+const HotelForm: React.FC<HotelFormProps> = ({ hotel, onSave }) => {
+  const [formData, setFormData] = useState<Hotel>(hotel || {
+    hotelId: 0,
+    hotelName: '',
+    description: '',
+    tags: [],
+    stars: 0,
+    initialRoomPrice: 0,
+    zipCode: '',
+    location: '',
+    city: '',
+    stateCode: '',
+    score: 0,
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (formData.hotelId === 0) {
+      await createHotel(formData);
+    } else {
+      await updateHotel(formData.hotelId, formData);
+    }
+    onSave();
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="mb-3">
+        <label htmlFor="hotelName" className="form-label">Nome do Hotel</label>
+        <input type="text" className="form-control" id="hotelName" name="hotelName" value={formData.hotelName} onChange={handleChange} required />
+      </div>
+      <div className="mb-3">
+        <label htmlFor="description" className="form-label">Descrição</label>
+        <textarea className="form-control" id="description" name="description" value={formData.description} onChange={handleChange} required />
+      </div>
+      {/* Adicione outros campos conforme necessário */}
+      <button type="submit" className="btn btn-primary">Salvar</button>
+    </form>
+  );
+};
+
+export default HotelForm;
+```
+
+#### HotelList.tsx
+
+Este componente listará os hotéis e permitirá a exclusão:
+
+```tsx
+import React, { useEffect, useState } from 'react';
+import { getAllHotels, deleteHotel, Hotel } from '../services/hotelService';
+
+const HotelList: React.FC = () => {
+  const [hotels, setHotels] = useState<Hotel[]>([]);
+
+  useEffect(() => {
+    const fetchHotels = async () => {
+      const hotels = await getAllHotels();
+      setHotels(hotels);
+    };
+    fetchHotels();
+  }, []);
+
+  const handleDelete = async (id: number) => {
+    await deleteHotel(id);
+    setHotels(hotels.filter(hotel => hotel.hotelId !== id));
+  };
+
+  return (
+    <div>
+      <h1>Lista de Hotéis</h1>
+      <ul className="list-group">
+        {hotels.map(hotel => (
+          <li key={hotel.hotelId} className="list-group-item d-flex justify-content-between align-items-center">
+            {hotel.hotelName}
+            <button className="btn btn-danger" onClick={() => handleDelete(hotel.hotelId)}>Apagar</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default HotelList;
+```
+
+#### HotelSearch.tsx
+
+Este componente permitirá a busca semântica:
+
+```tsx
+import React, { useState } from 'react';
+import { semanticSearch, Hotel } from '../services/hotelService';
+
+const HotelSearch: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [hotels, setHotels] = useState<Hotel[]>([]);
+
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const results = await semanticSearch({ query: searchTerm });
+    setHotels(results);
+  };
+
+  return (
+    <div>
+      <form onSubmit={handleSearch} className="mb-3">
+        <input type="text" className="form-control" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Buscar hotéis..." />
+        <button type="submit" className="btn btn-primary mt-2">Buscar</button>
+      </form>
+      <ul className="list-group">
+        {hotels.map(hotel => (
+          <li key={hotel.hotelId} className="list-group-item">{hotel.hotelName}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default HotelSearch;
+```
+
+### 4. Atualizando o Serviço
+
+Atualize o `hotelService.ts` para incluir as novas funções:
+
+```ts
+import axios from 'axios';
+
+export interface Hotel {
+  hotelId: number;
+  hotelName: string;
+  description: string;
+  tags: string[];
+  stars: number;
+  initialRoomPrice: number;
+  zipCode: string;
+  location: string;
+  city: string;
+  stateCode: string;
+  score: number;
+}
+
+const api = axios.create({
+  baseURL: 'http://localhost:5000/api/hotels/v1',
+});
+
+export const getAllHotels = async (): Promise<Hotel[]> => {
+  const response = await api.get<Hotel[]>('/');
+  return response.data;
+};
+
+export const getHotelById = async (id: number): Promise<Hotel> => {
+  const response = await api.get<Hotel>(`/${id}`);
+  return response.data;
+};
+
+export const createHotel = async (hotel: Hotel): Promise<void> => {
+  await api.post('/', hotel);
+};
+
+export const updateHotel = async (id: number, hotel: Hotel): Promise<void> => {
+  await api.put(`/${id}`, hotel);
+};
+
+export const deleteHotel = async (id: number): Promise<void> => {
+  await api.delete(`/${id}`);
+};
+
+export const semanticSearch = async (criteria: { query: string }): Promise<Hotel[]> => {
+  const response = await api.post('/semanticsearch', criteria);
+  return response.data;
+};
+```
+
+### 5. Integrando os Componentes no App
+
+Atualize o `App.tsx` para incluir as novas telas:
+
+```tsx
+import React, { useState } from 'react';
+import HotelList from './components/HotelList';
+import HotelForm from './components/HotelForm';
+import HotelSearch from './components/HotelSearch';
+
+const App: React.FC = () => {
+  const [editingHotel, setEditingHotel] = useState<Hotel | null>(null);
+
+  const handleSave = () => {
+    setEditingHotel(null);
+  };
+
+  return (
+    <div className="container">
+      <h1>Gerenciamento de Hotéis</h1>
+      <HotelSearch />
+      <HotelList />
+      <HotelForm hotel={editingHotel} onSave={handleSave} />
+    </div>
+  );
+};
+
+export default App;
+```
+
+### 6. Executando o Projeto
+
+Execute o projeto com:
+
+```bash
+npm run dev
+```
+
+Isso deve iniciar o servidor de desenvolvimento e abrir o projeto no navegador. Agora você tem um projeto React com TypeScript que permite cadastrar, listar, editar, excluir e buscar hotéis, tudo estilizado com Bootstrap.
+
+Se precisar de mais alguma coisa ou tiver dúvidas, estou aqui para ajudar! 😊
+
+Fonte: conversa com o Copilot, 15/11/2024
+(1) PROJETO de React JS para INICIANTES - Faça uma To Do List do zero!. https://www.youtube.com/watch?v=YVEVrigByKY.
+(2) Como Usar TypeScript no React | Guia Completo. https://www.youtube.com/watch?v=2-I3x3voXL8.
+(3) Navegação entre telas no React Native + Typescript. https://www.youtube.com/watch?v=6BDwQJq8z4E.
+(4) Como criar uma aplicação de lista de tarefas com React, TypeScript .... https://www.freecodecamp.org/portuguese/news/como-criar-uma-aplicacao-de-lista-de-tarefas-com-react-typescript-nodejs-e-mongodb/.
+(5) Como criar uma lista de tarefas com React - Itgo Labs. https://itgolabs.com/blog/pt-br/2024/01/12/como-criar-uma-lista-de-tarefas-com-react/.
+(6) Curso Online React com Typescript: desenvolva um sistema de cadastro e .... https://www.alura.com.br/curso-online-react-typescript-sistema-cadastro-autenticacao.
+(7) Criando um App com React, TypeScript, Hooks, Context e Forms. https://balta.io/cursos/criando-um-app-com-react-typeScript-hooks-context-forms.
+(8) CRUD React - Como criar o botão apagar registro com React - Celke. https://celke.com.br/artigo/crud-react-como-criar-o-botao-apagar-registro-com-react.
+(9) github.com. https://github.com/coderile/todo-frontend/tree/bce0e14dbfe0e72db561c668752f8b79a6abd002/src%2Findex.js.
+(10) github.com. https://github.com/Gopika2514/react-portfolio/tree/6a7516f043a74d82ff131c6cff2ea9ccb96c59bb/src%2Findex.js.
+(11) github.com. https://github.com/Lee8150951/React-Learning/tree/188e0fcb6f3ebea6e1feec19a90413c600dcf932/readme.md.
