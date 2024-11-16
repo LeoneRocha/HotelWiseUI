@@ -182,4 +182,4 @@ jobs:
     <li>Abra um Pull Request.</li>
 </ol>
 
-<2>Licença</h2> <p>Este projeto é licenciado sob a Licença MIT - veja o arquivo <a href="LICENSE">LICENSE</a> para mais detalhes.</p> <h2>Contato</h2> <p>Para mais informações, entre em contato com <a href="mailto:seuemail@dominio.com">seuemail@dominio.com</a>.</p> </body>
+<h2>Licença</h2> <p>Este projeto é licenciado sob a Licença MIT - veja o arquivo <a href="LICENSE">LICENSE</a> para mais detalhes.</p> <h2>Contato</h2> <p>Para mais informações, entre em contato com <a href="mailto:seuemail@dominio.com">seuemail@dominio.com</a>.</p> </body>
