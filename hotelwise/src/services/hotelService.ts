@@ -28,6 +28,6 @@ export const deleteHotel = async (id: number): Promise<void> => {
   await api.delete(`/${id}`);
 };
 
-export const semanticSearch = async (criteria: { maxHotelRetrive: number; searchTextCriteria: string }): Promise<IHotel[]> => {
+export const semanticSearch = async (criteria: { maxHotelRetrieve: number; searchTextCriteria: string }): Promise<IHotel[]> => {
   const response = await api.post('/semanticsearch', criteria); return response.data;
 };
