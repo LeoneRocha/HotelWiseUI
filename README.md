@@ -1,90 +1,100 @@
-Hotel Wise
-Descrição
-Hotel Wise é uma aplicação full-stack desenvolvida para facilitar a busca e reserva de hotéis de maneira "humanizada" usando Inteligência Artificial e Semantic Kernel. A aplicação utiliza React com TypeScript no frontend e uma API REST em C# com .NET 8 no backend. O banco de dados é gerenciado com MySQL e Entity Framework Core 8.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+</head>
+<body>
 
-Funcionalidades Principais
-Busca "Humanizada" de Hotéis: Utiliza IA e Semantic Kernel para oferecer uma experiência de busca intuitiva e inteligente.
+<h1>Hotel Wise</h1>
 
-Gestão de Hotéis: Adicionar, editar e remover hotéis.
+<h2>Descrição</h2>
+<p><strong>Hotel Wise</strong> é uma aplicação full-stack desenvolvida para facilitar a busca e reserva de hotéis de maneira "humanizada" usando Inteligência Artificial e Semantic Kernel. A aplicação utiliza React com TypeScript no frontend e uma API REST em C# com .NET 8 no backend. O banco de dados é gerenciado com MySQL e Entity Framework Core 8.</p>
 
-Reservas: Funcionalidades de reserva e gestão de reservas.
+<h2>Funcionalidades Principais</h2>
+<ul>
+    <li><strong>Busca "Humanizada" de Hotéis:</strong> Utiliza IA e Semantic Kernel para oferecer uma experiência de busca intuitiva e inteligente.</li>
+    <li><strong>Gestão de Hotéis:</strong> Adicionar, editar e remover hotéis.</li>
+    <li><strong>Reservas:</strong> Funcionalidades de reserva e gestão de reservas.</li>
+    <li><strong>Autenticação e Autorização:</strong> Sistema de login seguro para usuários e administradores.</li>
+    <li><strong>Integração com Docker:</strong> Facilita a criação e implantação de containers.</li>
+    <li><strong>Pipeline de DevOps:</strong> Implementação de CI/CD com Git pipeline.</li>
+    <li><strong>Qualidade de Código:</strong> Análise contínua do código com SonarCloud.</li>
+</ul>
 
-Autenticação e Autorização: Sistema de login seguro para usuários e administradores.
+<h2>Tecnologias Utilizadas</h2>
+<h3>Frontend</h3>
+<ul>
+    <li>React</li>
+    <li>TypeScript</li>
+    <li>Semantic UI / Material-UI (ou outro framework de UI)</li>
+    <li>Redux (para gerenciamento de estado)</li>
+</ul>
 
-Integração com Docker: Facilita a criação e implantação de containers.
+<h3>Backend</h3>
+<ul>
+    <li>C#</li>
+    <li>.NET 8</li>
+    <li>Entity Framework Core 8</li>
+    <li>MySQL</li>
+</ul>
 
-Pipeline de DevOps: Implementação de CI/CD com Git pipeline.
+<h3>DevOps & Ferramentas</h3>
+<ul>
+    <li>Docker</li>
+    <li>Azure DevOps / GitHub Actions</li>
+    <li>SonarCloud</li>
+</ul>
 
-Qualidade de Código: Análise contínua do código com SonarCloud.
+<h2>Pré-requisitos</h2>
+<ul>
+    <li>Node.js</li>
+    <li>Docker</li>
+    <li>.NET SDK 8</li>
+    <li>MySQL</li>
+</ul>
 
-Tecnologias Utilizadas
-Frontend
-React
+<h2>Configuração do Ambiente de Desenvolvimento</h2>
 
-TypeScript
-
-Semantic UI / Material-UI (ou outro framework de UI)
-
-Redux (para gerenciamento de estado)
-
-Backend
-C#
-
-.NET 8
-
-Entity Framework Core 8
-
-MySQL
-
-DevOps & Ferramentas
-Docker
-
-Azure DevOps / GitHub Actions
-
-SonarCloud
-
-Pré-requisitos
-Node.js
-
-Docker
-
-.NET SDK 8
-
-MySQL
-
-Configuração do Ambiente de Desenvolvimento
-Backend
-Clone o repositório:
-
-sh
-git clone https://github.com/seuprojeto/hotel-wise-backend.git
+<h3>Backend</h3>
+<ol>
+    <li>Clone o repositório:
+        <pre><code>git clone https://github.com/seuprojeto/hotel-wise-backend.git
 cd hotel-wise-backend
-Configure a string de conexão com o MySQL no appsettings.json.
+        </code></pre>
+    </li>
+    <li>Configure a string de conexão com o MySQL no <code>appsettings.json</code>.</li>
+    <li>Execute as migrações do Entity Framework:
+        <pre><code>dotnet ef database update
+        </code></pre>
+    </li>
+    <li>Inicie a aplicação:
+        <pre><code>dotnet run
+        </code></pre>
+    </li>
+</ol>
 
-Execute as migrações do Entity Framework:
-
-sh
-dotnet ef database update
-Inicie a aplicação:
-
-sh
-dotnet run
-Frontend
-Clone o repositório:
-
-sh
-git clone https://github.com/seuprojeto/hotel-wise-frontend.git
+<h3>Frontend</h3>
+<ol>
+    <li>Clone o repositório:
+        <pre><code>git clone https://github.com/seuprojeto/hotel-wise-frontend.git
 cd hotel-wise-frontend
-Instale as dependências:
+        </code></pre>
+    </li>
+    <li>Instale as dependências:
+        <pre><code>npm install
+        </code></pre>
+    </li>
+    <li>Inicie a aplicação:
+        <pre><code>npm start
+        </code></pre>
+    </li>
+</ol>
 
-sh
-npm install
-Inicie a aplicação:
+<h2>Estrutura do Projeto</h2>
 
-sh
-npm start
-Estrutura do Projeto
-Frontend
+<h3>Frontend</h3>
+<pre><code>
 hotel-wise-frontend/
 |-- src/
 |   |-- components/
@@ -95,7 +105,10 @@ hotel-wise-frontend/
 |   |-- index.tsx
 |-- public/
 |-- package.json
-Backend
+</code></pre>
+
+<h3>Backend</h3>
+<pre><code>
 hotel-wise-backend/
 |-- Controllers/
 |-- Models/
@@ -104,10 +117,12 @@ hotel-wise-backend/
 |-- Program.cs
 |-- Startup.cs
 |-- appsettings.json
-CI/CD
-A configuração de CI/CD pode ser feita usando Azure DevOps ou GitHub Actions. Abaixo está um exemplo de pipeline YAML para GitHub Actions:
+</code></pre>
 
-yaml
+<h2>CI/CD</h2>
+<p>A configuração de CI/CD pode ser feita usando Azure DevOps ou GitHub Actions. Abaixo está um exemplo de pipeline YAML para GitHub Actions:</p>
+
+<pre><code>
 name: CI/CD Pipeline
 
 on: [push, pull_request]
@@ -159,16 +174,16 @@ jobs:
       run: |
         docker build -t your-image-name .
         docker run -d -p 80:80 your-image-name
-Como Contribuir
-Faça um fork do projeto.
+</code></pre>
 
-Crie uma nova branch (git checkout -b feature/nome-da-sua-feature).
+<h2>Como Contribuir</h2>
+<ol>
+    <li>Faça um fork do projeto.</li>
+    <li>Crie uma nova branch (<code>git checkout -b feature/nome-da-sua-feature</code>).</li>
+    <li>Commit suas mudanças (<code>git commit -am 'Adicionei uma nova feature'</code>).</li>
+    <li>Faça push para a branch (<code>git push origin feature/nome-da-sua-feature</code>).</li>
+    <li>Abra um Pull Request.</li>
+</ol>
 
-Commit suas mudanças (git commit -am 'Adicionei uma nova feature').
-
-Faça push para a branch (git push origin feature/nome-da-sua-feature).
-
-Abra um Pull Request.
-
-Licença
-Este projeto é licenciado sob a Licença MIT - veja o arquivo LICENSE para mais detalhes
+<h2>Licença</h2>
+<p>Este projeto é lic
