@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HotelList from './components/HotelList';
 import HotelForm from './components/HotelForm';
+import HotelSearch from './components/HotelSearch';
 
 const AppRoutes: React.FC = () => {
     const handleSave = () => {
@@ -10,7 +11,8 @@ const AppRoutes: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HotelList />} />
+      <Route path="/" element={<HotelSearch />} />
+        <Route path="/list" element={<HotelList />} />
         <Route path="/edit/:id" element={<HotelForm onSave={handleSave} />} />
       </Routes>
     </Router>

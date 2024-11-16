@@ -1,5 +1,6 @@
  
   export interface IHotel {
+    
     hotelId: number;
     hotelName: string;
     description: string;
