@@ -7,6 +7,7 @@ interface HotelSearchTemplateProps {
   hotels: IHotel[];
   searched: boolean;
   error: string | null;
+  loading: boolean;
   handleSearch: (e: React.FormEvent) => void;
   handleAdminClick: () => void;
 }
@@ -17,6 +18,7 @@ const HotelSearchTemplate: React.FC<HotelSearchTemplateProps> = ({
   hotels,
   searched,
   error,
+  loading,
   handleSearch,
   handleAdminClick,
 }) => {
@@ -36,7 +38,13 @@ const HotelSearchTemplate: React.FC<HotelSearchTemplateProps> = ({
         />
         <button type="submit" className="btn btn-primary">Buscar</button>
       </form>
-      {!searched ? (
+      {loading ? (
+        <div className="text-center my-4">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Pesquisando...</span>
+          </div>
+        </div>
+      ) : !searched ? (
         <div className="alert alert-info w-100 text-center" role="alert">
           Digite no campo acima para pesquisar hotéis.
         </div>

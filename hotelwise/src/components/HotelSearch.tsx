@@ -10,12 +10,14 @@ const HotelSearch: React.FC = () => {
   const [hotels, setHotels] = useState<IHotel[]>([]);
   const [searched, setSearched] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     setSearched(true);
     setError(null);
+    setLoading(true);
     try {
       const results = await semanticSearch({ maxHotelRetrieve: 5, searchTextCriteria: searchTerm });
       if (results.length === 0) {
@@ -24,6 +26,8 @@ const HotelSearch: React.FC = () => {
       setHotels(results);
     } catch (err) {
       setError('Ocorreu um erro ao buscar os hotéis. Por favor, tente novamente.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -38,6 +42,7 @@ const HotelSearch: React.FC = () => {
       hotels={hotels}
       searched={searched}
       error={error}
+      loading={loading}
       handleSearch={handleSearch}
       handleAdminClick={handleAdminClick}
     />
