@@ -1,14 +1,48 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { IHotel } from '../interfaces/IHotel';
+import './HotelFormTemplate.css';
 
 interface HotelFormTemplateProps {
   formData: IHotel;
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   handleSubmit: (e: React.FormEvent) => void;
   handleCancel: () => void;
+  setFormData: React.Dispatch<React.SetStateAction<IHotel>>;
 }
 
-const HotelFormTemplate: React.FC<HotelFormTemplateProps> = ({ formData, handleChange, handleSubmit, handleCancel }) => {
+const HotelFormTemplate: React.FC<HotelFormTemplateProps> = ({
+  formData,
+  handleChange,
+  handleSubmit,
+  handleCancel,
+  setFormData,
+}) => {
+  const [tagInput, setTagInput] = useState('');
+  const [tags, setTags] = useState<string[]>(formData.tags);
+
+  useEffect(() => {
+    setTags(formData.tags);
+  }, [formData.tags]);
+
+  const handleTagInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTagInput(e.target.value);
+  };
+
+  const handleAddTag = () => {
+    if (tagInput.trim() && !tags.includes(tagInput.trim())) {
+      const newTags = [...tags, tagInput.trim()];
+      setTags(newTags);
+      setFormData({ ...formData, tags: newTags });
+      setTagInput('');
+    }
+  };
+
+  const handleRemoveTag = (tag: string) => {
+    const newTags = tags.filter(t => t !== tag);
+    setTags(newTags);
+    setFormData({ ...formData, tags: newTags });
+  };
+
   return (
     <div className="container-fluid mt-5">
       <h2 className="text-center mb-4">{formData.hotelId ? 'Editar Hotel' : 'Adicionar Hotel'}</h2>
@@ -26,7 +60,17 @@ const HotelFormTemplate: React.FC<HotelFormTemplateProps> = ({ formData, handleC
         <div className="row">
           <div className="col-md-6 mb-3">
             <label htmlFor="tags" className="form-label">Tags</label>
-            <input type="text" className="form-control" id="tags" name="tags" value={formData.tags.join(', ')} onChange={(e) => handleChange(e as any)} />
+            <div className="d-flex">
+              <input type="text" className="form-control me-2" id="tags" value={tagInput} onChange={handleTagInputChange} />
+              <button type="button" className="btn btn-primary" onClick={handleAddTag}>Adicionar</button>
+            </div>
+            <div className="mt-2">
+              {tags.map((tag, index) => (
+                <span key={index} className="badge bg-success me-2">
+                  {tag} <button type="button" className="btn-close btn-close-white ms-1" onClick={() => handleRemoveTag(tag)}></button>
+                </span>
+              ))}
+            </div>
           </div>
           <div className="col-md-6 mb-3">
             <label htmlFor="stars" className="form-label">Estrelas</label>
