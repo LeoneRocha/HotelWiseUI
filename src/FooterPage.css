@@ -1,0 +1,28 @@
+.footer {
+  background-color:#242424;
+  color: #ffffff;
+  padding: 1rem 0;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+}
+
+.footer .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer p {
+  margin: 0;
+}
+
+ 
+
+.server-info img {
+  width: 40px;
+  height: auto;
+  margin-top: 20px;
+  margin-left: 10px;
+}

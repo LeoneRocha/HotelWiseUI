@@ -4,6 +4,7 @@ import './App.css';
 import Navbar from './components/Navbar';
 import AppRoutes from './routes';
 import HeaderPage from './HeaderPage';
+import FooterPage from './FooterPage';
 
 const App: React.FC = () => {
   return (
@@ -24,6 +25,7 @@ const Main: React.FC = () => {
       <main className="container-fluid">
         <AppRoutes />
       </main>
+      <FooterPage/>
     </div>
   );
 };
