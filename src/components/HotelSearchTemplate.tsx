@@ -1,5 +1,6 @@
 import React from 'react';
 import { IHotel } from '../interfaces/IHotel';
+import './HotelSearchTemplate.css';
 
 interface HotelSearchTemplateProps {
   searchTerm: string;
@@ -22,6 +23,12 @@ const HotelSearchTemplate: React.FC<HotelSearchTemplateProps> = ({
   handleSearch,
   handleAdminClick,
 }) => {
+  const renderStars = (stars: number) => {
+    return [...Array(stars)].map((_, i) => (
+      <i key={i} className="fas fa-star star-gold"></i>
+    ));
+  };
+
   return (
     <div className="container-fluid mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
@@ -65,11 +72,11 @@ const HotelSearchTemplate: React.FC<HotelSearchTemplateProps> = ({
                     <h5 className="card-title">{hotel.hotelName}</h5>
                     <p className="card-text"><strong>Descrição:</strong> {hotel.description}</p>
                     <p className="card-text"><strong>Tags:</strong> {hotel.tags.join(', ')}</p>
-                    <p className="card-text"><strong>Estrelas:</strong> {hotel.stars}</p>
-                    <p className="card-text"><strong>Preço Inicial:</strong> R${hotel.initialRoomPrice}</p>
+                    <p className="card-text"><strong>Estrelas:</strong> {renderStars(hotel.stars)}</p>
+                    <p className="card-text"><strong>Preço Inicial:</strong> R${hotel.initialRoomPrice.toFixed(2)}</p>
                     <p className="card-text"><strong>Localização:</strong> {hotel.location}, {hotel.city} - {hotel.stateCode}</p>
                     <p className="card-text"><strong>CEP:</strong> {hotel.zipCode}</p>
-                    <p className="card-text"><strong>Pontuação:</strong> {hotel.score}</p>
+                    <p className="card-text pointsIA" ><strong>Pontuação:</strong> {hotel.score}</p>
                   </div>
                 </div>
               </div>
