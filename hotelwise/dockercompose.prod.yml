@@ -1,0 +1,12 @@
+name: hotelwiseuiproject
+services:
+  hotelwiseuiservice: 
+    image:  leonecr/hotelwiseui:latest
+    container_name:  hotelwiseui_container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+       - "80:80" 
+       - "4200:4200"   
+    restart: always

@@ -3,7 +3,7 @@ import { IHotel } from '../interfaces/IHotel';
 
 
 const api = axios.create({
-  baseURL: 'https://localhost:7203/api/Hotels/v1',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
 export const getAllHotels = async (): Promise<IHotel[]> => {

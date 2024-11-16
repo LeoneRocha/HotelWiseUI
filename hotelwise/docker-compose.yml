@@ -1,0 +1,12 @@
+name: hotelwiseuiproject
+services:
+  hotelwiseuiservice: 
+    image:  leonecr/hotelwiseui:latest
+    container_name:  hotelwiseui_container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+       - "8082:8082" # Mapeia a porta 8083 do  host  para a porta 8083 do contêiner ???. 
+       - "4200:4200"   
+    restart: always
