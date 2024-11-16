@@ -30,10 +30,10 @@ const FooterPage: React.FC = () => {
         <p><strong>API Version:</strong> {apiVersion || 'Carregando...'}</p>
         <div>
           <a href="https://vite.dev" target="_blank">
-            <img src={viteLogo} className="logo" alt="Vite logo" />
+            <img src={viteLogo} className="logo" alt="Vite" title='Vite' />
           </a>
           <a href="https://react.dev" target="_blank">
-            <img src={reactLogo} className="logo react" alt="React logo" />
+            <img src={reactLogo} className="logo react" alt="React" title='Reac'/>
           </a>
           <div className="server-info">
             <a href="https://getbootstrap.com/" target="_blank" rel="noopener noreferrer">
