@@ -54,9 +54,9 @@ const Navbar: React.FC = () => {
               </ul>
             </li>
           </ul>
-          <form className="d-flex" onSubmit={handleSubmit}>
+          <form className="d-flex assistant-search-form" onSubmit={handleSubmit}>
             <input
-              className="form-control me-2"
+              className="form-control me-2 assistant-search-input"
               type="search"
               placeholder="Pergunte ao Assistente..."
               aria-label="Search"
