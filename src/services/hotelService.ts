@@ -42,3 +42,7 @@ export const semanticSearch = async (criteria: { maxHotelRetrieve: number; searc
   const response = await api.post('/semanticsearch', criteria);
   return response.data;
 };
+export const generateHotelByIA = async (): Promise<IHotel> => {
+  const response = await api.get<IHotel>('/generate');
+  return response.data;
+};

@@ -7,6 +7,7 @@ interface HotelFormTemplateProps {
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   handleSubmit: (e: React.FormEvent) => void;
   handleCancel: () => void;
+  handleAutoFill: () => void;
   setFormData: React.Dispatch<React.SetStateAction<IHotel>>;
 }
 
@@ -15,6 +16,7 @@ const HotelFormTemplate: React.FC<HotelFormTemplateProps> = ({
   handleChange,
   handleSubmit,
   handleCancel,
+  handleAutoFill,
   setFormData,
 }) => {
   const [tagInput, setTagInput] = useState('');
@@ -47,6 +49,11 @@ const HotelFormTemplate: React.FC<HotelFormTemplateProps> = ({
     <div className="container-fluid mt-5">
       <h2 className="text-center mb-4">{formData.hotelId ? 'Editar Hotel' : 'Adicionar Hotel'}</h2>
       <form onSubmit={handleSubmit}>
+        {!formData.hotelId && (
+          <div className="d-flex mb-3">
+            <button type="button" className="btn btn-info" onClick={handleAutoFill}>Auto Preencher</button>
+          </div>
+        )}
         <div className="row">
           <div className="col-md-6 mb-3">
             <label htmlFor="hotelName" className="form-label">Nome do Hotel</label>
@@ -101,11 +108,7 @@ const HotelFormTemplate: React.FC<HotelFormTemplateProps> = ({
           <div className="col-md-6 mb-3">
             <label htmlFor="stateCode" className="form-label">Estado</label>
             <input type="text" className="form-control" id="stateCode" name="stateCode" value={formData.stateCode} onChange={handleChange} required />
-          </div>
-          <div className="col-md-6 mb-3">
-            <label htmlFor="score" className="form-label">Pontuação</label>
-            <input type="number" className="form-control" id="score" name="score" value={formData.score} onChange={handleChange} required />
-          </div>
+          </div> 
         </div>
         <div className="d-flex justify-content-between">
           <button type="button" className="btn btn-secondary w-49" onClick={handleCancel}>Cancelar</button>

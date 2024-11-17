@@ -5,6 +5,7 @@ import { IHotel } from '../interfaces/IHotel';
 import HotelFormTemplate from './HotelFormTemplate';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import { generateHotelByIA } from '../services/hotelService';
 
 interface HotelFormProps {
   onSave: () => void;
@@ -70,6 +71,17 @@ const HotelForm: React.FC<HotelFormProps> = ({ onSave }) => {
     navigate('/');
   };
 
+  const handleAutoFill = async () => {
+    try {
+      const generatedHotel = await generateHotelByIA();
+      setFormData(generatedHotel);
+    } catch (error) {
+      setModalMessage('Erro ao gerar dados do hotel. Por favor, tente novamente.');
+      setModalType('danger');
+      setShowModal(true);
+    }
+  };
+
   return (
     <div>
       <HotelFormTemplate
@@ -78,6 +90,7 @@ const HotelForm: React.FC<HotelFormProps> = ({ onSave }) => {
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
         setFormData={setFormData} // Passando a função de atualização do estado
+        handleAutoFill={handleAutoFill} // Passando a função de auto preenchimento
       />
 
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>

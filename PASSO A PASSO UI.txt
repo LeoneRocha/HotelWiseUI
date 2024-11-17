@@ -1,9 +1,11 @@
 ------------- TODO -------------
 
 
-1) Na api  de criar hotel fazer na api para pedir uma geracao de hotal e retornar um hotel 
+1) Na api  de criar hotel fazer na api para pedir uma geracao de hotal e retornar um hotel  - ok
 
-2) Na tela ao cria novo hotel soliciar e preenche o form com resultado do hotel 
+2) Na tela ao cria novo hotel soliciar e preenche o form com resultado do hotel - ok
+
+
 
 3) ao editar hotel um status se esta ou nao no veto se nao tiver mostrar botao Incluir no Store
 
@@ -22,16 +24,8 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
+Melhore o codigo do formulario criando um botao "auto preencher" quando for adicionar novo hotel para requisitar a api endpoint a baixo para buscar dados do hotel e carregar nos campos do forumlario 
+ 
 
 Para criar um projeto em React JS usando TypeScript e padrões de projetos, você pode seguir os passos abaixo. Vou incluir um exemplo básico de como configurar um projeto React com TypeScript e como estruturar os componentes e serviços para se comunicar com o seu controller de API.
 
