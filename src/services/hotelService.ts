@@ -1,11 +1,21 @@
 import axios from 'axios';
 import { IHotel } from '../interfaces/IHotel';
 
-
+// Criação da instância Axios
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL + '/Hotels/v1',
 });
 
+// Interceptor para adicionar o token de autenticação
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// Funções do serviço
 export const getAllHotels = async (): Promise<IHotel[]> => {
   const response = await api.get<IHotel[]>('/');
   return response.data;
@@ -29,5 +39,6 @@ export const deleteHotel = async (id: number): Promise<void> => {
 };
 
 export const semanticSearch = async (criteria: { maxHotelRetrieve: number; searchTextCriteria: string }): Promise<IHotel[]> => {
-  const response = await api.post('/semanticsearch', criteria); return response.data;
+  const response = await api.post('/semanticsearch', criteria);
+  return response.data;
 };
