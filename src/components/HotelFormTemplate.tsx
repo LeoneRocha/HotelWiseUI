@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IHotel } from '../interfaces/IHotel';
 import './HotelFormTemplate.css';
-import { FaPlusCircle, FaCheckCircle, FaStore, FaTimesCircle } from 'react-icons/fa';
+import { FaPlusCircle, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 
 interface HotelFormTemplateProps {
   formData: IHotel;
