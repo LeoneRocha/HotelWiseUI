@@ -71,7 +71,7 @@ const HotelForm: React.FC<HotelFormProps> = ({ onSave }) => {
   };
 
   const handleCancel = () => {
-    navigate('/');
+    navigate('/list');
   };
 
   const handleAutoFill = async () => {
