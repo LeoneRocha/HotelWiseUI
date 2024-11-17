@@ -26,6 +26,11 @@ export const getHotelById = async (id: number): Promise<IHotel> => {
   return response.data;
 };
 
+export const adVectorById = async (id: number): Promise<IHotel> => {
+  const response = await api.get<IHotel>(`/addvector/${id}`);
+  return response.data;
+};
+
 export const createHotel = async (hotel: IHotel): Promise<void> => {
   await api.post('/', hotel);
 };

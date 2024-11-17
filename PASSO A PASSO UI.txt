@@ -24,6 +24,7 @@
 
 
 
+
 Melhore o codigo do formulario criando um botao "auto preencher" quando for adicionar novo hotel para requisitar a api endpoint a baixo para buscar dados do hotel e carregar nos campos do forumlario 
  
 

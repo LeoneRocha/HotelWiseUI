@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getHotelById, createHotel, updateHotel, generateHotelByIA } from '../services/hotelService';
+import { getHotelById, createHotel, updateHotel, generateHotelByIA, adVectorById } from '../services/hotelService';
 import { IHotel } from '../interfaces/IHotel';
 import HotelFormTemplate from './HotelFormTemplate';
 import Modal from 'react-bootstrap/Modal';
@@ -25,6 +25,7 @@ const HotelForm: React.FC<HotelFormProps> = ({ onSave }) => {
     city: '',
     stateCode: '',
     score: 0,
+    isHotelInVectorStore: false,
   });
 
   const [showModal, setShowModal] = useState(false);
@@ -84,6 +85,17 @@ const HotelForm: React.FC<HotelFormProps> = ({ onSave }) => {
     }
   };
 
+  const handleAddToVectorStore = async () => {
+    try {
+      if (formData.hotelId > 0) {
+      await adVectorById(formData.hotelId );
+      navigate('/list');
+      }
+    } catch (error) {
+      setModalMessage('Erro ao gravar no vetor. Por favor, tente novamente.');      
+    }
+  };
+
   return (
     <div>
       <HotelFormTemplate
@@ -93,6 +105,7 @@ const HotelForm: React.FC<HotelFormProps> = ({ onSave }) => {
         handleCancel={handleCancel}
         setFormData={setFormData}
         handleAutoFill={handleAutoFill}
+        handleAddToVectorStore={handleAddToVectorStore}
       />
 
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>

@@ -12,4 +12,5 @@
     city: string;
     stateCode: string;
     score: number;
+    isHotelInVectorStore: boolean;
   }

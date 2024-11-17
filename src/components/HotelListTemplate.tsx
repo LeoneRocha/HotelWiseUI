@@ -11,6 +11,8 @@ interface HotelListTemplateProps {
   hotelsPerPage: number;
   handleDelete: (id: number) => void;
   paginate: (pageNumber: number) => void;
+  filter: string;
+  handleFilterChange: (filterValue: string) => void;
 }
 
 const HotelListTemplate: React.FC<HotelListTemplateProps> = ({
@@ -20,6 +22,8 @@ const HotelListTemplate: React.FC<HotelListTemplateProps> = ({
   hotelsPerPage,
   handleDelete,
   paginate,
+  filter,
+  handleFilterChange,
 }) => {
   return (
     <div className="container-fluid mt-5">
@@ -28,6 +32,16 @@ const HotelListTemplate: React.FC<HotelListTemplateProps> = ({
         <Link to="/edit/new" className="btn btn-success">
           <i className="fas fa-plus"></i> Adicionar Novo Hotel
         </Link>
+      </div>
+      {/* Campo de filtro adicionado */}
+      <div className="mb-4">
+        <input 
+          type="text" 
+          placeholder="Filtrar por nome do hotel" 
+          className="form-control"
+          value={filter} 
+          onChange={(e) => handleFilterChange(e.target.value)} 
+        />
       </div>
       <div className="row">
         {hotels.map(hotel => (

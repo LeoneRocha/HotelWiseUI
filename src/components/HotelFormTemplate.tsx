@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IHotel } from '../interfaces/IHotel';
 import './HotelFormTemplate.css';
+import { FaPlusCircle, FaCheckCircle, FaStore, FaTimesCircle } from 'react-icons/fa';
 
 interface HotelFormTemplateProps {
   formData: IHotel;
@@ -8,6 +9,7 @@ interface HotelFormTemplateProps {
   handleSubmit: (e: React.FormEvent) => void;
   handleCancel: () => void;
   handleAutoFill: () => void;
+  handleAddToVectorStore: () => void;
   setFormData: React.Dispatch<React.SetStateAction<IHotel>>;
 }
 
@@ -17,6 +19,7 @@ const HotelFormTemplate: React.FC<HotelFormTemplateProps> = ({
   handleSubmit,
   handleCancel,
   handleAutoFill,
+  handleAddToVectorStore,
   setFormData,
 }) => {
   const [tagInput, setTagInput] = useState('');
@@ -52,6 +55,21 @@ const HotelFormTemplate: React.FC<HotelFormTemplateProps> = ({
         {!formData.hotelId && (
           <div className="d-flex mb-3">
             <button type="button" className="btn btn-info" onClick={handleAutoFill}>Auto Preencher (IA)</button>
+          </div>
+        )}
+        {formData.hotelId && (
+          <div className="d-flex mb-3 align-items-center">
+            {formData.isHotelInVectorStore ? (
+              <FaCheckCircle className="text-success" />
+            ) : (
+              <FaTimesCircle className="text-danger" />
+            )}
+            <span className="ms-2">{formData.isHotelInVectorStore ? 'No Vector Store' : 'Not in Vector Store'}</span>
+            {!formData.isHotelInVectorStore && (
+              <button type="button" className="btn btn-link ms-2" onClick={handleAddToVectorStore}>
+                <FaPlusCircle className="text-primary" />
+              </button>
+            )}
           </div>
         )}
         <div className="row">
@@ -108,7 +126,7 @@ const HotelFormTemplate: React.FC<HotelFormTemplateProps> = ({
           <div className="col-md-6 mb-3">
             <label htmlFor="stateCode" className="form-label">Estado</label>
             <input type="text" className="form-control" id="stateCode" name="stateCode" value={formData.stateCode} onChange={handleChange} required />
-          </div> 
+          </div>
         </div>
         <div className="d-flex justify-content-between">
           <button type="button" className="btn btn-secondary w-49" onClick={handleCancel}>Cancelar</button>

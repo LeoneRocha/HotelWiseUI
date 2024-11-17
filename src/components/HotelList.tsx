@@ -5,8 +5,10 @@ import HotelListTemplate from './HotelListTemplate';
 
 const HotelList: React.FC = () => {
   const [hotels, setHotels] = useState<IHotel[]>([]);
+  const [filteredHotels, setFilteredHotels] = useState<IHotel[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hotelsPerPage] = useState(6);
+  const [filter, setFilter] = useState('');
   const isFetching = useRef(false); // Usado para evitar chamadas duplicadas à API
 
   useEffect(() => {
@@ -15,6 +17,7 @@ const HotelList: React.FC = () => {
       const fetchHotels = async () => {
         const hotels = await getAllHotels();
         setHotels(hotels);
+        setFilteredHotels(hotels); // Inicializa o estado dos hotéis filtrados
         isFetching.current = false; // Marca como executado
       };
       fetchHotels();
@@ -24,23 +27,40 @@ const HotelList: React.FC = () => {
   const handleDelete = async (id: number) => {
     await deleteHotel(id);
     setHotels(hotels.filter(hotel => hotel.hotelId !== id));
+    setFilteredHotels(filteredHotels.filter(hotel => hotel.hotelId !== id)); // Atualiza os hotéis filtrados
+  };
+
+  const handleFilterChange = (filterValue: string) => {
+    setFilter(filterValue);
+    if (filterValue === '') {
+      setFilteredHotels(hotels); // Volta aos resultados anteriores se o filtro for limpo
+    } else {
+      setFilteredHotels(hotels.filter(hotel => 
+        hotel.hotelName.toLowerCase().includes(filterValue.toLowerCase())
+      ));
+    }
+    setCurrentPage(1); // Reinicia a paginação ao filtrar
   };
 
   const indexOfLastHotel = currentPage * hotelsPerPage;
   const indexOfFirstHotel = indexOfLastHotel - hotelsPerPage;
-  const currentHotels = hotels.slice(indexOfFirstHotel, indexOfLastHotel);
+  const currentHotels = filteredHotels.slice(indexOfFirstHotel, indexOfLastHotel);
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
-    <HotelListTemplate
-      hotels={currentHotels}
-      totalHotels={hotels.length}
-      currentPage={currentPage}
-      hotelsPerPage={hotelsPerPage}
-      handleDelete={handleDelete}
-      paginate={paginate}
-    />
+    <div>
+      <HotelListTemplate
+        hotels={currentHotels}
+        totalHotels={filteredHotels.length}
+        currentPage={currentPage}
+        hotelsPerPage={hotelsPerPage}
+        handleDelete={handleDelete}
+        paginate={paginate}
+        filter={filter}
+        handleFilterChange={handleFilterChange}
+      />
+    </div>
   );
 };
 
