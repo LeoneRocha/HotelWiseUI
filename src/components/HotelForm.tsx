@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getHotelById, createHotel, updateHotel } from '../services/hotelService';
+import { getHotelById, createHotel, updateHotel, generateHotelByIA } from '../services/hotelService';
 import { IHotel } from '../interfaces/IHotel';
 import HotelFormTemplate from './HotelFormTemplate';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import { generateHotelByIA } from '../services/hotelService';
 
 interface HotelFormProps {
   onSave: () => void;
@@ -31,12 +30,15 @@ const HotelForm: React.FC<HotelFormProps> = ({ onSave }) => {
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState<string | null>(null);
   const [modalType, setModalType] = useState<'success' | 'danger' | null>(null);
+  const isFetching = useRef(false);  // Usado para evitar chamadas duplicadas à API
 
   useEffect(() => {
-    if (id) {
+    if (id && !isFetching.current) {
+      isFetching.current = true;
       const fetchHotel = async () => {
         const hotel = await getHotelById(Number(id));
         setFormData(hotel);
+        isFetching.current = false;
       };
       fetchHotel();
     }
@@ -89,8 +91,8 @@ const HotelForm: React.FC<HotelFormProps> = ({ onSave }) => {
         handleChange={handleChange}
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
-        setFormData={setFormData} // Passando a função de atualização do estado
-        handleAutoFill={handleAutoFill} // Passando a função de auto preenchimento
+        setFormData={setFormData}
+        handleAutoFill={handleAutoFill}
       />
 
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>

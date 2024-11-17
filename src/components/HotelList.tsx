@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { getAllHotels, deleteHotel } from '../services/hotelService';
 import { IHotel } from '../interfaces/IHotel'; 
 import HotelListTemplate from './HotelListTemplate';
@@ -7,13 +7,18 @@ const HotelList: React.FC = () => {
   const [hotels, setHotels] = useState<IHotel[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hotelsPerPage] = useState(6);
+  const isFetching = useRef(false); // Usado para evitar chamadas duplicadas à API
 
   useEffect(() => {
-    const fetchHotels = async () => {
-      const hotels = await getAllHotels();
-      setHotels(hotels);
-    };
-    fetchHotels();
+    if (!isFetching.current) {
+      isFetching.current = true;
+      const fetchHotels = async () => {
+        const hotels = await getAllHotels();
+        setHotels(hotels);
+        isFetching.current = false; // Marca como executado
+      };
+      fetchHotels();
+    }
   }, []);
 
   const handleDelete = async (id: number) => {

@@ -4,21 +4,21 @@
 1) Na api  de criar hotel fazer na api para pedir uma geracao de hotal e retornar um hotel  - ok
 
 2) Na tela ao cria novo hotel soliciar e preenche o form com resultado do hotel - ok
+ 
+3) NA API AO CRIAR OU EDITAR JA TEM QUE INSERIR NO VETOR STORE   - ok 
+
+4) ao editar hotel um status se esta ou nao no veto se nao tiver mostrar botao Incluir no Store - XXXXXXXX
+
+5) Incluir protecao de rota para ver se ta autenticado
+
+6) AUTENTICACAO VIA AZURE AD 
+
+6) GERAR IMAGENS DE HOTEL POR IA  
 
 
 
-3) ao editar hotel um status se esta ou nao no veto se nao tiver mostrar botao Incluir no Store
 
-4) Incluir protecao de rota para ver se ta autenticado
-
-5) NA API AO CRIAR OU EDITAR JA TEM QUE INSERIR NO VETOR STORE 
-
-6)
-
-
-
-
-
+------------- TODO -------------
 
 
 

@@ -23,8 +23,8 @@ const HotelListTemplate: React.FC<HotelListTemplateProps> = ({
 }) => {
   return (
     <div className="container-fluid mt-5">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1 className="text-center">Lista de Hotéis</h1>
+      <h1 className="text-left">Lista de Hotéis</h1>
+      <div className="d-flex align-items-center mb-4">
         <Link to="/edit/new" className="btn btn-success">
           <i className="fas fa-plus"></i> Adicionar Novo Hotel
         </Link>

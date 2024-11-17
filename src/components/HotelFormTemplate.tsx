@@ -51,7 +51,7 @@ const HotelFormTemplate: React.FC<HotelFormTemplateProps> = ({
       <form onSubmit={handleSubmit}>
         {!formData.hotelId && (
           <div className="d-flex mb-3">
-            <button type="button" className="btn btn-info" onClick={handleAutoFill}>Auto Preencher</button>
+            <button type="button" className="btn btn-info" onClick={handleAutoFill}>Auto Preencher (IA)</button>
           </div>
         )}
         <div className="row">
