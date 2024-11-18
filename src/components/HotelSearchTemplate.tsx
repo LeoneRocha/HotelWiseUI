@@ -66,13 +66,12 @@ const HotelSearchTemplate: React.FC<HotelSearchTemplateProps> = ({
                     <i className="fas fa-hotel fa-4x text-muted"></i>
                   </div>
                   <div className="card-body">
-                    <h5 className="card-title">{hotel.hotelName}<i className="fas fa-info-circle text-muted" title={`Pontuação: ${hotel.score}`} alt={`Pontuação: ${hotel.score}`} style={{ marginLeft: '10px' }} ></i></h5>
-                    <p className="card-text"><strong>Descrição:</strong> {hotel.description}</p>
+                    <h5 className="card-title">{hotel.hotelName}<i className="fas fa-info-circle text-muted" title={`Pontuação: ${hotel.score}`} style={{ marginLeft: '10px' }} ></i></h5> <p className="card-text"><strong>Descrição:</strong> {hotel.description}</p>
                     <p className="card-text"><strong>Tags:</strong> {hotel.tags.join(', ')}</p>
                     <p className="card-text"><strong>Estrelas:</strong> {renderStars(hotel.stars)}</p>
                     <p className="card-text"><strong>Preço Inicial:</strong> R${hotel.initialRoomPrice.toFixed(2)}</p>
                     <p className="card-text"><strong>Localização:</strong> {hotel.location}, {hotel.city} - {hotel.stateCode}</p>
-                    <p className="card-text"><strong>CEP:</strong> {hotel.zipCode}</p> 
+                    <p className="card-text"><strong>CEP:</strong> {hotel.zipCode}</p>
                   </div>
                 </div>
               </div>
