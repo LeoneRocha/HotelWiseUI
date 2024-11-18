@@ -15,7 +15,7 @@
 
 6) GERAR IMAGENS DE HOTEL POR IA  
 
-
+7) Por na telas todas as tags ao ao selecionar a tag e por em filtrar ele envia a tag para o vetor pesquisa naquela tag 
 
 
 ------------- TODO -------------
