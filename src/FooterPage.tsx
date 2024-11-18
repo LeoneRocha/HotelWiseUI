@@ -31,11 +31,10 @@ const FooterPage: React.FC = () => {
         <p><strong>UI Version:</strong> {uiVersion}</p>
         <p><strong>API Version:</strong> {apiVersion || 'Carregando...'}</p>
         <div>
-          <a href="https://vite.dev" target="_blank">
-            <img src={viteLogo} className="logo" alt="Vite" title='Vite' />
-          </a>
           <a href="https://react.dev" target="_blank">
             <img src={reactLogo} className="logo react" alt="React" title='Reac' />
+          </a><a href="https://vite.dev" target="_blank">
+            <img src={viteLogo} className="logo" alt="Vite" title='Vite' />
           </a>
           <div className="server-info">
             <a href="https://getbootstrap.com/" target="_blank" rel="noopener noreferrer">
@@ -55,7 +54,7 @@ const FooterPage: React.FC = () => {
             </a>
             <a href="https://sonarcloud.io/summary/new_code?id=lionscorp_hotelwiseui" target="_blank" rel="noopener noreferrer">
               <img src="https://static.cdnlogo.com/logos/s/13/sonarcloud.svg" alt="SonarCloud" title="SonarCloud" />
-            </a>             
+            </a>
             <a href="https://hub.docker.com/r/leonecr/hotelwiseui" target="_blank" rel="noopener noreferrer">
               <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original-wordmark.svg" alt="Docker Hub" title="Docker Hub" />
             </a>
@@ -67,10 +66,10 @@ const FooterPage: React.FC = () => {
             </a>
             <a href="https://qdrant.tech/" target="_blank" rel="noopener noreferrer">
               <img src="https://qdrant.tech/img/brand-resources-logos/logo.svg" alt="qdrant" title="qdrant" />
-            </a> 
+            </a>
             <a href="https://mistral.ai/" target="_blank" rel="noopener noreferrer">
               <img src="https://custom.typingmind.com/assets/models/mistralai.png" alt="mistral" title="mistral" />
-            </a> 
+            </a>
           </div>
         </div>
       </div>
