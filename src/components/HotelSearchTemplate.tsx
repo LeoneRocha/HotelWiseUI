@@ -9,7 +9,7 @@ interface HotelSearchTemplateProps {
   searched: boolean;
   error: string | null;
   loading: boolean;
-  handleSearch: (e: React.FormEvent) => void; 
+  handleSearch: (e: React.FormEvent) => void;
 }
 
 const HotelSearchTemplate: React.FC<HotelSearchTemplateProps> = ({
@@ -19,7 +19,7 @@ const HotelSearchTemplate: React.FC<HotelSearchTemplateProps> = ({
   searched,
   error,
   loading,
-  handleSearch, 
+  handleSearch,
 }) => {
   const renderStars = (stars: number) => {
     return [...Array(stars)].map((_, i) => (
@@ -30,7 +30,7 @@ const HotelSearchTemplate: React.FC<HotelSearchTemplateProps> = ({
   return (
     <div className="container-fluid mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2>Buscar Hotéis</h2> 
+        <h2>Buscar Hotéis</h2>
       </div>
       <form onSubmit={handleSearch} className="input-group mb-4 w-100">
         <input
@@ -66,14 +66,13 @@ const HotelSearchTemplate: React.FC<HotelSearchTemplateProps> = ({
                     <i className="fas fa-hotel fa-4x text-muted"></i>
                   </div>
                   <div className="card-body">
-                    <h5 className="card-title">{hotel.hotelName}</h5>
+                    <h5 className="card-title">{hotel.hotelName}<i className="fas fa-info-circle text-muted" title={`Pontuação: ${hotel.score}`} alt={`Pontuação: ${hotel.score}`} style={{ marginLeft: '10px' }} ></i></h5>
                     <p className="card-text"><strong>Descrição:</strong> {hotel.description}</p>
                     <p className="card-text"><strong>Tags:</strong> {hotel.tags.join(', ')}</p>
                     <p className="card-text"><strong>Estrelas:</strong> {renderStars(hotel.stars)}</p>
                     <p className="card-text"><strong>Preço Inicial:</strong> R${hotel.initialRoomPrice.toFixed(2)}</p>
                     <p className="card-text"><strong>Localização:</strong> {hotel.location}, {hotel.city} - {hotel.stateCode}</p>
-                    <p className="card-text"><strong>CEP:</strong> {hotel.zipCode}</p>
-                    <p className="card-text pointsIA" ><strong>Pontuação:</strong> {hotel.score}</p>
+                    <p className="card-text"><strong>CEP:</strong> {hotel.zipCode}</p> 
                   </div>
                 </div>
               </div>
