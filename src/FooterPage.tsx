@@ -70,6 +70,9 @@ const FooterPage: React.FC = () => {
             <a href="https://mistral.ai/" target="_blank" rel="noopener noreferrer">
               <img src="https://custom.typingmind.com/assets/models/mistralai.png" alt="mistral" title="mistral" />
             </a>
+            <a href="https://mistral.ai/" target="_blank" rel="noopener noreferrer">
+              <img src="https://groq.com/wp-content/uploads/2024/03/PBG-mark1-color.svg" alt="Powered by Groq for fast inference." title="Powered by Groq for fast inference."  className="white-icon" />
+            </a>
           </div>
         </div>
       </div>
