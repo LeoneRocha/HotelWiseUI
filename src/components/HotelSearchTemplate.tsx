@@ -9,8 +9,7 @@ interface HotelSearchTemplateProps {
   searched: boolean;
   error: string | null;
   loading: boolean;
-  handleSearch: (e: React.FormEvent) => void;
-  handleAdminClick: () => void;
+  handleSearch: (e: React.FormEvent) => void; 
 }
 
 const HotelSearchTemplate: React.FC<HotelSearchTemplateProps> = ({
@@ -20,8 +19,7 @@ const HotelSearchTemplate: React.FC<HotelSearchTemplateProps> = ({
   searched,
   error,
   loading,
-  handleSearch,
-  handleAdminClick,
+  handleSearch, 
 }) => {
   const renderStars = (stars: number) => {
     return [...Array(stars)].map((_, i) => (
@@ -32,8 +30,7 @@ const HotelSearchTemplate: React.FC<HotelSearchTemplateProps> = ({
   return (
     <div className="container-fluid mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2>Buscar Hotéis</h2>
-        <button className="btn btn-secondary" onClick={handleAdminClick}>Admin</button>
+        <h2>Buscar Hotéis</h2> 
       </div>
       <form onSubmit={handleSearch} className="input-group mb-4 w-100">
         <input

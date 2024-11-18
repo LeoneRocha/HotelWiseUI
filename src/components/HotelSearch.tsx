@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react'; 
 import { semanticSearch } from '../services/hotelService';
 import { IHotel } from '../interfaces/IHotel'; 
 import './HotelSearch.css'; // Adicione um arquivo CSS para customizações adicionais
@@ -10,8 +9,7 @@ const HotelSearch: React.FC = () => {
   const [hotels, setHotels] = useState<IHotel[]>([]);
   const [searched, setSearched] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false); 
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,9 +29,7 @@ const HotelSearch: React.FC = () => {
     }
   };
 
-  const handleAdminClick = () => {
-    navigate('/list');
-  };
+ 
 
   return (
     <HotelSearchTemplate
@@ -43,8 +39,7 @@ const HotelSearch: React.FC = () => {
       searched={searched}
       error={error}
       loading={loading}
-      handleSearch={handleSearch}
-      handleAdminClick={handleAdminClick}
+      handleSearch={handleSearch} 
     />
   );
 };
