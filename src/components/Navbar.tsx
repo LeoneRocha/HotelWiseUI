@@ -39,7 +39,7 @@ const Navbar: React.FC = () => {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav me-auto">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <Link className="nav-link" to="/search">Buscar Hotéis</Link>
             </li>
@@ -63,7 +63,7 @@ const Navbar: React.FC = () => {
               value={query}
               onChange={handleInputChange}
             />
-            <button className="btn btn-outline-success" type="submit">Enviar</button>
+            <button className="btn btn-success" type="submit">Enviar</button>
           </form>
         </div>
       </div>

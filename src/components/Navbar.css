@@ -1,22 +1,22 @@
 .nav-item.dropdown:hover .dropdown-menu {
   display: block;
-  background-color: #343a40; /* Cor preta do menu */
+  background-color: #343a40;
   color: #ffffff !important;
 }
 
 .dropdown-menu {
-  background-color: #343a40; /* Cor preta do menu */
+  background-color: #343a40;
   border: none;
   margin-top: 0;
   color: #ffffff !important;
 }
 
 .dropdown-item {
-  color: #ffffff !important; /* Cor do texto para o dropdown item */
+  color: #ffffff !important;
 }
 
 .dropdown-item:hover {
-  background-color: #495057; /* Cor de fundo ao passar o mouse */
+  background-color: #495057;
   color: #f00202 !important;
 }
 
@@ -29,6 +29,30 @@
   width: 80%;
 }
 
+@media (max-width: 767px) {
+  .assistant-search-form {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+
 .assistant-search-input {
   width: 100%;
+}
+
+@media (max-width: 767px) {
+  .assistant-search-input {
+    margin-bottom: 10px;
+  }
+}
+
+.navbar-nav .nav-item {
+  margin-right: 10px;
+}
+
+@media (max-width: 767px) {
+  .navbar-nav .nav-item {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
 }

@@ -5,7 +5,7 @@ body, html {
   }
   
   .login-container {
-    height: 100vh;
+    height: 75vh;
     background: linear-gradient(135deg, #1f8ef1, #5e72e4);
   }
   
