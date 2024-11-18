@@ -19,12 +19,13 @@
 .footer p {
   margin: 0;
 }
-
  
-
 .server-info img {
   width: 40px;
   height: auto;
   margin-top: 20px;
   margin-left: 10px;
+}
+.white-icon {
+  filter: invert(100%);
 }
