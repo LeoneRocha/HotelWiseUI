@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { getAppInformationVersionProduct } from './services/apiService';
-import './FooterPage.css';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
+import './css/FooterPage.css';
 //https://devicon.dev/
 //https://cdnlogo.com/vector-logos/sonar?
 //https://custom.typingmind.com/tools/model-icons/mistral

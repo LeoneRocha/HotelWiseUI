@@ -3,7 +3,7 @@ import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar';
 import AppRoutes from './routes';
-import HeaderPage from './HeaderPage';
+import HeaderPage from './components/HeaderPage';
 import FooterPage from './FooterPage';
 import LocalStorageService from './services/localStorageService';
 
@@ -23,7 +23,7 @@ const Main: React.FC = () => {
     <div className="container-fluid p-0">
       {showNavbar && <HeaderPage />}
       {showNavbar && <Navbar />}
-      <main className="container-fluid">
+      <main>
         <AppRoutes />
       </main>
       <FooterPage />
