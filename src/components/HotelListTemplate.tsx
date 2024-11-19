@@ -40,7 +40,7 @@ const HotelListTemplate: React.FC<HotelListTemplateProps> = ({
                 <i className="fas fa-hotel fa-4x text-muted"></i>
               </div>
               <div className="card-body">
-                <h5 className="card-title">{hotel.hotelName}</h5>
+                <h5 className="card-title">{hotel.hotelName}<i className="fas fa-info-circle text-muted" title={`Id: ${hotel.hotelId}`} style={{ marginLeft: '10px' }} ></i></h5>
                 <p className="card-text">{hotel.description}</p>
                 <div className="d-flex justify-content-between">
                   <Link to={`/edit/${hotel.hotelId}`} className="btn btn-primary">
