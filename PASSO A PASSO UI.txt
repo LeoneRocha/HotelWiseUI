@@ -1,15 +1,15 @@
 ------------- TODO -------------
 
 
-1) Na api  de criar hotel fazer na api para pedir uma geracao de hotal e retornar um hotel  - ok
+1) Na api  de criar hotel fazer na api para pedir uma geracao de hotal e retornar um hotel  - ok FEITO
 
-2) Na tela ao cria novo hotel soliciar e preenche o form com resultado do hotel - ok
+2) Na tela ao cria novo hotel soliciar e preenche o form com resultado do hotel - ok FEITO
  
-3) NA API AO CRIAR OU EDITAR JA TEM QUE INSERIR NO VETOR STORE   - ok 
+3) NA API AO CRIAR OU EDITAR JA TEM QUE INSERIR NO VETOR STORE   - ok FEITO
 
-4)  ao editar hotel um status se esta ou nao no veto se nao tiver mostrar botao Incluir no Store   - ok 
+4)  ao editar hotel um status se esta ou nao no veto se nao tiver mostrar botao Incluir no Store   - ok  FEITO
 
-5) Incluir protecao de rota para ver se ta autenticado  - ok 
+5) Incluir protecao de rota para ver se ta autenticado  - ok  FEITO
 
 6) Por na telas todas as tags ao ao selecionar a tag e por em filtrar ele envia a tag para o vetor pesquisa naquela tag 
 
