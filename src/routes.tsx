@@ -33,6 +33,10 @@ const AppRoutes: React.FC = () => {
           <HotelList />
         </AuthGuard>
       } />
+      <Route path="/new/:new" element={<AuthGuard>
+        <HotelForm onSave={handleSave} />
+      </AuthGuard>
+      } />
       <Route path="/edit/:id" element={
         <AuthGuard>
           <HotelForm onSave={handleSave} />

@@ -48,7 +48,7 @@ const Navbar: React.FC = () => {
                 Admin
               </Link>
               <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><Link className="dropdown-item" to="/edit/new">Adicionar Hotel</Link></li>
+                <li><Link className="dropdown-item" to="/new/:new">Adicionar Hotel</Link></li>
                 <li><hr className="dropdown-divider" /></li>
                 <li><Link className="dropdown-item" to="/list">Listar Hotéis</Link></li>
               </ul>

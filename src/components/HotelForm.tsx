@@ -31,7 +31,23 @@ const HotelForm: React.FC<HotelFormProps> = ({ onSave }) => {
   const isFetching = useRef(false);  // Usado para evitar chamadas duplicadas à API
 
   useEffect(() => {
-    if (id && !isNaN(Number(id)) && !isFetching.current) {
+    if (id === 'new') {
+      // Limpar os campos do formulário
+      setFormData({
+        hotelId: 0,
+        hotelName: '',
+        description: '',
+        tags: [],
+        stars: 0,
+        initialRoomPrice: 0,
+        zipCode: '',
+        location: '',
+        city: '',
+        stateCode: '',
+        score: 0,
+        isHotelInVectorStore: false,
+      });
+    } else if (id && !isNaN(Number(id)) && !isFetching.current) {
       isFetching.current = true;
       const fetchHotel = async () => {
         try {
