@@ -1,7 +1,7 @@
 import React, { useState } from 'react'; 
 import { semanticSearch } from '../services/hotelService';
 import { IHotel } from '../interfaces/IHotel'; 
-import './HotelSearch.css'; // Adicione um arquivo CSS para customizações adicionais
+import '../css/HotelSearch.css'; // Adicione um arquivo CSS para customizações adicionais
 import HotelSearchTemplate from './HotelSearchTemplate';
 
 const HotelSearch: React.FC = () => {

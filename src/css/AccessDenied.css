@@ -1,0 +1,46 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .access-denied-container {
+    height: 75vh;
+    background: linear-gradient(135deg, #ff6b6b, #d63031);
+  }
+  
+  .access-denied-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  .access-denied-card .text-danger {
+    font-size: 2.5rem;
+  }
+  
+  .access-denied-icon {
+    font-size: 4rem;
+    animation: pulse 2s infinite;
+    color: #d63031;
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  
+  .btn-primary {
+    background-color: #d63031;
+    border-color: #d63031;
+  }
+  
+  .btn-primary:hover {
+    background-color: #c0392b;
+  }
+  

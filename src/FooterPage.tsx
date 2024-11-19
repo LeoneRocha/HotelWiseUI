@@ -9,7 +9,7 @@ import viteLogo from '/vite.svg';
 const FooterPage: React.FC = () => {
   const [apiVersion, setApiVersion] = useState<string>('');
   const uiVersion = import.meta.env.VITE_UI_VERSION;
-
+  const actualYear = new Date().getFullYear();
   useEffect(() => {
     const fetchApiVersion = async () => {
       try {
@@ -28,6 +28,9 @@ const FooterPage: React.FC = () => {
   return (
     <footer className="footer">
       <div className="container">
+        <br />
+        <p> © {actualYear} Pesquisa de Hotel IA. All rights reserved.</p>
+        <br />
         <p><strong>UI Version:</strong> {uiVersion}</p>
         <p><strong>API Version:</strong> {apiVersion || 'Carregando...'}</p>
         <div>
@@ -70,11 +73,12 @@ const FooterPage: React.FC = () => {
             <a href="https://mistral.ai/" target="_blank" rel="noopener noreferrer">
               <img src="https://custom.typingmind.com/assets/models/mistralai.png" alt="mistral" title="mistral" />
             </a>
-            <a href="https://mistral.ai/" target="_blank" rel="noopener noreferrer">
-              <img src="https://groq.com/wp-content/uploads/2024/03/PBG-mark1-color.svg" alt="Powered by Groq for fast inference." title="Powered by Groq for fast inference."  className="white-icon" />
+            <a href="https://groq.com/" target="_blank" rel="noopener noreferrer">
+              <img src="https://groq.com/wp-content/uploads/2024/03/PBG-mark1-color.svg" alt="Powered by Groq for fast inference." title="Powered by Groq for fast inference." className="white-icon" />
             </a>
           </div>
         </div>
+        <br />
       </div>
     </footer>
   );

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import './Navbar.css'; // Importando o CSS customizado
+import '../css/Navbar.css'; // Importando o CSS customizado
 import { getChatCompletion } from '../services/chatService';
 
 const Navbar: React.FC = () => {

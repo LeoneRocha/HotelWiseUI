@@ -11,12 +11,11 @@
 
 5) Incluir protecao de rota para ver se ta autenticado
 
-6) AUTENTICACAO VIA AZURE AD 
+6) Por na telas todas as tags ao ao selecionar a tag e por em filtrar ele envia a tag para o vetor pesquisa naquela tag 
 
-6) GERAR IMAGENS DE HOTEL POR IA  
+7) AUTENTICACAO VIA AZURE AD 
 
-7) Por na telas todas as tags ao ao selecionar a tag e por em filtrar ele envia a tag para o vetor pesquisa naquela tag 
-
+8) GERAR IMAGENS DE HOTEL POR IA  
 
 ------------- TODO -------------
 

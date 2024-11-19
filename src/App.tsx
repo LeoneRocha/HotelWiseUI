@@ -1,10 +1,11 @@
 import React from 'react';
-import { BrowserRouter as Router, useLocation, } from 'react-router-dom';
+import { BrowserRouter as Router, useLocation } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/Navbar';
 import AppRoutes from './routes';
 import HeaderPage from './HeaderPage';
 import FooterPage from './FooterPage';
+import LocalStorageService from './services/localStorageService';
 
 const App: React.FC = () => {
   return (
@@ -16,7 +17,7 @@ const App: React.FC = () => {
 
 const Main: React.FC = () => {
   const location = useLocation();
-  const showNavbar = location.pathname !== '/';
+  const showNavbar = isLoggedIn() && location.pathname !== '/';
 
   return (
     <div className="container-fluid p-0">
@@ -25,8 +26,13 @@ const Main: React.FC = () => {
       <main className="container-fluid">
         <AppRoutes />
       </main>
-      <FooterPage/>
+      <FooterPage />
     </div>
   );
 };
+
+const isLoggedIn = (): boolean => {
+  return LocalStorageService.hasItem('token');
+};
+
 export default App;

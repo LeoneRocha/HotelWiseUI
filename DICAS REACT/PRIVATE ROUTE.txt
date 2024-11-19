@@ -1,0 +1,164 @@
+Entendi. Para criar uma abordagem mais nativa e padrão para proteger rotas no React com TypeScript, vamos utilizar a funcionalidade de context API do React para gerenciar a autenticação e um componente de `PrivateRoute` para proteger as rotas.
+
+### Passo 1: Criar um Contexto de Autenticação
+
+Vamos começar criando um contexto para gerenciar o estado de autenticação.
+
+#### AuthContext.tsx
+
+```tsx
+import React, { createContext, useContext, useState, ReactNode } from 'react';
+import LocalStorageService from './LocalStorageService';
+
+interface AuthContextType {
+  isAuthenticated: boolean;
+  login: (token: string) => void;
+  logout: () => void;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(LocalStorageService.hasItem('token'));
+
+  const login = (token: string) => {
+    LocalStorageService.setItem('token', token);
+    setIsAuthenticated(true);
+  };
+
+  const logout = () => {
+    LocalStorageService.removeItem('token');
+    setIsAuthenticated(false);
+  };
+
+  return (
+    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = (): AuthContextType => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
+```
+
+### Passo 2: Criar um Componente de Rota Privada
+
+Vamos criar um componente `PrivateRoute` que irá proteger as rotas.
+
+#### PrivateRoute.tsx
+
+```tsx
+import React from 'react';
+import { Route, Navigate } from 'react-router-dom';
+import { useAuth } from './AuthContext';
+
+interface PrivateRouteProps {
+  element: JSX.Element;
+  path: string;
+}
+
+const PrivateRoute: React.FC<PrivateRouteProps> = ({ element, ...rest }) => {
+  const { isAuthenticated } = useAuth();
+
+  return isAuthenticated ? element : <Navigate to="/access-denied" />;
+};
+
+export default PrivateRoute;
+```
+
+### Passo 3: Atualizar `AppRoutes` para usar o `PrivateRoute`
+
+Vamos atualizar o `AppRoutes` para usar o componente `PrivateRoute` para proteger as rotas.
+
+#### AppRoutes.tsx
+
+```tsx
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import HotelList from './components/HotelList';
+import HotelForm from './components/HotelForm';
+import HotelSearch from './components/HotelSearch';
+import Login from './components/Login';
+import NotFound from './components/NotFound';
+import AccessDenied from './components/AccessDenied';
+import PrivateRoute from './components/PrivateRoute';
+
+const AppRoutes: React.FC = () => {
+  const handleSave = () => {
+    // Lógica para lidar com a ação de salvar, se necessário
+  };
+
+  return (
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/search" element={<PrivateRoute element={<HotelSearch />} />} />
+      <Route path="/list" element={<PrivateRoute element={<HotelList />} />} />
+      <Route path="/edit/:id" element={<PrivateRoute element={<HotelForm onSave={handleSave} />} />} />
+      <Route path="/access-denied" element={<AccessDenied />} /> {/* Rota para acesso negado */}
+      <Route path="*" element={<NotFound />} /> {/* Rota de fallback */}
+    </Routes>
+  );
+};
+
+export default AppRoutes;
+```
+
+### Passo 4: Envolver o Aplicativo no Provedor de Autenticação
+
+Envolva seu aplicativo com o `AuthProvider` para fornecer o contexto de autenticação.
+
+#### App.tsx
+
+```tsx
+import React from 'react';
+import { BrowserRouter as Router, useLocation } from 'react-router-dom';
+import './App.css';
+import Navbar from './components/Navbar';
+import AppRoutes from './routes';
+import HeaderPage from './HeaderPage';
+import FooterPage from './FooterPage';
+import { AuthProvider } from './services/AuthContext'; // Importando o AuthProvider
+
+const App: React.FC = () => {
+  return (
+    <Router>
+      <AuthProvider>
+        <Main />
+      </AuthProvider>
+    </Router>
+  );
+};
+
+const Main: React.FC = () => {
+  const location = useLocation();
+  const showNavbar = location.pathname !== '/';
+
+  return (
+    <div className="container-fluid p-0">
+      {showNavbar && <HeaderPage />}
+      {showNavbar && <Navbar />}
+      <main className="container-fluid">
+        <AppRoutes />
+      </main>
+      <FooterPage />
+    </div>
+  );
+};
+
+export default App;
+```
+
+### Explicação:
+
+1. **AuthContext**: Fornece o estado de autenticação e funções para login e logout.
+2. **PrivateRoute**: Verifica se o usuário está autenticado antes de renderizar a rota protegida.
+3. **AppRoutes**: Usa `PrivateRoute` para proteger rotas específicas.
+4. **AuthProvider**: Envolve o aplicativo para fornecer o contexto de autenticação a todos os componentes.
+
+Com essas mudanças, seu aplicativo estará mais padronizado e nativo ao React, utilizando o contexto para gerenciar a autenticação e proteger as rotas de forma eficaz.

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { IHotel } from '../interfaces/IHotel';
 import { Pagination } from 'react-bootstrap';
-import './HotelList.css'; // Adicione um arquivo CSS para customizações adicionais
+import '../css/HotelList.css'; // Adicione um arquivo CSS para customizações adicionais
 
 interface HotelListTemplateProps {
   hotels: IHotel[];

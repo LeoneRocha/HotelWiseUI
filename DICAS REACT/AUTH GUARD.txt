@@ -1,0 +1,110 @@
+Para proteger as rotas em um aplicativo React com TypeScript para que apenas usuários autenticados possam acessá-las, você pode criar um componente de "guard" que verificará se o usuário está autenticado e tem um token válido. Se o usuário não estiver autenticado, ele será redirecionado para a página de login ou uma página de acesso negado.
+
+Vamos criar esse guard e integrá-lo ao seu sistema de rotas.
+
+### Componente `AuthGuard`
+
+Este componente verificará se o usuário está autenticado antes de renderizar a rota protegida.
+
+```tsx
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import LocalStorageService from '../services/LocalStorageService';
+
+interface AuthGuardProps {
+  children: JSX.Element;
+}
+
+const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
+  const isLoggedIn = LocalStorageService.hasItem('token');
+
+  return isLoggedIn ? children : <Navigate to="/access-denied" />;
+};
+
+export default AuthGuard;
+```
+
+### Atualização do `AppRoutes` para usar o `AuthGuard`
+
+Agora vamos atualizar o `AppRoutes` para usar o `AuthGuard` para proteger as rotas.
+
+```tsx
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import HotelList from './components/HotelList';
+import HotelForm from './components/HotelForm';
+import HotelSearch from './components/HotelSearch';
+import Login from './components/Login';
+import NotFound from './components/NotFound';
+import AccessDenied from './components/AccessDenied';
+import AuthGuard from './components/AuthGuard'; // Importando o AuthGuard
+
+const AppRoutes: React.FC = () => {
+  const handleSave = () => {
+    // Lógica para lidar com a ação de salvar, se necessário
+  };
+
+  return (
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/search" element={
+        <AuthGuard>
+          <HotelSearch />
+        </AuthGuard>
+      } />
+      <Route path="/list" element={
+        <AuthGuard>
+          <HotelList />
+        </AuthGuard>
+      } />
+      <Route path="/edit/:id" element={
+        <AuthGuard>
+          <HotelForm onSave={handleSave} />
+        </AuthGuard>
+      } />
+      <Route path="/access-denied" element={<AccessDenied />} /> {/* Rota para acesso negado */}
+      <Route path="*" element={<NotFound />} /> {/* Rota de fallback */}
+    </Routes>
+  );
+};
+
+export default AppRoutes;
+```
+
+### Atualização do `LocalStorageService.ts`
+
+Caso ainda não tenha feito isso, aqui está o serviço `LocalStorageService`:
+
+```tsx
+class LocalStorageService {
+  static setItem(key: string, value: string): void {
+    localStorage.setItem(key, value);
+  }
+
+  static getItem(key: string): string | null {
+    return localStorage.getItem(key);
+  }
+
+  static removeItem(key: string): void {
+    localStorage.removeItem(key);
+  }
+
+  static hasItem(key: string): boolean {
+    return localStorage.getItem(key) !== null;
+  }
+
+  static clear(): void {
+    localStorage.clear();
+  }
+}
+
+export default LocalStorageService;
+```
+
+### Explicação
+
+1. **`AuthGuard`**: O componente `AuthGuard` verifica se o usuário está autenticado consultando o token no `localStorage`. Se o usuário não estiver logado, ele redireciona para a página de acesso negado.
+2. **Integrando `AuthGuard` nas rotas**: Utilizamos o `AuthGuard` para proteger rotas específicas. Se o usuário tentar acessar uma dessas rotas sem estar autenticado, ele será redirecionado para a página de acesso negado.
+3. **`LocalStorageService`**: O serviço `LocalStorageService` é usado para verificar a presença do token no `localStorage`.
+
+Com essas mudanças, você garante que somente usuários autenticados possam acessar as rotas protegidas. Se um usuário não autenticado tentar acessar uma dessas rotas, ele será redirecionado para uma página de acesso negado.

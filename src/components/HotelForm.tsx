@@ -5,11 +5,8 @@ import { IHotel } from '../interfaces/IHotel';
 import HotelFormTemplate from './HotelFormTemplate';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-
-interface HotelFormProps {
-  onSave: () => void;
-}
-
+import { HotelFormProps } from '../interfaces/HotelFormProps';
+ 
 const HotelForm: React.FC<HotelFormProps> = ({ onSave }) => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();

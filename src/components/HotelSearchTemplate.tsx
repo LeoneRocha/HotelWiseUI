@@ -1,6 +1,6 @@
 import React from 'react';
 import { IHotel } from '../interfaces/IHotel';
-import './HotelSearchTemplate.css';
+import '../css/HotelSearchTemplate.css';
 
 interface HotelSearchTemplateProps {
   searchTerm: string;
