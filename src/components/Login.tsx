@@ -14,7 +14,9 @@ const Login: React.FC = () => {
   // Verifica se o usuário já está logado ao montar o componente
   useEffect(() => {
     const token = SecurityService.getToken();
-    if (token && SecurityService.isTokenValid(token)) {
+    const isvalidToken = SecurityService.isTokenValid(token);
+
+    if (token && isvalidToken) {
       navigate('/search');
     }
   }, [navigate]);

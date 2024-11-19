@@ -2,12 +2,22 @@ import { jwtDecode, JwtPayload } from 'jwt-decode';
 import LocalStorageService from './localStorageService';
 
 class SecurityService {
-    static isTokenValid(token: string): boolean {
+    static isTokenValid(token: string | null): boolean {
+        if (token === null) {
+            token = SecurityService.getToken();
+        }
         try {
-            const decoded = jwtDecode<JwtPayload>(token);
-            const currentTime = Date.now() / 1000;
-            return decoded.exp ? decoded.exp > currentTime : false;
+            if (token !== null) {
+                const decoded = jwtDecode<JwtPayload>(token);
+                console.log('Decoded token:', decoded); 
+                const currentTime = Date.now() / 1000; 
+                return decoded.exp ? decoded.exp > currentTime : false;
+            }
+            console.log('Token is null');
+            return false;
+
         } catch (error) {
+            console.error('Error decoding token:', error);
             return false;
         }
     }
