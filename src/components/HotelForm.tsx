@@ -29,6 +29,7 @@ const HotelForm: React.FC<HotelFormProps> = ({ onSave }) => {
   const [modalMessage, setModalMessage] = useState<string | null>(null);
   const [modalType, setModalType] = useState<'success' | 'danger' | null>(null);
   const isFetching = useRef(false);  // Usado para evitar chamadas duplicadas à API
+  const [countdown, setCountdown] = useState(10); // Estado para a contagem regressiva
 
   useEffect(() => {
     if (id === 'new') {
@@ -77,18 +78,39 @@ const HotelForm: React.FC<HotelFormProps> = ({ onSave }) => {
         await createHotel(formData);
         setModalMessage('Hotel criado com sucesso!');
         setModalType('success');
+        setShowModal(true);
       } else {
         await updateHotel(formData.hotelId, formData);
         setModalMessage('Hotel atualizado com sucesso!');
         setModalType('success');
+        setShowModal(true);
       }
       onSave();
     } catch (error) {
       setModalMessage('Ocorreu um erro ao salvar o hotel. Por favor, tente novamente.');
       setModalType('danger');
+      setShowModal(true);
     }
-    setShowModal(true);
   };
+
+  // Efetuar o redirecionamento após a contagem regressiva - Usa para que o set nao ter vazamento de memoria bom usar o useffect para gerenciar um timmout
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+    if (modalType === 'success' && formData.hotelId === 0) {
+      const countdownInterval = setInterval(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000);
+      
+      timer = setTimeout(() => {
+        navigate('/list');
+      }, 10000);
+
+      return () => {
+        clearTimeout(timer);
+        clearInterval(countdownInterval);
+      };
+    }
+  }, [modalType, formData.hotelId, navigate]);
 
   const handleCancel = () => {
     navigate('/list');
@@ -134,6 +156,9 @@ const HotelForm: React.FC<HotelFormProps> = ({ onSave }) => {
         </Modal.Header>
         <Modal.Body>
           {modalMessage}
+          {modalType === 'success' && formData.hotelId === 0 && (
+            <p>Redirecionando em {countdown} segundos...</p>
+          )}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
