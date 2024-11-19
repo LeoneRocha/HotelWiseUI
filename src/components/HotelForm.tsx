@@ -31,12 +31,19 @@ const HotelForm: React.FC<HotelFormProps> = ({ onSave }) => {
   const isFetching = useRef(false);  // Usado para evitar chamadas duplicadas à API
 
   useEffect(() => {
-    if (id && !isFetching.current) {
+    if (id && !isNaN(Number(id)) && !isFetching.current) {
       isFetching.current = true;
       const fetchHotel = async () => {
-        const hotel = await getHotelById(Number(id));
-        setFormData(hotel);
-        isFetching.current = false;
+        try {
+          const hotel = await getHotelById(Number(id));
+          setFormData(hotel);
+        } catch (error) {
+          setModalMessage('Erro ao buscar dados do hotel. Por favor, tente novamente.');
+          setModalType('danger');
+          setShowModal(true);
+        } finally {
+          isFetching.current = false;
+        }
       };
       fetchHotel();
     }
@@ -121,4 +128,5 @@ const HotelForm: React.FC<HotelFormProps> = ({ onSave }) => {
     </div>
   );
 };
+
 export default HotelForm;
