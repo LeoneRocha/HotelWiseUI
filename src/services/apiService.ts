@@ -1,13 +1,6 @@
 import axios from 'axios';
-
-export interface IAppInformation {
-  id: string;
-  name: string;
-  version: string;
-  environmentName: string;
-  message: string;
-}
-
+import { IAppInformation } from '../interfaces/IAppInformation';
+ 
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL + '/AppInformationVersionProduct/v1', 
 });

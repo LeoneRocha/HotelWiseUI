@@ -1,8 +1,6 @@
 import axios from 'axios';
-
-interface AskAssistantResponse {
-  response: string;
-}
+import { AskAssistantResponse } from '../interfaces/AskAssistantResponse';
+ 
 
 // Criação da instância Axios
 const api = axios.create({
