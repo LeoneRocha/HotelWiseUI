@@ -1,19 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { IHotel } from '../interfaces/IHotel';
 import { Pagination } from 'react-bootstrap';
 import '../css/HotelList.css'; // Adicione um arquivo CSS para customizações adicionais
-
-interface HotelListTemplateProps {
-  hotels: IHotel[];
-  totalHotels: number;
-  currentPage: number;
-  hotelsPerPage: number;
-  handleDelete: (id: number) => void;
-  paginate: (pageNumber: number) => void;
-  filter: string;
-  handleFilterChange: (filterValue: string) => void;
-}
+import { HotelListTemplateProps } from '../interfaces/HotelListTemplateProps';
 
 const HotelListTemplate: React.FC<HotelListTemplateProps> = ({
   hotels,
@@ -35,12 +24,12 @@ const HotelListTemplate: React.FC<HotelListTemplateProps> = ({
       </div>
       {/* Campo de filtro adicionado */}
       <div className="mb-4">
-        <input 
-          type="text" 
-          placeholder="Filtrar por nome do hotel" 
+        <input
+          type="text"
+          placeholder="Filtrar por nome do hotel"
           className="form-control"
-          value={filter} 
-          onChange={(e) => handleFilterChange(e.target.value)} 
+          value={filter}
+          onChange={(e) => handleFilterChange(e.target.value)}
         />
       </div>
       <div className="row">

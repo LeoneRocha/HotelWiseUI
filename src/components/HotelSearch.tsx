@@ -1,6 +1,6 @@
-import React, { useState } from 'react'; 
+import React, { useState } from 'react';
 import { semanticSearch } from '../services/hotelService';
-import { IHotel } from '../interfaces/IHotel'; 
+import { IHotel } from '../interfaces/IHotel';
 import '../css/HotelSearch.css'; // Adicione um arquivo CSS para customizações adicionais
 import HotelSearchTemplate from './HotelSearchTemplate';
 
@@ -9,7 +9,7 @@ const HotelSearch: React.FC = () => {
   const [hotels, setHotels] = useState<IHotel[]>([]);
   const [searched, setSearched] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false); 
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,7 +29,7 @@ const HotelSearch: React.FC = () => {
     }
   };
 
- 
+
 
   return (
     <HotelSearchTemplate
@@ -39,7 +39,7 @@ const HotelSearch: React.FC = () => {
       searched={searched}
       error={error}
       loading={loading}
-      handleSearch={handleSearch} 
+      handleSearch={handleSearch}
     />
   );
 };

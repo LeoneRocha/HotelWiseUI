@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { getAllHotels, deleteHotel } from '../services/hotelService';
-import { IHotel } from '../interfaces/IHotel'; 
+import { IHotel } from '../interfaces/IHotel';
 import HotelListTemplate from './HotelListTemplate';
 
 const HotelList: React.FC = () => {
@@ -35,7 +35,7 @@ const HotelList: React.FC = () => {
     if (filterValue === '') {
       setFilteredHotels(hotels); // Volta aos resultados anteriores se o filtro for limpo
     } else {
-      setFilteredHotels(hotels.filter(hotel => 
+      setFilteredHotels(hotels.filter(hotel =>
         hotel.hotelName.toLowerCase().includes(filterValue.toLowerCase())
       ));
     }
@@ -63,5 +63,4 @@ const HotelList: React.FC = () => {
     </div>
   );
 };
-
 export default HotelList;

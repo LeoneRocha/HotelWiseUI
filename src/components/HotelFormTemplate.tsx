@@ -1,17 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { IHotel } from '../interfaces/IHotel';
 import '../css/HotelFormTemplate.css';
 import { FaPlusCircle, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
-
-interface HotelFormTemplateProps {
-  formData: IHotel;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-  handleSubmit: (e: React.FormEvent) => void;
-  handleCancel: () => void;
-  handleAutoFill: () => void;
-  handleAddToVectorStore: () => void;
-  setFormData: React.Dispatch<React.SetStateAction<IHotel>>;
-}
+import { HotelFormTemplateProps } from '../interfaces/HotelFormTemplateProps';
 
 const HotelFormTemplate: React.FC<HotelFormTemplateProps> = ({
   formData,
@@ -136,5 +126,4 @@ const HotelFormTemplate: React.FC<HotelFormTemplateProps> = ({
     </div>
   );
 };
-
 export default HotelFormTemplate;

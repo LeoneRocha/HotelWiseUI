@@ -1,16 +1,6 @@
 import React from 'react';
-import { IHotel } from '../interfaces/IHotel';
 import '../css/HotelSearchTemplate.css';
-
-interface HotelSearchTemplateProps {
-  searchTerm: string;
-  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
-  hotels: IHotel[];
-  searched: boolean;
-  error: string | null;
-  loading: boolean;
-  handleSearch: (e: React.FormEvent) => void;
-}
+import { HotelSearchTemplateProps } from '../interfaces/HotelSearchTemplateProps';
 
 const HotelSearchTemplate: React.FC<HotelSearchTemplateProps> = ({
   searchTerm,

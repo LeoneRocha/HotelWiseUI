@@ -6,7 +6,7 @@ import HotelFormTemplate from './HotelFormTemplate';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { HotelFormProps } from '../interfaces/HotelFormProps';
- 
+
 const HotelForm: React.FC<HotelFormProps> = ({ onSave }) => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -85,11 +85,11 @@ const HotelForm: React.FC<HotelFormProps> = ({ onSave }) => {
   const handleAddToVectorStore = async () => {
     try {
       if (formData.hotelId > 0) {
-      await adVectorById(formData.hotelId );
-      navigate('/list');
+        await adVectorById(formData.hotelId);
+        navigate('/list');
       }
     } catch (error) {
-      setModalMessage('Erro ao gravar no vetor. Por favor, tente novamente.');      
+      setModalMessage('Erro ao gravar no vetor. Por favor, tente novamente.');
     }
   };
 
@@ -121,5 +121,4 @@ const HotelForm: React.FC<HotelFormProps> = ({ onSave }) => {
     </div>
   );
 };
-
 export default HotelForm;

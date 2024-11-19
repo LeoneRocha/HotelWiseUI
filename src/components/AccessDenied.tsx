@@ -14,5 +14,4 @@ const AccessDenied: React.FC = () => {
     </div>
   );
 };
-
 export default AccessDenied;
