@@ -15,39 +15,77 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+interface ServiceResponse<T> {
+  data: T;
+  success: boolean;
+  message: string;
+  errors: { name: string; message: string; errorCode: string }[];
+  unauthorized: boolean;
+}
+
 // Funções do serviço
 export const getAllHotels = async (): Promise<IHotel[]> => {
-  const response = await api.get<IHotel[]>('/');
-  return response.data;
+  const response = await api.get<ServiceResponse<IHotel[]>>('/');
+  if (response.data.success) {
+    return response.data.data;
+  } else {
+    throw new Error(response.data.message || 'Erro ao buscar hotéis');
+  }
 };
 
 export const getHotelById = async (id: number): Promise<IHotel> => {
-  const response = await api.get<IHotel>(`/${id}`);
-  return response.data;
+  const response = await api.get<ServiceResponse<IHotel>>(`/${id}`);
+  if (response.data.success) {
+    return response.data.data;
+  } else {
+    throw new Error(response.data.message || 'Erro ao buscar hotel');
+  }
 };
 
 export const adVectorById = async (id: number): Promise<IHotel> => {
-  const response = await api.get<IHotel>(`/addvector/${id}`);
-  return response.data;
+  const response = await api.get<ServiceResponse<IHotel>>(`/addvector/${id}`);
+  if (response.data.success) {
+    return response.data.data;
+  } else {
+    throw new Error(response.data.message || 'Erro ao adicionar vetor');
+  }
 };
 
 export const createHotel = async (hotel: IHotel): Promise<void> => {
-  await api.post('/', hotel);
+  const response = await api.post<ServiceResponse<void>>('/', hotel);
+  if (!response.data.success) {
+    throw new Error(response.data.message || 'Erro ao criar hotel');
+  }
 };
 
 export const updateHotel = async (id: number, hotel: IHotel): Promise<void> => {
-  await api.put(`/${id}`, hotel);
+  const response = await api.put<ServiceResponse<void>>(`/${id}`, hotel);
+  if (!response.data.success) {
+    throw new Error(response.data.message || 'Erro ao atualizar hotel');
+  }
 };
 
 export const deleteHotel = async (id: number): Promise<void> => {
-  await api.delete(`/${id}`);
+  const response = await api.delete<ServiceResponse<void>>(`/${id}`);
+  if (!response.data.success) {
+    throw new Error(response.data.message || 'Erro ao deletar hotel');
+  }
 };
 
 export const semanticSearch = async (criteria: { maxHotelRetrieve: number; searchTextCriteria: string }): Promise<IHotel[]> => {
-  const response = await api.post('/semanticsearch', criteria);
-  return response.data;
+  const response = await api.post<ServiceResponse<IHotel[]>>('/semanticsearch', criteria);
+  if (response.data.success) {
+    return response.data.data;
+  } else {
+    throw new Error(response.data.message || 'Erro na busca semântica');
+  }
 };
+
 export const generateHotelByIA = async (): Promise<IHotel> => {
-  const response = await api.get<IHotel>('/generate');
-  return response.data;
+  const response = await api.get<ServiceResponse<IHotel>>('/generate');
+  if (response.data.success) {
+    return response.data.data;
+  } else {
+    throw new Error(response.data.message || 'Erro ao gerar hotel por IA');
+  }
 };

@@ -9,7 +9,7 @@
 
 4)  ao editar hotel um status se esta ou nao no veto se nao tiver mostrar botao Incluir no Store   - ok 
 
-5) Incluir protecao de rota para ver se ta autenticado
+5) Incluir protecao de rota para ver se ta autenticado  - ok 
 
 6) Por na telas todas as tags ao ao selecionar a tag e por em filtrar ele envia a tag para o vetor pesquisa naquela tag 
 
