@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { getAppInformationVersionProduct } from './services/apiService';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
@@ -10,8 +10,14 @@ const FooterPage: React.FC = () => {
   const [apiVersion, setApiVersion] = useState<string>('');
   const uiVersion = import.meta.env.VITE_UI_VERSION;
   const actualYear = new Date().getFullYear();
+  
+  // Cria uma referência para garantir que a API seja chamada apenas uma vez
+  const hasFetchedData = useRef(false);
+
   useEffect(() => {
     const fetchApiVersion = async () => {
+      if (hasFetchedData.current) return;
+      hasFetchedData.current = true;
       try {
         const data = await getAppInformationVersionProduct();
         if (data && data.length > 0) {
@@ -35,8 +41,9 @@ const FooterPage: React.FC = () => {
         <p><strong>API Version:</strong> {apiVersion || 'Carregando...'}</p>
         <div>
           <a href="https://react.dev" target="_blank">
-            <img src={reactLogo} className="logo react" alt="React" title='Reac' />
-          </a><a href="https://vite.dev" target="_blank">
+            <img src={reactLogo} className="logo react" alt="React" title='React' />
+          </a>
+          <a href="https://vite.dev" target="_blank">
             <img src={viteLogo} className="logo" alt="Vite" title='Vite' />
           </a>
           <div className="server-info">
@@ -83,4 +90,5 @@ const FooterPage: React.FC = () => {
     </footer>
   );
 };
+
 export default FooterPage;
