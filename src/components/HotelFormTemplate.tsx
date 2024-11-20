@@ -47,7 +47,7 @@ const HotelFormTemplate: React.FC<HotelFormTemplateProps> = ({
             <button type="button" className="btn btn-info" onClick={handleAutoFill}>Auto Preencher (IA)</button>
           </div>
         )}
-        {formData.hotelId && (
+        {formData && formData.hotelId > 0 && (
           <div className="d-flex mb-3 align-items-center">
             {formData.isHotelInVectorStore ? (
               <FaCheckCircle className="text-success" />
@@ -126,4 +126,5 @@ const HotelFormTemplate: React.FC<HotelFormTemplateProps> = ({
     </div>
   );
 };
+
 export default HotelFormTemplate;

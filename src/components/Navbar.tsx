@@ -4,6 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import '../css/Navbar.css'; // Importando o CSS customizado
 import { getChatCompletion } from '../services/chatService';
+import DOMPurify from 'dompurify'; // Importando dompurify
 
 const Navbar: React.FC = () => {
   const [query, setQuery] = useState('');
@@ -19,7 +20,9 @@ const Navbar: React.FC = () => {
     try {
       const res = await getChatCompletion({ maxHotelRetrieve: 0, searchTextCriteria: query });
       if (res.length > 0) {
-        setResponse(res[0].response);
+        // Sanitizar a resposta antes de definir o estado
+        const sanitizedResponse = DOMPurify.sanitize(res[0].response);
+        setResponse(sanitizedResponse);
       } else {
         setResponse('Nenhuma resposta encontrada.');
       }
@@ -72,7 +75,7 @@ const Navbar: React.FC = () => {
         <Modal.Header closeButton>
           <Modal.Title>Resposta do Assistente</Modal.Title>
         </Modal.Header>
-        <Modal.Body>{response}</Modal.Body>
+        <Modal.Body dangerouslySetInnerHTML={{ __html: response }}></Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
             Fechar

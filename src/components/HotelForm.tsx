@@ -7,23 +7,25 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { HotelFormProps } from '../interfaces/HotelFormProps';
 
+const initialFormData: IHotel = {
+  hotelId: 0,
+  hotelName: '',
+  description: '',
+  tags: [],
+  stars: 0,
+  initialRoomPrice: 0,
+  zipCode: '',
+  location: '',
+  city: '',
+  stateCode: '',
+  score: 0,
+  isHotelInVectorStore: false,
+};
+
 const HotelForm: React.FC<HotelFormProps> = ({ onSave }) => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [formData, setFormData] = useState<IHotel>({
-    hotelId: 0,
-    hotelName: '',
-    description: '',
-    tags: [],
-    stars: 0,
-    initialRoomPrice: 0,
-    zipCode: '',
-    location: '',
-    city: '',
-    stateCode: '',
-    score: 0,
-    isHotelInVectorStore: false,
-  });
+  const [formData, setFormData] = useState<IHotel>(initialFormData);
 
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState<string | null>(null);
@@ -34,20 +36,7 @@ const HotelForm: React.FC<HotelFormProps> = ({ onSave }) => {
   useEffect(() => {
     if (id === 'new') {
       // Limpar os campos do formulário
-      setFormData({
-        hotelId: 0,
-        hotelName: '',
-        description: '',
-        tags: [],
-        stars: 0,
-        initialRoomPrice: 0,
-        zipCode: '',
-        location: '',
-        city: '',
-        stateCode: '',
-        score: 0,
-        isHotelInVectorStore: false,
-      });
+      setFormData(initialFormData);
     } else if (id && !isNaN(Number(id)) && !isFetching.current) {
       isFetching.current = true;
       const fetchHotel = async () => {
@@ -93,7 +82,7 @@ const HotelForm: React.FC<HotelFormProps> = ({ onSave }) => {
     }
   };
 
-  // Efetuar o redirecionamento após a contagem regressiva - Usa para que o set nao ter vazamento de memoria bom usar o useffect para gerenciar um timmout
+  // Efetuar o redirecionamento após a contagem regressiva - Usar useEffect para gerenciar um timeout e evitar vazamento de memória
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
     if (modalType === 'success' && formData.hotelId === 0) {
