@@ -68,11 +68,11 @@ export const deleteHotel = async (id: number): Promise<void> => {
 };
 
 // Função de busca semântica
-export const semanticSearch = async (criteria: ISearchCriteria): Promise<IHotelSemanticResult> => {
+export const semanticSearch = async (criteria: ISearchCriteria): Promise<ServiceResponse<IHotelSemanticResult>> => {
   const response = await api.post<ServiceResponse<IHotelSemanticResult>>('/semanticsearch', criteria);
   console.log(response);
   if (response.data.success) {
-    return response.data.data;
+    return response.data;
   } else {
     throw new Error(response.data.message || 'Erro na busca semântica');
   }
@@ -85,4 +85,9 @@ export const generateHotelByIA = async (): Promise<IHotel> => {
   } else {
     throw new Error(response.data.message || 'Erro ao gerar hotel por IA');
   }
+}; 
+
+export const getTags = async (): Promise<string[]> => {
+  const response = await axios.get<string[]>('/Hotels/v1/tags');
+  return response.data;
 };
