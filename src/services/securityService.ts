@@ -1,6 +1,6 @@
 import { jwtDecode, JwtPayload } from 'jwt-decode';
-import LocalStorageService from './localStorageService';
-import DataHelper from '../helpers/dataUtilshelper';
+import LocalStorageService from './localStorageService';  
+import DataUtilsHelper from '../helpers/dataUtilshelper';
 
 class SecurityService {
     static isTokenValid(token: string | null): boolean {
@@ -13,7 +13,7 @@ class SecurityService {
                 console.log('Decoded token:', decoded);
                 const currentTime = Date.now() / 1000; 
                 if (decoded.exp) {
-                    console.log('Token expiration time:', DataHelper.formatTimestamp(decoded.exp));
+                    console.log('Token expiration time:', DataUtilsHelper.formatTimestamp(decoded.exp));
                 }
                 return decoded.exp ? decoded.exp > currentTime : false;
             }
