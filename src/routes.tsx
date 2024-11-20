@@ -12,17 +12,10 @@ const AppRoutes: React.FC = () => {
   const handleSave = () => {
     // Lógica para lidar com a ação de salvar, se necessário
   };
-  return (
-    /*  <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/search" element={<HotelSearch />} />
-        <Route path="/list" element={<HotelList />} />
-        <Route path="/edit/:id" element={<HotelForm onSave={handleSave} />} />
-        <Route path="/access-denied" element={<AccessDenied />} /> {/ Rota para acesso negado /}
-        <Route path="*" element={<NotFound />} /> {/ Rota de fallback /}
-      </Routes>*/
+  return ( 
     <Routes>
       <Route path="/" element={<Login />} />
+      <Route path="/Login" element={<Login />} />
       <Route path="/search" element={
         <AuthGuard>
           <HotelSearch />

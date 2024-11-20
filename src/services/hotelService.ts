@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { IHotel } from '../interfaces/IHotel';
+import { ServiceResponse } from '../interfaces/authTypes';
 
 // Criação da instância Axios
 const api = axios.create({
@@ -15,13 +16,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-interface ServiceResponse<T> {
-  data: T;
-  success: boolean;
-  message: string;
-  errors: { name: string; message: string; errorCode: string }[];
-  unauthorized: boolean;
-}
+
 
 // Funções do serviço
 export const getAllHotels = async (): Promise<IHotel[]> => {

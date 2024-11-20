@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import { FiLogOut } from 'react-icons/fi'; // Importando o ícone de logout
 import '../css/Navbar.css'; // Importando o CSS customizado
 import { getChatCompletion } from '../services/chatService';
+import LocalStorageService from '../services/localStorageService'; // Importando LocalStorageService
 import DOMPurify from 'dompurify'; // Importando dompurify
 
 const Navbar: React.FC = () => {
   const [query, setQuery] = useState('');
   const [response, setResponse] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false); // Estado para exibir modal de logout
+  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
@@ -32,6 +36,24 @@ const Navbar: React.FC = () => {
       setResponse('Ocorreu um erro ao consultar a API. Por favor, tente novamente.');
       setShowModal(true);
     }
+  };
+
+  const handleLogout = () => {
+    LocalStorageService.removeItem('token');
+    navigate('/login');
+  };
+
+  const confirmLogout = () => {
+    setShowLogoutModal(true);
+  };
+
+  const handleLogoutClose = () => {
+    setShowLogoutModal(false);
+  };
+
+  const handleLogoutConfirm = () => {
+    handleLogout();
+    setShowLogoutModal(false);
   };
 
   return (
@@ -68,6 +90,9 @@ const Navbar: React.FC = () => {
             />
             <button className="btn btn-success" type="submit">Enviar</button>
           </form>
+          <button className="btn btn-link text-white ms-3" onClick={confirmLogout}>
+            <FiLogOut size={24}  title='Logout'/>
+          </button>
         </div>
       </div>
 
@@ -79,6 +104,21 @@ const Navbar: React.FC = () => {
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
             Fechar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showLogoutModal} onHide={handleLogoutClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirmar Logout</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Você deseja deslogar do sistema?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleLogoutClose}>
+            Cancelar
+          </Button>
+          <Button variant="primary" onClick={handleLogoutConfirm}>
+            Logout
           </Button>
         </Modal.Footer>
       </Modal>
