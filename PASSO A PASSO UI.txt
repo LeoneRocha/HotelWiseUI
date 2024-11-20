@@ -11,11 +11,13 @@
 
 5) Incluir protecao de rota para ver se ta autenticado  - ok  FEITO
 
-6) Por na telas todas as tags ao ao selecionar a tag e por em filtrar ele envia a tag para o vetor pesquisa naquela tag 
+6) Refatora erro da busca semantica para um objeto response
 
-7) AUTENTICACAO VIA AZURE AD 
+10) Por na telas todas as tags ao ao selecionar a tag e por em filtrar ele envia a tag para o vetor pesquisa naquela tag 
 
-8) GERAR IMAGENS DE HOTEL POR IA  
+11) AUTENTICACAO VIA AZURE AD 
+
+12) GERAR IMAGENS DE HOTEL POR IA  
 
 ------------- TODO -------------
 

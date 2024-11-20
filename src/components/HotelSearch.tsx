@@ -3,6 +3,8 @@ import { semanticSearch } from '../services/hotelService';
 import { IHotel } from '../interfaces/IHotel';
 import '../css/HotelSearch.css'; // Adicione um arquivo CSS para customizações adicionais
 import HotelSearchTemplate from './HotelSearchTemplate';
+import { ISearchCriteria } from '../interfaces/ISearchCriteria';
+import { IHotelSemanticResult } from '../interfaces/IHotelSemanticResult';
 
 const HotelSearch: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -17,19 +19,25 @@ const HotelSearch: React.FC = () => {
     setError(null);
     setLoading(true);
     try {
-      const results = await semanticSearch({ maxHotelRetrieve: 5, searchTextCriteria: searchTerm });
-      if (results.length === 0) {
+      const criteria: ISearchCriteria = {
+        maxHotelRetrieve: 5,
+        searchTextCriteria: searchTerm,
+        tagsCriteria: [],
+      };
+      const results: IHotelSemanticResult = await semanticSearch(criteria);
+
+      if (results.hotelsVectorResult.length === 0 && results.hotelsIAResult.length === 0) {
         setError('Nenhum hotel foi localizado com o critério digitado.');
       }
-      setHotels(results);
+
+      // Combina ambos os resultados em um único array
+      setHotels([...results.hotelsVectorResult, ...results.hotelsIAResult]);
     } catch (err) {
       setError('Ocorreu um erro ao buscar os hotéis. Por favor, tente novamente.');
     } finally {
       setLoading(false);
     }
   };
-
-
 
   return (
     <HotelSearchTemplate

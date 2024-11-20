@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getHotelById, createHotel, updateHotel, generateHotelByIA, adVectorById } from '../services/hotelService';
+import { getHotelById, createHotel, updateHotel, generateHotelByIA, addVectorById } from '../services/hotelService';
 import { IHotel } from '../interfaces/IHotel';
 import HotelFormTemplate from './HotelFormTemplate';
 import Modal from 'react-bootstrap/Modal';
@@ -119,7 +119,7 @@ const HotelForm: React.FC<HotelFormProps> = ({ onSave }) => {
   const handleAddToVectorStore = async () => {
     try {
       if (formData.hotelId > 0) {
-        await adVectorById(formData.hotelId);
+        await addVectorById(formData.hotelId);
         navigate('/list');
       }
     } catch (error) {

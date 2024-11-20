@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { IHotel } from '../interfaces/IHotel';
 import { ServiceResponse } from '../interfaces/authTypes';
+import { ISearchCriteria } from '../interfaces/ISearchCriteria';
+import { IHotelSemanticResult } from '../interfaces/IHotelSemanticResult';
 
 // Criação da instância Axios
 const api = axios.create({
@@ -15,8 +17,6 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
-
-
 
 // Funções do serviço
 export const getAllHotels = async (): Promise<IHotel[]> => {
@@ -37,7 +37,7 @@ export const getHotelById = async (id: number): Promise<IHotel> => {
   }
 };
 
-export const adVectorById = async (id: number): Promise<IHotel> => {
+export const addVectorById = async (id: number): Promise<IHotel> => {
   const response = await api.get<ServiceResponse<IHotel>>(`/addvector/${id}`);
   if (response.data.success) {
     return response.data.data;
@@ -67,8 +67,10 @@ export const deleteHotel = async (id: number): Promise<void> => {
   }
 };
 
-export const semanticSearch = async (criteria: { maxHotelRetrieve: number; searchTextCriteria: string }): Promise<IHotel[]> => {
-  const response = await api.post<ServiceResponse<IHotel[]>>('/semanticsearch', criteria);
+// Função de busca semântica
+export const semanticSearch = async (criteria: ISearchCriteria): Promise<IHotelSemanticResult> => {
+  const response = await api.post<ServiceResponse<IHotelSemanticResult>>('/semanticsearch', criteria);
+  console.log(response);
   if (response.data.success) {
     return response.data.data;
   } else {
