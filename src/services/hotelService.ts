@@ -88,6 +88,6 @@ export const generateHotelByIA = async (): Promise<IHotel> => {
 }; 
 
 export const getTags = async (): Promise<string[]> => {
-  const response = await axios.get<string[]>('/Hotels/v1/tags');
+  const response = await api.get<string[]>('/tags'); 
   return response.data;
 };

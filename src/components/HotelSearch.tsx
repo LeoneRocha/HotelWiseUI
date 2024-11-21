@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { semanticSearch } from '../services/hotelService';
-import { IHotel } from '../interfaces/IHotel';
+import React, { useState, useEffect } from 'react';
+import { semanticSearch, getTags } from '../services/hotelService'; 
 import '../css/HotelSearch.css'; // Adicione um arquivo CSS para customizações adicionais
 import HotelSearchTemplate from './HotelSearchTemplate';
 import { ISearchCriteria } from '../interfaces/ISearchCriteria';
@@ -9,11 +8,32 @@ import { IHotelSemanticResult } from '../interfaces/IHotelSemanticResult';
 
 const HotelSearch: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>([]); // Inicializando como array vazio
   const [serviceResponse, setServiceResponse] = useState<ServiceResponse<IHotelSemanticResult> | null>(null);
   const [searched, setSearched] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const fetchedTags = await getTags();
+        setTags(fetchedTags);
+      } catch (err) {
+        console.error('Erro ao buscar tags:', err);
+      }
+    };
+
+    fetchTags();
+  }, []);
+
+  const handleTagChange = (tag: string) => {
+    setSelectedTags(prevTags =>
+      prevTags.includes(tag) ? prevTags.filter(t => t !== tag) : [...prevTags, tag]
+    );
+  };
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,7 +45,7 @@ const HotelSearch: React.FC = () => {
       const criteria: ISearchCriteria = {
         maxHotelRetrieve: 5,
         searchTextCriteria: searchTerm,
-        tagsCriteria: [],
+        tagsCriteria: selectedTags,
       };
       const response: ServiceResponse<IHotelSemanticResult> = await semanticSearch(criteria);
 
@@ -53,6 +73,9 @@ const HotelSearch: React.FC = () => {
       handleSearch={handleSearch}
       showAlert={showAlert} // Passa o estado do alerta para o template
       setShowAlert={setShowAlert} // Passa a função para alterar o estado do alerta
+      tags={tags}
+      selectedTags={selectedTags}
+      handleTagChange={handleTagChange} // Passa a função para alterar as tags selecionadas
     />
   );
 };

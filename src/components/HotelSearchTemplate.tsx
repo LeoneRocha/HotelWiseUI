@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../css/HotelSearchTemplate.css';
 import { HotelSearchTemplateProps } from '../interfaces/HotelSearchTemplateProps';
 
@@ -12,7 +12,14 @@ const HotelSearchTemplate: React.FC<HotelSearchTemplateProps> = ({
   handleSearch,
   showAlert,
   setShowAlert,
+  tags,
+  selectedTags,
+  handleTagChange,
 }) => {
+  const [filterTerm, setFilterTerm] = useState('');
+
+  const filteredTags = tags.filter(tag => tag.toLowerCase().includes(filterTerm.toLowerCase()));
+
   const renderStars = (stars: number) => {
     return [...Array(stars)].map((_, i) => (
       <i key={i} className="fas fa-star star-gold"></i>
@@ -34,6 +41,28 @@ const HotelSearchTemplate: React.FC<HotelSearchTemplateProps> = ({
         />
         <button type="submit" className="btn btn-primary">Buscar</button>
       </form>
+      <div className="mb-4">
+        <h5>Tags Disponíveis:</h5>
+        <input
+          type="text"
+          className="form-control mb-2"
+          value={filterTerm}
+          onChange={(e) => setFilterTerm(e.target.value)}
+          placeholder="Filtrar tags..."
+        />
+        <div className="d-flex flex-wrap">
+          {Array.isArray(filteredTags) && filteredTags.map(tag => (
+            <button
+              key={tag}
+              type="button"
+              className={`btn ${selectedTags.includes(tag) ? 'btn-primary' : 'btn-outline-primary'} m-1`}
+              onClick={() => handleTagChange(tag)}
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
+      </div>
       {loading ? (
         <div className="text-center my-4">
           <div className="spinner-border text-primary" role="status">
