@@ -15,7 +15,11 @@
 
 7) Por na telas todas as tags ao ao selecionar a tag e por em filtrar ele envia a tag para o vetor pesquisa naquela tag  - ok  FEITO
 
-8) Criar testes unitarios 
+8) lembra-me  - OK
+
+9) Aceita cookies e politica 
+
+10) Criar testes unitarios 
 
 11) AUTENTICACAO VIA AZURE AD 
 
