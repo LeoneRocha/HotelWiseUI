@@ -11,9 +11,11 @@
 
 5) Incluir protecao de rota para ver se ta autenticado  - ok  FEITO
 
-6) Refatora erro da busca semantica para um objeto response
+6) Refatora erro da busca semantica para um objeto response - ok  FEITO
 
-10) Por na telas todas as tags ao ao selecionar a tag e por em filtrar ele envia a tag para o vetor pesquisa naquela tag 
+7) Por na telas todas as tags ao ao selecionar a tag e por em filtrar ele envia a tag para o vetor pesquisa naquela tag  - ok  FEITO
+
+8) Criar testes unitarios 
 
 11) AUTENTICACAO VIA AZURE AD 
 
@@ -24,7 +26,33 @@
 
 
 
+npm install --save-dev @testing-library/react @testing-library/jest-dom @testing-library/user-event
 
+# Instale o Jest e seus tipos
+npm install --save-dev jest @types/jest
+
+# Instale o ts-jest para suporte a TypeScript
+npm install --save-dev ts-jest
+
+# Instale as bibliotecas de teste para React
+npm install --save-dev @testing-library/react @testing-library/jest-dom @testing-library/user-event
+
+# Instale os repórteres, se necessário
+npm install --save-dev jest-junit jest-html-reporter
+
+npm install --save-dev jest @types/jest ts-jest axios-mock-adapter
+
+
+npm install --save-dev ts-node
+
+
+npm install --save-dev jest-environment-jsdom
+
+npm install --save-dev react-test-renderer
+
+npm install --save-dev jest babel-jest @babel/preset-env @babel/preset-react react-test-renderer
+
+npm install --save-dev @testing-library/react
 
 Melhore o codigo do formulario criando um botao "auto preencher" quando for adicionar novo hotel para requisitar a api endpoint a baixo para buscar dados do hotel e carregar nos campos do forumlario 
  
