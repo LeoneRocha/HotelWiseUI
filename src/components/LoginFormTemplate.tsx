@@ -1,12 +1,14 @@
 import React from 'react';
 import { LoginFormTemplateProps } from '../interfaces/LoginFormTemplateProps';
- 
+
 const LoginFormTemplate: React.FC<LoginFormTemplateProps> = ({
   username,
   password,
+  rememberMe,
   error,
   onUsernameChange,
   onPasswordChange,
+  onRememberMeChange,
   onSubmit,
   onAzureLogin,
 }) => {
@@ -39,6 +41,16 @@ const LoginFormTemplate: React.FC<LoginFormTemplateProps> = ({
               onChange={onPasswordChange}
               required
             />
+          </div>
+          <div className="form-group form-check mb-3">
+            <input
+              type="checkbox"
+              className="form-check-input"
+              id="rememberMe"
+              checked={rememberMe}
+              onChange={onRememberMeChange}
+            />
+            <label className="form-check-label" htmlFor="rememberMe">Lembrar-me</label>
           </div>
           <button type="submit" className="btn btn-primary w-100 mb-3">Entrar</button>
         </form>

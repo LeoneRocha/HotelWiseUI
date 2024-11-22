@@ -1,44 +1,43 @@
 body, html {
-    height: 100%;
-    margin: 0;
-    font-family: Arial, sans-serif;
-  }
-  
-  .login-container {
-    height: 75vh;
-    background: linear-gradient(135deg, #1f8ef1, #5e72e4);
-  }
-  
-  .login-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-  }
-  
-  .login-card h2 {
-    font-weight: 700;
-    color: #1f8ef1;
-  }
-  
-  .btn-light {
-    background-color: #ffffff;
-    border: 1px solid #1f8ef1;
-    color: #1f8ef1;
-  }
-  
-  .btn-light:hover {
-    background-color: #e2e6ea;
-  }
-  
-  .btn-primary {
-    background-color: #5e72e4;
-    border-color: #5e72e4;
-  }
-  
-  .btn-primary:hover {
-    background-color: #4e62d1;
-  }
-  
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.login-container {
+  height: 75vh;
+  background: linear-gradient(135deg, #1f8ef1, #5e72e4);
+}
+
+.login-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-card h2 {
+  font-weight: 700;
+  color: #1f8ef1;
+}
+
+.btn-light {
+  background-color: #ffffff;
+  border: 1px solid #1f8ef1;
+  color: #1f8ef1;
+}
+
+.btn-light:hover {
+  background-color: #e2e6ea;
+}
+
+.btn-primary {
+  background-color: #5e72e4;
+  border-color: #5e72e4;
+}
+
+.btn-primary:hover {
+  background-color: #4e62d1;
+}
