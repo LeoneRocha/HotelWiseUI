@@ -19,6 +19,8 @@
 
 9) Aceita cookies e politica 
 
+Crie um componente em react typescript que seja um aviso (popup) de consentimento de cookies e politica de privacidade, crie um componente completo com tudo necessario para essa funcionalidade, deve aparecer ao entrar na raiz e se aceitar persistir no storage se ele aceitou ou nao e se aceitou nao mostrar de novo
+
 10) Criar testes unitarios 
 
 11) AUTENTICACAO VIA AZURE AD 

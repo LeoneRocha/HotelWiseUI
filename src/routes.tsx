@@ -6,7 +6,8 @@ import HotelSearch from './components/HotelSearch';
 import Login from './components/Login';
 import NotFound from './components/NotFound';
 import AccessDenied from './components/AccessDenied'; // Novo componente
-import AuthGuard from './components/AuthGuard';
+import AuthGuard from './components/AuthGuard'; 
+import PrivacyPolicy from './components/PrivacyPolicy';
 
 const AppRoutes: React.FC = () => {
   const handleSave = () => {
@@ -36,8 +37,10 @@ const AppRoutes: React.FC = () => {
         </AuthGuard>
       } />
       <Route path="/access-denied" element={<AccessDenied />} /> {/* Rota para acesso negado */}
-      <Route path="*" element={<NotFound />} /> {/* Rota de fallback */}
+      <Route path="*" element={<NotFound />} /> {/* Rota de fallback */} 
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} /> 
     </Routes>
+    
   );
 };
 
