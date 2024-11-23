@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authenticate } from '../services/authService';
 import SecurityService from '../services/securityService';
-import LocalStorageService from '../services/localStorageService'; // Importando o serviço de localStorage
+import LocalStorageService from '../services/localStorageService';
 import LoginFormTemplate from './LoginFormTemplate';
 import '../css/Login.css';
 
@@ -13,21 +13,19 @@ const Login: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  // Verifica se o usuário já está logado ao montar o componente
   useEffect(() => {
     const token = SecurityService.getToken();
     const isvalidToken = SecurityService.isTokenValid(token);
 
     if (token && isvalidToken) {
       navigate('/search');
-    }else{
+    } else {
       const savedUsername = LocalStorageService.getItem('rememberMeUsername');
       if (savedUsername) {
         setUsername(savedUsername);
         setRememberMe(true);
       }
     }
-    
   }, [navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -42,6 +40,7 @@ const Login: React.FC = () => {
         SecurityService.setToken(response.data.tokenAuth.accessToken);
 
         if (rememberMe) {
+          console.log('Remember me is checked. Setting item in localStorage.');
           LocalStorageService.setItem('rememberMeUsername', sanitizedUsername);
         } else {
           LocalStorageService.removeItem('rememberMeUsername');

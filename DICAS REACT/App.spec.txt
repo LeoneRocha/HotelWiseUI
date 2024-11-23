@@ -1,0 +1,128 @@
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import App from '../App';
+import LocalStorageService from '../services/localStorageService';
+
+// Mock dos componentes que não são foco do teste
+jest.mock('../components/Navbar', () => () => <div>Navbar</div>);
+jest.mock('../components/HeaderPage', () => () => <div>HeaderPage</div>);
+jest.mock('../components/CookieConsent', () => () => <div>CookieConsent Component</div>);
+jest.mock('../FooterPage', () => () => <div>FooterPage</div>);
+jest.mock('../routes', () => () => <div>AppRoutes</div>);
+
+jest.mock('../App.css', () => '')
+
+interface ErrorBoundaryProps {
+  children: React.ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+}
+
+class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(): ErrorBoundaryState {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
+    console.error("Error caught by ErrorBoundary: ", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <div>Something went wrong.</div>;
+    }
+
+    return this.props.children; 
+  }
+}
+
+describe('App component', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test('renders HeaderPage and Navbar when logged in and not on home route', () => {
+    jest.spyOn(LocalStorageService, 'hasItem').mockReturnValue(true);
+
+    render(
+      <MemoryRouter initialEntries={['/dashboard']}>
+        <ErrorBoundary>
+          <Routes>
+            <Route path="*" element={<App />} />
+          </Routes>
+        </ErrorBoundary>
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText('HeaderPage')).toBeInTheDocument();
+    expect(screen.getByText('Navbar')).toBeInTheDocument();
+    expect(screen.getByText('FooterPage')).toBeInTheDocument();
+  });
+
+  test('does not render Navbar when not logged in', () => {
+    jest.spyOn(LocalStorageService, 'hasItem').mockReturnValue(false);
+
+    render(
+      <MemoryRouter initialEntries={['/dashboard']}>
+        <ErrorBoundary>
+          <Routes>
+            <Route path="*" element={<App />} />
+          </Routes>
+        </ErrorBoundary>
+      </MemoryRouter>
+    );
+
+    expect(screen.queryByText('Navbar')).not.toBeInTheDocument();
+    expect(screen.getByText('FooterPage')).toBeInTheDocument();
+  });
+
+  test('renders CookieConsent on home and login routes', () => {
+    jest.spyOn(LocalStorageService, 'hasItem').mockReturnValue(false);
+
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <ErrorBoundary>
+          <Routes>
+            <Route path="*" element={<App />} />
+          </Routes>
+        </ErrorBoundary>
+      </MemoryRouter>
+    );
+    expect(screen.getByText('CookieConsent Component')).toBeInTheDocument();
+
+    render(
+      <MemoryRouter initialEntries={['/login']}>
+        <ErrorBoundary>
+          <Routes>
+            <Route path="*" element={<App />} />
+          </Routes>
+        </ErrorBoundary>
+      </MemoryRouter>
+    );
+    expect(screen.getByText('CookieConsent Component')).toBeInTheDocument();
+  });
+
+  test('does not render CookieConsent on other routes', () => {
+    jest.spyOn(LocalStorageService, 'hasItem').mockReturnValue(false);
+
+    render(
+      <MemoryRouter initialEntries={['/dashboard']}>
+        <ErrorBoundary>
+          <Routes>
+            <Route path="*" element={<App />} />
+          </Routes>
+        </ErrorBoundary>
+      </MemoryRouter>
+    );
+
+    expect(screen.queryByText('CookieConsent Component')).not.toBeInTheDocument();
+  });
+});

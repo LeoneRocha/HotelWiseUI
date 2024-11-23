@@ -5,6 +5,9 @@ https://medium.com/@abhishekpn98/setup-jest-in-a-typescript-react-project-cfb818
 
 https://dev.to/hannahadora/jest-testing-with-vite-and-react-typescript-4bap
 
+https://www.alura.com.br/artigos/testes-automatizados-react-typescript?srsltid=AfmBOop-06xUHKuf80_vGokZkNpPQApsWOC-n3DXgZJyWxSne9bGk3A8
+
+https://dev.to/bajajcodes/mastering-jest-configuration-for-react-typescript-projects-with-vite-a-step-by-step-guide-4k4b
 
 npm install --save-dev @testing-library/react @testing-library/jest-dom @testing-library/dom @testing-library/user-event
 
@@ -47,3 +50,96 @@ Solução 1: Forçar a instalação com --legacy-peer-deps:
 Adicione a seguinte linha no seu arquivo YAML da pipeline para forçar a instalação:
 
 yaml
+
+
+// Mock do arquivo CSS para evitar problemas durante o teste
+jest.mock('../css/HotelList.css', () => ({}));
+
+  beforeEach(() => {
+        jest.clearAllMocks();
+        // Mock do console.warn para suprimir os avisos durante os testes
+        jest.spyOn(console, 'warn').mockImplementation(() => { });
+    });
+
+
+
+
+Gere test jest para esse componente em react typescript
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { authenticate } from '../services/authService';
+import SecurityService from '../services/securityService';
+import LocalStorageService from '../services/localStorageService'; // Importando o serviço de localStorage
+import LoginFormTemplate from './LoginFormTemplate';
+import '../css/Login.css';
+
+const Login: React.FC = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  // Verifica se o usuário já está logado ao montar o componente
+  useEffect(() => {
+    const token = SecurityService.getToken();
+    const isvalidToken = SecurityService.isTokenValid(token);
+
+    if (token && isvalidToken) {
+      navigate('/search');
+    }else{
+      const savedUsername = LocalStorageService.getItem('rememberMeUsername');
+      if (savedUsername) {
+        setUsername(savedUsername);
+        setRememberMe(true);
+      }
+    }
+    
+  }, [navigate]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const sanitizedUsername = username.replace(/[^a-zA-Z0-9]/g, '');
+    const sanitizedPassword = password.replace(/[^a-zA-Z0-9]/g, '');
+
+    try {
+      const response = await authenticate({ login: sanitizedUsername, password: sanitizedPassword });
+      if (response.success) {
+        SecurityService.setToken(response.data.tokenAuth.accessToken);
+
+        if (rememberMe) {
+          LocalStorageService.setItem('rememberMeUsername', sanitizedUsername);
+        } else {
+          LocalStorageService.removeItem('rememberMeUsername');
+        }
+
+        navigate('/search');
+      } else {
+        setError('Autenticação falhou. Por favor, verifique suas credenciais.');
+      }
+    } catch (error) {
+      setError('Ocorreu um erro ao tentar fazer login. Por favor, tente novamente.');
+    }
+  };
+
+  const handleAzureLogin = () => {
+    window.location.href = 'URL_DO_AZURE_AD';
+  };
+
+  return (
+    <LoginFormTemplate
+      username={username}
+      password={password}
+      rememberMe={rememberMe}
+      error={error}
+      onUsernameChange={(e) => setUsername(e.target.value)}
+      onPasswordChange={(e) => setPassword(e.target.value)}
+      onRememberMeChange={() => setRememberMe(!rememberMe)}
+      onSubmit={handleSubmit}
+      onAzureLogin={handleAzureLogin}
+    />
+  );
+};
+
+export default Login;
