@@ -36,3 +36,14 @@ npm run build:prod
 npm run dev
 
 npm run test
+
+
+dentificar Dependências Conflitantes:
+
+O problema está entre jest e vite-jest. jest@29.7.0 é encontrado, mas vite-jest@0.1.4 requer jest@"^27.0.0".
+
+Solução 1: Forçar a instalação com --legacy-peer-deps:
+
+Adicione a seguinte linha no seu arquivo YAML da pipeline para forçar a instalação:
+
+yaml
