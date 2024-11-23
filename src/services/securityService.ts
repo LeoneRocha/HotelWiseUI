@@ -1,9 +1,7 @@
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import LocalStorageService from './localStorageService'; 
 
- 
-  
-class SecurityService {
+   class SecurityService {
     static isTokenValid(token: string | null): boolean {
         if (token === null) {
             token = SecurityService.getToken();

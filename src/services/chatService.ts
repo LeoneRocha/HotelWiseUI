@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { AskAssistantResponse } from '../interfaces/AskAssistantResponse';
+import { EnvironmentService } from './EnvironmentService';
  
-
 // Criação da instância Axios
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL + '/Assistant/v1/ask',
+  baseURL: EnvironmentService.getApiBaseUrl() + '/Assistant/v1/ask',
 });
 
 // Interceptor para adicionar o token de autenticação

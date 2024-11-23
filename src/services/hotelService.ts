@@ -3,10 +3,11 @@ import { IHotel } from '../interfaces/IHotel';
 import { ServiceResponse } from '../interfaces/authTypes';
 import { ISearchCriteria } from '../interfaces/ISearchCriteria';
 import { IHotelSemanticResult } from '../interfaces/IHotelSemanticResult';
+import { EnvironmentService } from './EnvironmentService';
 
 // Criação da instância Axios
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL + '/Hotels/v1',
+  baseURL: EnvironmentService.getApiBaseUrl() + '/Hotels/v1',
 });
 
 // Interceptor para adicionar o token de autenticação

@@ -1,0 +1,38 @@
+https://dev.to/vitorrios1001/implementando-testes-com-jest-em-projetos-react-typescript-2j2
+
+
+https://medium.com/@abhishekpn98/setup-jest-in-a-typescript-react-project-cfb8188534ec
+
+https://dev.to/hannahadora/jest-testing-with-vite-and-react-typescript-4bap
+
+
+npm install --save-dev @testing-library/react @testing-library/jest-dom @testing-library/dom @testing-library/user-event
+
+
+npm install --save-dev jest jest-environment-jsdom ts-jest @types/jest
+
+
+npm install --save-dev @testing-library/jest-dom
+
+
+npm install --save-dev jest @testing-library/react @testing-library/jest-dom ts-jest
+
+
+
+npm install --save-dev jest-junit
+
+
+instalar o  jest-html-reporter para react typscript
+
+
+npm install --save-dev vite-jest
+npm install --save-dev vite-plugin-environment
+
+
+
+
+npm run build:prod
+
+npm run dev
+
+npm run test
