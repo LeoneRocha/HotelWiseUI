@@ -63,59 +63,113 @@ jest.mock('../css/HotelList.css', () => ({}));
  
 
 Gere test jest para esse componente em react typescript
+ import axios from 'axios';
+import { IHotel } from '../interfaces/IHotel';
+import { ServiceResponse } from '../interfaces/authTypes';
+import { ISearchCriteria } from '../interfaces/ISearchCriteria';
+import { IHotelSemanticResult } from '../interfaces/IHotelSemanticResult';
+import { EnvironmentService } from './EnvironmentService';
 
-import { jwtDecode, JwtPayload } from 'jwt-decode';
-import LocalStorageService from './localStorageService'; 
+// Criação da instância Axios
+export const api_hotelservice = axios.create({
+  baseURL: EnvironmentService.getApiBaseUrl() + '/Hotels/v1',
+});
 
-   class SecurityService {
-    static isTokenValid(token: string | null): boolean {
-        if (token === null) {
-            token = SecurityService.getToken();
-        }
-        try {
-            if (token !== null) {
-                const decoded = jwtDecode<JwtPayload>(token);
-                console.log('Decoded token:', decoded);
-                const currentTime = Date.now() / 1000; 
-                if (decoded.exp) {
-                    console.log('Token expiration time:', this.formatTimestamp(decoded.exp));
-                }
-                return decoded.exp ? decoded.exp > currentTime : false;
-            }
-            console.log('Token is null');
-            return false;
+// Interceptor para adicionar o token de autenticação
+api_hotelservice.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
-        } catch (error) {
-            console.error('Error decoding token:', error);
-            return false;
-        }
-    }
+// Funções do serviço
+export const getAllHotels = async (): Promise<IHotel[]> => {
+  const response = await api_hotelservice.get<ServiceResponse<IHotel[]>>('/');
+  if (response.data.success) {
+    return response.data.data;
+  } else {
+    throw new Error(response.data.message || 'Erro ao buscar hotéis');
+  }
+};
 
-    static isTokenExpired(token: string): boolean {
-        return !this.isTokenValid(token);
-    }
+export const getHotelById = async (id: number): Promise<IHotel> => {
+  const response = await api_hotelservice.get<ServiceResponse<IHotel>>(`/${id}`);
+  if (response.data.success) {
+    return response.data.data;
+  } else {
+    throw new Error(response.data.message || 'Erro ao buscar hotel');
+  }
+};
 
-    static getToken(): string | null {
-        return LocalStorageService.getItem('token');
-    }
+export const addVectorById = async (id: number): Promise<IHotel> => {
+  const response = await api_hotelservice.get<ServiceResponse<IHotel>>(`/addvector/${id}`);
+  if (response.data.success) {
+    return response.data.data;
+  } else {
+    throw new Error(response.data.message || 'Erro ao adicionar vetor');
+  }
+};
 
-    static setToken(token: string): void {
-        LocalStorageService.setItem('token', token);
-    }
+export const createHotel = async (hotel: IHotel): Promise<void> => {
+  const response = await api_hotelservice.post<ServiceResponse<void>>('/', hotel);
+  if (!response.data.success) {
+    throw new Error(response.data.message || 'Erro ao criar hotel');
+  }
+};
 
-    static removeToken(): void {
-        LocalStorageService.removeItem('token');
-    }
-    static formatTimestamp(timestamp: number): string {
-        const date = new Date(timestamp * 1000); // Convertendo de segundos para milissegundos
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-        const year = date.getFullYear();
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-        const seconds = String(date.getSeconds()).padStart(2, '0');
-        return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
-      }
-}
+export const updateHotel = async (id: number, hotel: IHotel): Promise<void> => {
+  const response = await api_hotelservice.put<ServiceResponse<void>>(`/${id}`, hotel);
+  if (!response.data.success) {
+    throw new Error(response.data.message || 'Erro ao atualizar hotel');
+  }
+};
 
-export default SecurityService;
+export const deleteHotel = async (id: number): Promise<void> => {
+  const response = await api_hotelservice.delete<ServiceResponse<void>>(`/${id}`);
+  if (!response.data.success) {
+    throw new Error(response.data.message || 'Erro ao deletar hotel');
+  }
+};
+
+// Função de busca semântica
+export const semanticSearch = async (criteria: ISearchCriteria): Promise<ServiceResponse<IHotelSemanticResult>> => {
+  const response = await api_hotelservice.post<ServiceResponse<IHotelSemanticResult>>('/semanticsearch', criteria);
+  console.log(response);
+  if (response.data.success) {
+    return response.data;
+  } else {
+    throw new Error(response.data.message || 'Erro na busca semântica');
+  }
+};
+
+export const generateHotelByIA = async (): Promise<IHotel> => {
+  const response = await api_hotelservice.get<ServiceResponse<IHotel>>('/generate');
+  if (response.data.success) {
+    return response.data.data;
+  } else {
+    throw new Error(response.data.message || 'Erro ao gerar hotel por IA');
+  }
+};
+
+export const getTags = async (): Promise<string[]> => {
+  const response = await api_hotelservice.get<string[]>('/tags');
+  return response.data;
+};
+ 
+  export interface IHotel {
+    
+    hotelId: number;
+    hotelName: string;
+    description: string;
+    tags: string[];
+    stars: number;
+    initialRoomPrice: number;
+    zipCode: string;
+    location: string;
+    city: string;
+    stateCode: string;
+    score: number;
+    isHotelInVectorStore: boolean;
+  }

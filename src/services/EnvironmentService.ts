@@ -2,7 +2,7 @@
 export class EnvironmentService {
   // Método para obter a versão da UI
   public static getUIVersion(): string {
-    return process.env.VITE_UI_VERSION ?? '1.0.0.0';
+    return process.env.VITE_UI_VERSION ?? '1.0';
   }
 
   public static getApiBaseUrl(): string {
