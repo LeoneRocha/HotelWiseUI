@@ -2,6 +2,9 @@ import type { Config } from 'jest';
 
 const config: Config = {
   preset: 'ts-jest',
+  globals: {
+    'process.env.NODE_ENV': 'test',
+  },
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testPathIgnorePatterns: [
@@ -11,14 +14,13 @@ const config: Config = {
   transform: {
     '^.+\\.(ts|tsx)$': ['ts-jest', {
       tsconfig: '<rootDir>/tsconfig.spec.json' // Referência ao tsconfig.spec.json
-    }] ,
+    }],
   },
-  /*moduleNameMapper: {
+  moduleNameMapper: {
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
     "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js",
-    "\\.(css|less|scss|sass)$": "identity-obj-proxy" 
-  },*/
-  collectCoverageFrom: [
+    "\\.(css|less|scss|sass)$": "identity-obj-proxy"
+  }, collectCoverageFrom: [
     'src/**/*.ts',
     'src/**/*.tsx',
     // Excluir

@@ -9,7 +9,7 @@ const FooterPage: React.FC = () => {
   const [apiVersion, setApiVersion] = useState<string>('');
   const uiVersion = EnvironmentService.getUIVersion();
   const actualYear = new Date().getFullYear();
-  
+
   const hasFetchedData = useRef(false);
 
   useEffect(() => {
@@ -22,7 +22,9 @@ const FooterPage: React.FC = () => {
           setApiVersion(data[0].version);
         }
       } catch (error) {
-        console.error('Erro ao buscar a versão da API:', error);
+        if (process.env.NODE_ENV !== 'test') {
+          console.error('Erro ao buscar a versão da API:', error);
+        }
       }
     };
 
