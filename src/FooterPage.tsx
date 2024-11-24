@@ -62,6 +62,9 @@ const FooterPage: React.FC = () => {
             <a href="https://www.nginx.com/" target="_blank" rel="noopener noreferrer">
               <img src="https://static.cdnlogo.com/logos/n/17/nginx.svg" alt="Nginx Server" title="Nginx Server" />
             </a>
+            <a href="https://jestjs.io/" target="_blank" rel="noopener noreferrer">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jest/jest-plain.svg" alt="JEST" title="JEST" />
+            </a>
             <a href="https://sonarcloud.io/summary/new_code?id=lionscorp_hotelwiseui" target="_blank" rel="noopener noreferrer">
               <img src="https://static.cdnlogo.com/logos/s/13/sonarcloud.svg" alt="SonarCloud" title="SonarCloud" />
             </a>
