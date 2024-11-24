@@ -22,7 +22,7 @@ const FooterPage: React.FC = () => {
           setApiVersion(data[0].version);
         }
       } catch (error) {
-        if (process.env.NODE_ENV !== 'test') {
+        if (EnvironmentService.isNotTestEnvironment()) {
           console.error('Erro ao buscar a versão da API:', error);
         }
       }

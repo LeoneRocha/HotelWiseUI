@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { semanticSearch, getTags } from '../services/hotelService'; 
+import { semanticSearch, getTags } from '../services/hotelService';
 import '../css/HotelSearch.css'; // Adicione um arquivo CSS para customizações adicionais
 import HotelSearchTemplate from './HotelSearchTemplate';
 import { ISearchCriteria } from '../interfaces/ISearchCriteria';
 import { ServiceResponse } from '../interfaces/authTypes';
 import { IHotelSemanticResult } from '../interfaces/IHotelSemanticResult';
+import { EnvironmentService } from '../services/EnvironmentService';
 
 const HotelSearch: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -22,7 +23,9 @@ const HotelSearch: React.FC = () => {
         const fetchedTags = await getTags();
         setTags(fetchedTags);
       } catch (err) {
-        console.error('Erro ao buscar tags:', err);
+        if (EnvironmentService.isNotTestEnvironment()) {
+          console.error('Erro ao buscar tags:', err);
+        }
       }
     };
 

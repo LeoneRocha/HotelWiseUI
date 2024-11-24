@@ -6,6 +6,8 @@ import { getAppInformationVersionProduct } from '../services/appInformationServi
 jest.mock('../services/EnvironmentService', () => ({
     EnvironmentService: {
         getUIVersion: jest.fn(() => '1.0'),
+        getApiBaseUrl: jest.fn(() => 'http://localhost:3000/api'),
+        isNotTestEnvironment: jest.fn(() => false),
     },
 }));
 

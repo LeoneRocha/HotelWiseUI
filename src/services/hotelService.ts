@@ -71,7 +71,9 @@ export const deleteHotel = async (id: number): Promise<void> => {
 // Função de busca semântica
 export const semanticSearch = async (criteria: ISearchCriteria): Promise<ServiceResponse<IHotelSemanticResult>> => {
   const response = await api_hotelservice.post<ServiceResponse<IHotelSemanticResult>>('/semanticsearch', criteria);
-  console.log(response);
+  if (EnvironmentService.isNotTestEnvironment()) {
+    console.log(response);
+  }
   if (response.data.success) {
     return response.data;
   } else {

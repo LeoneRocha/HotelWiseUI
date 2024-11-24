@@ -7,6 +7,7 @@ import '../css/Navbar.css'; // Importando o CSS customizado
 import { getChatCompletion } from '../services/chatService';
 import LocalStorageService from '../services/localStorageService'; // Importando LocalStorageService
 import DOMPurify from 'dompurify'; // Importando dompurify
+import { EnvironmentService } from '../services/EnvironmentService';
 
 const Navbar: React.FC = () => {
   const [query, setQuery] = useState('');
@@ -32,7 +33,9 @@ const Navbar: React.FC = () => {
       }
       setShowModal(true);
     } catch (error) {
-      console.error('Erro ao consultar a API de chat completion:', error);
+      if (EnvironmentService.isNotTestEnvironment()) {
+        console.error('Erro ao consultar a API de chat completion:', error);
+      }
       setResponse('Ocorreu um erro ao consultar a API. Por favor, tente novamente.');
       setShowModal(true);
     }
@@ -91,7 +94,7 @@ const Navbar: React.FC = () => {
             <button className="btn btn-success" type="submit">Enviar</button>
           </form>
           <button className="btn btn-link text-white ms-3" onClick={confirmLogout}>
-            <FiLogOut size={24}  title='Logout'/>
+            <FiLogOut size={24} title='Logout' />
           </button>
         </div>
       </div>

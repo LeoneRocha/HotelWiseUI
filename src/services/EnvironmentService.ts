@@ -8,5 +8,8 @@ export class EnvironmentService {
   public static getApiBaseUrl(): string {
     return process.env.VITE_API_BASE_URL ?? 'http://localhost:3000/api';
   }
+  public static isNotTestEnvironment(): boolean {
+    return process.env.NODE_ENV !== 'test';
+  }
 }
 
