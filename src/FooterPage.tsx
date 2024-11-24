@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { getAppInformationVersionProduct } from './services/apiService';
+import { getAppInformationVersionProduct } from './services/appInformationService';
 import { EnvironmentService } from './services/EnvironmentService';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
