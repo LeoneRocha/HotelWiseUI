@@ -7,6 +7,7 @@ import HeaderPage from './components/HeaderPage';
 import FooterPage from './FooterPage';
 import LocalStorageService from './services/localStorageService';
 import CookieConsent from './components/CookieConsent';
+import SecurityService from './services/securityService';
 
 const SinglePage: React.FC = () => {
     const location = useLocation();
@@ -27,7 +28,7 @@ const SinglePage: React.FC = () => {
 };
 
 const isLoggedIn = (): boolean => {
-    return LocalStorageService.hasItem('token');
+    return LocalStorageService.hasItem('token') && SecurityService.isTokenValid(SecurityService.getToken());
 };
 
 export default SinglePage;
