@@ -6,7 +6,7 @@ import DOMPurify from 'dompurify';
 import { EnvironmentService } from '../services/EnvironmentService';
 import NavbarTemplate from './NavbarTemplate';
 
-const NavbarContainer: React.FC = () => {
+const Navbar: React.FC = () => {
   const [query, setQuery] = useState('');
   const [response, setResponse] = useState('');
   const [showModal, setShowModal] = useState(false);
@@ -71,4 +71,4 @@ const NavbarContainer: React.FC = () => {
   );
 };
 
-export default NavbarContainer;
+export default Navbar;
