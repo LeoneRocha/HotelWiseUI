@@ -18,8 +18,8 @@ const NavbarTemplate: React.FC<NavbarProps> = ({
   handleLogoutConfirm,
   setShowModal,
 }) => (
-  <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div className="container-fluid">
+  <div className="container-fluid bg-dark">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <Link className="navbar-brand" to="/list">Hotel Management</Link>
       <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
@@ -40,50 +40,53 @@ const NavbarTemplate: React.FC<NavbarProps> = ({
             </ul>
           </li>
         </ul>
-        <form className="d-flex assistant-search-form" onSubmit={handleSubmit}>
-          <input
-            className="form-control me-2 assistant-search-input"
-            type="search"
-            placeholder="Pergunte ao Assistente..."
-            aria-label="Search"
-            value={query}
-            onChange={handleInputChange}
-          />
-          <button className="btn btn-success" type="submit">Enviar</button>
-        </form>
         <button className="btn btn-link text-white ms-3" onClick={confirmLogout}>
           <FiLogOut size={24} title='Logout' />
         </button>
       </div>
+    </nav>
+    <div className="container-fluid bg-dark mt-3 mb-3 assistant-search-form " >
+      <form className="d-flex flex-column flex-md-row assistant-search-form" onSubmit={handleSubmit}>
+        <input
+          className="form-control me-md-2 assistant-search-input"
+          type="search"
+          placeholder="Pergunte ao Assistente..."
+          aria-label="Search"
+          value={query}
+          onChange={handleInputChange}
+        />
+        <button className="btn btn-success mt-2 mt-md-0 ms-md-2" type="submit">Enviar</button>
+      </form>
     </div>
+    <div>
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Resposta do Assistente</Modal.Title>
+        </Modal.Header>
+        <Modal.Body dangerouslySetInnerHTML={{ __html: response }}></Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Fechar
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
-    <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>Resposta do Assistente</Modal.Title>
-      </Modal.Header>
-      <Modal.Body dangerouslySetInnerHTML={{ __html: response }}></Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={() => setShowModal(false)}>
-          Fechar
-        </Button>
-      </Modal.Footer>
-    </Modal>
-
-    <Modal show={showLogoutModal} onHide={handleLogoutClose} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>Confirmar Logout</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>Você deseja deslogar do sistema?</Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleLogoutClose}>
-          Cancelar
-        </Button>
-        <Button variant="primary" onClick={handleLogoutConfirm}>
-          Logout
-        </Button>
-      </Modal.Footer>
-    </Modal>
-  </nav>
+      <Modal show={showLogoutModal} onHide={handleLogoutClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirmar Logout</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Você deseja deslogar do sistema?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleLogoutClose}>
+            Cancelar
+          </Button>
+          <Button variant="primary" onClick={handleLogoutConfirm}>
+            Logout
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+  </div>
 );
 
 export default NavbarTemplate;
