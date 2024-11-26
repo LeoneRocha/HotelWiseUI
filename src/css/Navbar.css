@@ -25,6 +25,15 @@
   color: #ffffff !important;
 }
 
+.offcanvas, .offcanvas-header, .offcanvas-body, .dropdown-menu {
+  background-color: #343a40;
+  color: #ffffff;
+}
+
+.navbar-nav .nav-item {
+  margin-right: 10px;
+}
+
 .assistant-search-form {
   width: 100%;
   display: flex;
@@ -54,10 +63,6 @@
   .btn-success {
     margin-top: 0;
   }
-}
-
-.navbar-nav .nav-item {
-  margin-right: 10px;
 }
 
 @media (max-width: 767px) {
