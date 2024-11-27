@@ -29,8 +29,7 @@ const config: Config = {
     '!src/**/*.spec.{ts,tsx}',
     '!src/**/*.d.ts',
     '!src/**/index.tsx',
-    '!src/**/reportWebVitals.ts',
-    '!src/**/setupTests.ts',
+    '!src/**/reportWebVitals.ts', 
     '!src/**/*.{service,constant,interface,model}.ts',
     '!**/node_modules/**',
     '!**/vendor/**'
