@@ -18,6 +18,16 @@ const Chatbot: React.FC = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 600);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const chatContainer = document.getElementById('chat-container');
@@ -79,63 +89,63 @@ const Chatbot: React.FC = () => {
 
   const toggleModal = () => setShow(!show);
 
+  const ChatbotModal = (
+    <div className="chatbot-modal">
+      <div className="chatbot-modal-header">
+        <span>Assistente</span>
+        <Button variant="link" onClick={toggleModal} className="chatbot-close">&times;</Button>
+      </div>
+      <div className="chat-messages" id="chat-container">
+        {messages.map((msg, index) => (
+          <div key={index} className={`chat-message ${msg.sender}`}>
+            {msg.sender === 'bot' ? (
+              <div className="bot-message">
+                <FaRobot className="message-icon" />
+                <span dangerouslySetInnerHTML={{ __html: msg.text }} />
+              </div>
+            ) : (
+              <div className="user-message">
+                <FaUser className="message-icon" />
+                <span>{msg.text}</span>
+              </div>
+            )}
+          </div>
+        ))}
+        {isTyping && (
+          <div className="chat-message bot">
+            <Spinner animation="border" size="sm" role="status" aria-hidden="true" />
+            <span> O robô está digitando...</span>
+          </div>
+        )}
+      </div>
+      <form onSubmit={handleSubmit} className="chat-input-form">
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Digite sua mensagem..."
+          className="chat-input"
+        />
+        <button type="submit">Enviar</button>
+      </form>
+      {showAlert && (
+        <Alert variant="warning" className="login-alert">
+          Para utilizar o assistente, você precisa fazer login.
+        </Alert>
+      )}
+      <Button onClick={handleClearHistory} className="clear-history-button" variant="light">
+        Limpar Histórico
+      </Button>
+    </div>
+  );
+
   return (
     <div className="chatbot-container">
       <Button variant="primary" onClick={toggleModal} className="chatbot-toggle">
         {show ? 'Fechar' : 'Chat'}
       </Button>
 
-      {show && (
-        <Draggable>
-          <div className="chatbot-modal">
-            <div className="chatbot-modal-header">
-              <span>Assistente</span>
-              <Button variant="link" onClick={toggleModal} className="chatbot-close">&times;</Button>
-            </div>
-            <div className="chat-messages" id="chat-container">
-              {messages.map((msg, index) => (
-                <div key={index} className={`chat-message ${msg.sender}`}>
-                  {msg.sender === 'bot' ? (
-                    <div className="bot-message">
-                      <FaRobot className="message-icon" />
-                      <span dangerouslySetInnerHTML={{ __html: msg.text }} />
-                    </div>
-                  ) : (
-                    <div className="user-message">
-                      <FaUser className="message-icon" />
-                      <span>{msg.text}</span>
-                    </div>
-                  )}
-                </div>
-              ))}
-              {isTyping && (
-                <div className="chat-message bot">
-                  <Spinner animation="border" size="sm" role="status" aria-hidden="true" />
-                  <span> O robô está digitando...</span>
-                </div>
-              )}
-            </div>
-            <form onSubmit={handleSubmit} className="chat-input-form">
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Digite sua mensagem..."
-                className="chat-input"
-              />
-              <button type="submit">Enviar</button>
-            </form>
-            {showAlert && (
-              <Alert variant="warning" className="login-alert">
-                Para utilizar o assistente, você precisa fazer login.
-              </Alert>
-            )}
-            <Button onClick={handleClearHistory} className="clear-history-button" variant="light">
-              Limpar Histórico
-            </Button>
-          </div>
-        </Draggable>
-      )}
+      {show && (isMobile ? ChatbotModal : <Draggable>{ChatbotModal}</Draggable>)}
     </div>
   );
 };
