@@ -4,13 +4,23 @@ import LocalStorageService from '../services/localStorageService';
 
 // Mock do arquivo CSS para evitar problemas durante o teste
 jest.mock('../css/CookieConsent.css', () => ({}));
+ 
+// Mock the chat history manager and assistant service
+jest.mock('../services/chatHistoryManager', () => ({
+  saveMessage: jest.fn(),
+  getChatHistory: jest.fn(() => []),
+  clearChatHistory: jest.fn(),
+}));
 
-// Mock do LocalStorageService
-jest.mock('../services/localStorageService', () => ({
+jest.mock('../services/assistantService', () => ({
+  getChatCompletion: jest.fn(),
+}));
+
+jest.mock('../services/LocalStorageService', () => ({
   getItem: jest.fn(),
   setItem: jest.fn(),
 }));
-
+ 
 describe('CookieConsent component', () => {
   beforeEach(() => {
     jest.clearAllMocks();

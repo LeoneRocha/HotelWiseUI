@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Draggable from 'react-draggable';
 import { saveMessage, getChatHistory, clearChatHistory } from '../services/chatHistoryManager';
 import { getChatCompletion } from '../services/assistantService';
 import Button from 'react-bootstrap/Button';
-import Spinner from 'react-bootstrap/Spinner';
-import Alert from 'react-bootstrap/Alert';
-import { FaRobot, FaUser } from 'react-icons/fa';
+import ChatbotModal from './ChatbotModal';
 import '../css/Chatbot.css';
 import DOMPurify from 'dompurify';
 import { Message } from '../interfaces/AskAssistantResponse'; 
@@ -40,6 +38,12 @@ const Chatbot: React.FC = () => {
     setIsAuthenticated(!!token);
   }, [messages]);
 
+  const addMessage = useCallback((sender: 'user' | 'bot', text: string) => {
+    const newMessage: Message = { sender, text };
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
+    saveMessage(newMessage);
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setShowAlert(false);
@@ -51,34 +55,19 @@ const Chatbot: React.FC = () => {
       return;
     }
 
-    const userMessage: Message = { sender: 'user', text: input };
-    setMessages((prevMessages) => [...prevMessages, userMessage]);
-    saveMessage(userMessage);
-
+    addMessage('user', input);
     setIsTyping(true);
+    setInput(''); // Clear input field
 
     try {
-      const response = await getChatCompletion({
-        maxHotelRetrieve: 0,
-        searchTextCriteria: input,
-      });
+      const response = await getChatCompletion({ maxHotelRetrieve: 0, searchTextCriteria: input });
       const sanitizedResponse = DOMPurify.sanitize(response[0].response);
-      const botMessage: Message = { sender: 'bot', text: sanitizedResponse };
-
-      saveMessage(botMessage);
-      setMessages((prevMessages) => [...prevMessages, botMessage]);
+      addMessage('bot', sanitizedResponse);
     } catch (error) {
       console.error('Erro ao consultar a API de chat completion:', error);
-      const errorMessage: Message = {
-        sender: 'bot',
-        text: 'Ocorreu um erro ao consultar a API. Por favor, tente novamente.',
-      };
-
-      saveMessage(errorMessage);
-      setMessages((prevMessages) => [...prevMessages, errorMessage]);
+      addMessage('bot', 'Ocorreu um erro ao consultar a API. Por favor, tente novamente.');
     } finally {
       setIsTyping(false);
-      setInput(''); // Clear input field
     }
   };
 
@@ -87,65 +76,41 @@ const Chatbot: React.FC = () => {
     setMessages([]);
   };
 
-  const toggleModal = () => setShow(!show);
-
-  const ChatbotModal = (
-    <div className="chatbot-modal">
-      <div className="chatbot-modal-header">
-        <span>Assistente</span>
-        <Button variant="link" onClick={toggleModal} className="chatbot-close">&times;</Button>
-      </div>
-      <div className="chat-messages" id="chat-container">
-        {messages.map((msg, index) => (
-          <div key={index} className={`chat-message ${msg.sender}`}>
-            {msg.sender === 'bot' ? (
-              <div className="bot-message">
-                <FaRobot className="message-icon" />
-                <span dangerouslySetInnerHTML={{ __html: msg.text }} />
-              </div>
-            ) : (
-              <div className="user-message">
-                <FaUser className="message-icon" />
-                <span>{msg.text}</span>
-              </div>
-            )}
-          </div>
-        ))}
-        {isTyping && (
-          <div className="chat-message bot">
-            <Spinner animation="border" size="sm" role="status" aria-hidden="true" />
-            <span> O robô está digitando...</span>
-          </div>
-        )}
-      </div>
-      <form onSubmit={handleSubmit} className="chat-input-form">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Digite sua mensagem..."
-          className="chat-input"
-        />
-        <button type="submit">Enviar</button>
-      </form>
-      {showAlert && (
-        <Alert variant="warning" className="login-alert">
-          Para utilizar o assistente, você precisa fazer login.
-        </Alert>
-      )}
-      <Button onClick={handleClearHistory} className="clear-history-button" variant="light">
-        Limpar Histórico
-      </Button>
-    </div>
-  );
+  const toggleModal = () => {
+    setShow((prevShow) => {
+      if (!prevShow) {
+        addMessage('bot', 'Olá! Eu sou seu assistente virtual. Como posso ajudar você hoje?');
+        addMessage('bot', 'Posso ajudar com várias tarefas, como responder perguntas, dar dicas e suporte, ou simplesmente bater um papo. O que você precisa?');
+      }
+      return !prevShow;
+    });
+  };
 
   return (
     <div className="chatbot-container">
       <Button variant="primary" onClick={toggleModal} className="chatbot-toggle">
         {show ? 'Fechar' : 'Chat'}
       </Button>
-
-      {show && (isMobile ? ChatbotModal : <Draggable>{ChatbotModal}</Draggable>)}
+      {show && (isMobile ? <ChatbotModal 
+                            messages={messages} 
+                            isTyping={isTyping} 
+                            showAlert={showAlert} 
+                            input={input} 
+                            handleSubmit={handleSubmit} 
+                            handleClearHistory={handleClearHistory} 
+                            setInput={setInput} 
+                            toggleModal={toggleModal} 
+                          /> 
+                        : <Draggable><ChatbotModal 
+                                        messages={messages} 
+                                        isTyping={isTyping} 
+                                        showAlert={showAlert} 
+                                        input={input} 
+                                        handleSubmit={handleSubmit} 
+                                        handleClearHistory={handleClearHistory} 
+                                        setInput={setInput} 
+                                        toggleModal={toggleModal} 
+                                      /></Draggable>)}
     </div>
   );
 };

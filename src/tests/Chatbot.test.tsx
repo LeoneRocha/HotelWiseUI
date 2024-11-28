@@ -1,4 +1,3 @@
-// Chatbot.test.tsx
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import * as chatHistoryManager from '../services/chatHistoryManager';
@@ -22,7 +21,6 @@ jest.mock('../services/LocalStorageService', () => ({
 }));
 
 describe('Chatbot component', () => {
-
     beforeEach(() => {
         jest.clearAllMocks();
         // Mock do console.warn para suprimir os avisos durante os testes
@@ -108,7 +106,11 @@ describe('Chatbot component', () => {
 
         await waitFor(() => {
             expect(screen.getByText('Para utilizar o assistente, você precisa fazer login.')).toBeInTheDocument();
-            expect(chatHistoryManager.saveMessage).not.toHaveBeenCalled();
+            expect(chatHistoryManager.saveMessage).toHaveBeenCalledTimes(2); // Verifica se as mensagens de boas-vindas foram salvas
+            expect(chatHistoryManager.saveMessage).not.toHaveBeenCalledWith(expect.objectContaining({
+                sender: 'user',
+                text: 'How are you?',
+            }));
         });
     });
 
