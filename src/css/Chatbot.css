@@ -21,8 +21,9 @@
   position: fixed;
   bottom: 80px;
   right: 20px;
-  width: 350px;
-  max-height: 600px;
+  width: 90%;
+  max-width: 350px;
+  max-height: 80vh;
   background: white;
   border: 1px solid #ddd;
   border-radius: 20px;
@@ -123,4 +124,33 @@
 
 .clear-history-button:hover {
   background-color: #f8f9fa;
+}
+
+/* Media queries para telas menores */
+@media (max-width: 600px) {
+  .chatbot-modal {
+    width: 100%;
+    bottom: 0;
+    right: 0;
+    border-radius: 0;
+    max-height: 90vh;
+  }
+
+  .chatbot-modal-header {
+    padding: 8px;
+  }
+
+  .chat-input-form {
+    flex-direction: column;
+  }
+
+  .chat-input {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .chat-input-form button {
+    width: 100%;
+    padding: 10px;
+  }
 }

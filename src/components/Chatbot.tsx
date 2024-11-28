@@ -70,7 +70,6 @@ const Chatbot: React.FC = () => {
       setIsTyping(false);
       setInput(''); // Clear input field
     }
-  
   };
 
   const handleClearHistory = () => {
