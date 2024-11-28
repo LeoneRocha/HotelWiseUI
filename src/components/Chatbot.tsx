@@ -1,36 +1,49 @@
-// Chatbot.tsx
 import React, { useState, useEffect } from 'react';
 import Draggable from 'react-draggable';
 import { saveMessage, getChatHistory, clearChatHistory } from '../services/chatHistoryManager';
 import { getChatCompletion } from '../services/assistantService';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
+import Alert from 'react-bootstrap/Alert';
 import { FaRobot, FaUser } from 'react-icons/fa';
 import '../css/Chatbot.css';
 import DOMPurify from 'dompurify';
-import { Message } from '../interfaces/AskAssistantResponse';
+import { Message } from '../interfaces/AskAssistantResponse'; 
+import LocalStorageService from '../services/localStorageService';
 
 const Chatbot: React.FC = () => {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<Message[]>(getChatHistory());
   const [show, setShow] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
 
   useEffect(() => {
     const chatContainer = document.getElementById('chat-container');
     if (chatContainer) {
       chatContainer.scrollTop = chatContainer.scrollHeight;
     }
+
+    // Check authentication status
+    const token = LocalStorageService.getItem('token');
+    setIsAuthenticated(!!token);
   }, [messages]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setShowAlert(false);
     if (!input.trim()) return;
+
+    if (!isAuthenticated) {
+      setShowAlert(true);
+      setInput(''); // Clear input field
+      return;
+    }
 
     const userMessage: Message = { sender: 'user', text: input };
     setMessages((prevMessages) => [...prevMessages, userMessage]);
     saveMessage(userMessage);
-    setInput('');
 
     setIsTyping(true);
 
@@ -55,7 +68,9 @@ const Chatbot: React.FC = () => {
       setMessages((prevMessages) => [...prevMessages, errorMessage]);
     } finally {
       setIsTyping(false);
+      setInput(''); // Clear input field
     }
+  
   };
 
   const handleClearHistory = () => {
@@ -111,6 +126,11 @@ const Chatbot: React.FC = () => {
               />
               <button type="submit">Enviar</button>
             </form>
+            {showAlert && (
+              <Alert variant="warning" className="login-alert">
+                Para utilizar o assistente, você precisa fazer login.
+              </Alert>
+            )}
             <Button onClick={handleClearHistory} className="clear-history-button" variant="light">
               Limpar Histórico
             </Button>

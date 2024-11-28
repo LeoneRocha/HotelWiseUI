@@ -4,6 +4,7 @@ import '@testing-library/jest-dom';
 import * as chatHistoryManager from '../services/chatHistoryManager';
 import { getChatCompletion } from '../services/assistantService';
 import Chatbot from '../components/Chatbot';
+import LocalStorageService from '../services/localStorageService';
 
 // Mock the chat history manager and assistant service
 jest.mock('../services/chatHistoryManager', () => ({
@@ -16,13 +17,19 @@ jest.mock('../services/assistantService', () => ({
     getChatCompletion: jest.fn(),
 }));
 
+jest.mock('../services/LocalStorageService', () => ({
+    getItem: jest.fn(),
+}));
+
 describe('Chatbot component', () => {
+
     beforeEach(() => {
         jest.clearAllMocks();
         // Mock do console.warn para suprimir os avisos durante os testes
         jest.spyOn(console, 'warn').mockImplementation(() => { });
         jest.spyOn(console, 'error').mockImplementation(() => { });
     });
+
     test('renders chat messages from history', () => {
         const messages = [
             { sender: 'user', text: 'Hello' },
@@ -40,6 +47,7 @@ describe('Chatbot component', () => {
 
     test('sends a message and saves to history', async () => {
         (getChatCompletion as jest.Mock).mockResolvedValue([{ response: 'I am fine, thank you!' }]);
+        (LocalStorageService.getItem as jest.Mock).mockReturnValue('dummy-token');
 
         render(<Chatbot />);
 
@@ -66,6 +74,7 @@ describe('Chatbot component', () => {
 
     test('handles API error and displays error message', async () => {
         (getChatCompletion as jest.Mock).mockRejectedValue(new Error('Erro na API'));
+        (LocalStorageService.getItem as jest.Mock).mockReturnValue('dummy-token');
 
         render(<Chatbot />);
 
@@ -82,6 +91,24 @@ describe('Chatbot component', () => {
                 sender: 'bot',
                 text: 'Ocorreu um erro ao consultar a API. Por favor, tente novamente.',
             });
+        });
+    });
+
+    test('displays authentication alert if user is not authenticated', async () => {
+        (LocalStorageService.getItem as jest.Mock).mockReturnValue(null);
+
+        render(<Chatbot />);
+
+        fireEvent.click(screen.getByText('Chat')); // Abrir o modal
+
+        fireEvent.change(screen.getByPlaceholderText('Digite sua mensagem...'), {
+            target: { value: 'How are you?' },
+        });
+        fireEvent.submit(screen.getByRole('button', { name: /enviar/i }));
+
+        await waitFor(() => {
+            expect(screen.getByText('Para utilizar o assistente, você precisa fazer login.')).toBeInTheDocument();
+            expect(chatHistoryManager.saveMessage).not.toHaveBeenCalled();
         });
     });
 
