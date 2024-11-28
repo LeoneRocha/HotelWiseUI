@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import ChatbotModal from './ChatbotModal';
 import '../css/Chatbot.css';
 import DOMPurify from 'dompurify';
-import { Message } from '../interfaces/AskAssistantResponse'; 
+import { Message } from '../interfaces/AskAssistantResponse';
 import LocalStorageService from '../services/localStorageService';
 
 const Chatbot: React.FC = () => {
@@ -14,7 +14,6 @@ const Chatbot: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>(getChatHistory());
   const [show, setShow] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
 
@@ -32,11 +31,12 @@ const Chatbot: React.FC = () => {
     if (chatContainer) {
       chatContainer.scrollTop = chatContainer.scrollHeight;
     }
-
-    // Check authentication status
-    const token = LocalStorageService.getItem('token');
-    setIsAuthenticated(!!token);
   }, [messages]);
+
+  const isAuthenticated = useCallback(() => {
+    const token = LocalStorageService.getItem('token');
+    return !!token;
+  }, []);
 
   const addMessage = useCallback((sender: 'user' | 'bot', text: string) => {
     const newMessage: Message = { sender, text };
@@ -49,7 +49,7 @@ const Chatbot: React.FC = () => {
     setShowAlert(false);
     if (!input.trim()) return;
 
-    if (!isAuthenticated) {
+    if (!isAuthenticated()) {
       setShowAlert(true);
       setInput(''); // Clear input field
       return;
@@ -78,7 +78,7 @@ const Chatbot: React.FC = () => {
 
   const toggleModal = () => {
     setShow((prevShow) => {
-      if (!prevShow) {
+      if (!prevShow && messages.length === 0) {
         addMessage('bot', 'Olá! Eu sou seu assistente virtual. Como posso ajudar você hoje?');
         addMessage('bot', 'Posso ajudar com várias tarefas, como responder perguntas, dar dicas e suporte, ou simplesmente bater um papo. O que você precisa?');
       }

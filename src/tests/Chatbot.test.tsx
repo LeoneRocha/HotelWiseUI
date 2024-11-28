@@ -106,7 +106,7 @@ describe('Chatbot component', () => {
 
         await waitFor(() => {
             expect(screen.getByText('Para utilizar o assistente, você precisa fazer login.')).toBeInTheDocument();
-            expect(chatHistoryManager.saveMessage).toHaveBeenCalledTimes(2); // Verifica se as mensagens de boas-vindas foram salvas
+            expect(chatHistoryManager.saveMessage).toHaveBeenCalledTimes(0); // Verifica se nenhuma mensagem foi salva
             expect(chatHistoryManager.saveMessage).not.toHaveBeenCalledWith(expect.objectContaining({
                 sender: 'user',
                 text: 'How are you?',
@@ -124,6 +124,22 @@ describe('Chatbot component', () => {
         await waitFor(() => {
             expect(chatHistoryManager.clearChatHistory).toHaveBeenCalled();
             expect(screen.queryByText('Hello')).not.toBeInTheDocument();
+        });
+    });
+
+    test('does not add welcome messages if chat history exists', async () => {
+        const messages = [
+            { sender: 'user', text: 'Hello' },
+        ];
+        (chatHistoryManager.getChatHistory as jest.Mock).mockReturnValue(messages);
+
+        render(<Chatbot />);
+
+        fireEvent.click(screen.getByText('Chat')); // Abrir o modal
+
+        await waitFor(() => {
+            expect(screen.getByText('Hello')).toBeInTheDocument();
+            expect(screen.queryByText('Olá! Eu sou seu assistente virtual. Como posso ajudar você hoje?')).not.toBeInTheDocument();
         });
     });
 });
