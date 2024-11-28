@@ -1,18 +1,8 @@
 import React from 'react';
 import { Button, Spinner, Alert } from 'react-bootstrap';
-import ChatMessage from './ChatMessage';
-import { Message } from '../interfaces/AskAssistantResponse';
+import ChatMessage from './ChatMessage'; 
+import { ChatbotModalProps } from '../interfaces/ChatbotModalProps';
 
-interface ChatbotModalProps {
-  messages: Message[];
-  isTyping: boolean;
-  showAlert: boolean;
-  input: string;
-  handleSubmit: (e: React.FormEvent) => void;
-  handleClearHistory: () => void;
-  setInput: (input: string) => void;
-  toggleModal: () => void;
-}
 
 const ChatbotModal: React.FC<ChatbotModalProps> = ({
   messages, isTyping, showAlert, input,
