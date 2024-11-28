@@ -1,13 +1,14 @@
 // Chatbot.tsx
 import React, { useState, useEffect } from 'react';
 import Draggable from 'react-draggable';
-import { saveMessage, getChatHistory, clearChatHistory, Message } from '../services/chatHistoryManager';
+import { saveMessage, getChatHistory, clearChatHistory } from '../services/chatHistoryManager';
 import { getChatCompletion } from '../services/assistantService';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 import { FaRobot, FaUser } from 'react-icons/fa';
 import '../css/Chatbot.css';
 import DOMPurify from 'dompurify';
+import { Message } from '../interfaces/AskAssistantResponse';
 
 const Chatbot: React.FC = () => {
   const [input, setInput] = useState('');

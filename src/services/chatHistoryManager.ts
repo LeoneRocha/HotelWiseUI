@@ -1,11 +1,8 @@
 // chatHistoryManager.ts
+import { Message } from '../interfaces/AskAssistantResponse';
 import { saveToSession, getFromSession, removeFromSession } from './sessionManagerService'
 const SESSION_KEY = 'chatHistory';
 
-export interface Message {
-    sender: 'user' | 'bot';
-    text: string;
-}
 
 export const saveMessage = (message: Message) => {
     const history = getChatHistory();
