@@ -8,8 +8,8 @@ jest.mock('../../services/EnvironmentService', () => ({
 }));
 
 // Import the axios instance created in assistantService
-import { getChatCompletion } from '../../services/chatService';
-import { api_assistantService } from '../../services/chatService';
+import { getChatCompletion } from '../../services/assistantService';
+import { api_assistantService } from '../../services/assistantService';
 
 describe('assistantService', () => {
   let mock: MockAdapter;

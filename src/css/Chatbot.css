@@ -1,0 +1,126 @@
+/* Chatbot.css */
+.chatbot-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1050;
+}
+
+.chatbot-toggle {
+  z-index: 1051;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chatbot-modal {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 350px;
+  max-height: 600px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chatbot-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.chatbot-close {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.chat-messages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  background-color: #f9f9f9;
+}
+
+.chat-messages::-webkit-scrollbar {
+  width: 0 !important;
+}
+
+.chat-messages {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.chat-message {
+  margin: 5px 0;
+  padding: 8px;
+  border-radius: 10px;
+}
+
+.chat-message.user {
+  text-align: right;
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.chat-message.bot {
+  text-align: left;
+  background-color: white;
+  color: #383d41;
+}
+
+.chat-input-form {
+  display: flex;
+  padding: 10px;
+  background: #f8f9fa;
+  border-top: 1px solid #ddd;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  color: black;
+}
+
+.chat-input-form button {
+  margin-left: 10px;
+  padding: 8px 10px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.clear-history-button {
+  margin: 10px;
+  padding: 5px 10px;
+  border: none;
+  background-color: transparent;
+  color: #888;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.clear-history-button:hover {
+  background-color: #f8f9fa;
+}

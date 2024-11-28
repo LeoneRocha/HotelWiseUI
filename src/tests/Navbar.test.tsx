@@ -1,14 +1,14 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar'; // Ajuste o caminho conforme necessário
-import { getChatCompletion } from '../services/chatService';
+import { getChatCompletion } from '../services/assistantService';
 import LocalStorageService from '../services/localStorageService';
 
 // Mock do arquivo CSS para evitar problemas durante o teste
 jest.mock('../css/Navbar.css', () => ({}));
 
 // Mock dos serviços
-jest.mock('../services/chatService', () => ({
+jest.mock('../services/assistantService', () => ({
   getChatCompletion: jest.fn(),
 }));
 jest.mock('../services/localStorageService', () => ({

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getChatCompletion } from '../services/chatService';
+import { getChatCompletion } from '../services/assistantService';
 import LocalStorageService from '../services/localStorageService';
 import DOMPurify from 'dompurify';
 import { EnvironmentService } from '../services/EnvironmentService';

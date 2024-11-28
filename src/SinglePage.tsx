@@ -8,6 +8,7 @@ import FooterPage from './FooterPage';
 import LocalStorageService from './services/localStorageService';
 import CookieConsent from './components/CookieConsent';
 import SecurityService from './services/securityService';
+import Chatbot from './components/Chatbot';
 
 const SinglePage: React.FC = () => {
     const location = useLocation();
@@ -22,6 +23,7 @@ const SinglePage: React.FC = () => {
             </main>
             {/* Renderizar o CookieConsent apenas nas rotas / e /login */}
             {window.location.pathname === '/' || window.location.pathname === '/login' ? <CookieConsent /> : null}
+            <Chatbot />
             <FooterPage />
         </div>
     );
