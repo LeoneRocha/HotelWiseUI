@@ -4,8 +4,8 @@ import { getHotelById, createHotel, updateHotel, generateHotelByIA, addVectorByI
 import { IHotel } from '../interfaces/IHotel';
 import HotelFormTemplate from './HotelFormTemplate';
 import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-import { HotelFormProps } from '../interfaces/HotelFormProps';
+import Button from 'react-bootstrap/Button'; 
+import { IHotelFormProps } from '../interfaces/IHotelFormProps';
 
 const initialFormData: IHotel = {
   hotelId: 0,
@@ -22,7 +22,7 @@ const initialFormData: IHotel = {
   isHotelInVectorStore: false,
 };
 
-const HotelForm: React.FC<HotelFormProps> = ({ onSave }) => {
+const HotelForm: React.FC<IHotelFormProps> = ({ onSave }) => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [formData, setFormData] = useState<IHotel>(initialFormData);

@@ -1,7 +1,7 @@
-import { Message } from "./AskAssistantResponse";
+import { IMessage } from "./IAskAssistantResponse";
 
-export interface ChatbotModalProps {
-    messages: Message[];
+export interface IChatbotModalProps {
+    messages: IMessage[];
     isTyping: boolean;
     showAlert: boolean;
     input: string;
@@ -11,6 +11,6 @@ export interface ChatbotModalProps {
     toggleModal: () => void;
   }
 
-  export interface ChatMessageProps {
-    message: Message;
+  export interface IChatMessageProps {
+    message: IMessage;
   }

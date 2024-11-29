@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import '../css/HotelSearchTemplate.css';
-import { HotelSearchTemplateProps } from '../interfaces/HotelSearchTemplateProps';
+import { IHotelSearchTemplateProps } from '../interfaces/IHotelSearchTemplateProps';
 
-const HotelSearchTemplate: React.FC<HotelSearchTemplateProps> = ({
+const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
   searchTerm,
   setSearchTerm,
   serviceResponse,

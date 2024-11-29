@@ -1,13 +1,13 @@
 import { render, screen } from '@testing-library/react';
 import HotelSearchTemplate from '../components/HotelSearchTemplate'; // Ajuste o caminho conforme necessário
-import { HotelSearchTemplateProps } from '../interfaces/HotelSearchTemplateProps';
-import { ServiceResponse } from '../interfaces/authTypes';
+import { IHotelSearchTemplateProps } from '../interfaces/IHotelSearchTemplateProps';
+import { IServiceResponse } from '../interfaces/IAuthTypes';
 import { IHotelSemanticResult } from '../interfaces/IHotelSemanticResult';
 
 // Mock do arquivo CSS para evitar problemas durante o teste
 jest.mock('../css/HotelSearchTemplate.css', () => ({}));
 
-const mockServiceResponse: ServiceResponse<IHotelSemanticResult> = {
+const mockServiceResponse: IServiceResponse<IHotelSemanticResult> = {
     data: {
         hotelsVectorResult: [
             { hotelId: 1, hotelName: 'Hotel Vector One', description: 'Description One', tags: [], stars: 5, initialRoomPrice: 100, zipCode: '', location: '', city: '', stateCode: '', score: 8.9, isHotelInVectorStore: false },
@@ -21,8 +21,8 @@ const mockServiceResponse: ServiceResponse<IHotelSemanticResult> = {
     errors: [],
     unauthorized: false,
 };
-const renderComponent = (props: Partial<HotelSearchTemplateProps> = {}) => {
-    const defaultProps: HotelSearchTemplateProps = {
+const renderComponent = (props: Partial<IHotelSearchTemplateProps> = {}) => {
+    const defaultProps: IHotelSearchTemplateProps = {
         searchTerm: '',
         setSearchTerm: jest.fn(),
         serviceResponse: mockServiceResponse,

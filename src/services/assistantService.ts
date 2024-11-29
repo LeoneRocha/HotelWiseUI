@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AskAssistantResponse } from '../interfaces/AskAssistantResponse';
+import { IAskAssistantResponse } from '../interfaces/IAskAssistantResponse';
 import { EnvironmentService } from './EnvironmentService';
  
 // Criação da instância Axios
@@ -17,7 +17,7 @@ api_assistantService.interceptors.request.use((config) => {
 });
 
 // Função do serviço
-export const getChatCompletion = async (criteria: { maxHotelRetrieve: number; searchTextCriteria: string }): Promise<AskAssistantResponse[]> => {
-  const response = await api_assistantService.post<AskAssistantResponse[]>('/', criteria);
+export const getChatCompletion = async (criteria: { maxHotelRetrieve: number; searchTextCriteria: string }): Promise<IAskAssistantResponse[]> => {
+  const response = await api_assistantService.post<IAskAssistantResponse[]>('/', criteria);
   return response.data;
 };

@@ -1,7 +1,7 @@
 import React from 'react';
-import { LoginFormTemplateProps } from '../interfaces/LoginFormTemplateProps';
+import { ILoginFormTemplateProps } from '../interfaces/ILoginFormTemplateProps';
 
-const LoginFormTemplate: React.FC<LoginFormTemplateProps> = ({
+const LoginFormTemplate: React.FC<ILoginFormTemplateProps> = ({
   username,
   password,
   rememberMe,

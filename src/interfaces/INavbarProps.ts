@@ -1,4 +1,4 @@
-export interface NavbarProps {  
+export interface INavbarProps {  
   showLogoutModal: boolean;  
   confirmLogout: () => void;
   handleLogoutClose: () => void;

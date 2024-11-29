@@ -3,7 +3,7 @@ import { semanticSearch, getTags } from '../services/hotelService';
 import '../css/HotelSearch.css'; // Adicione um arquivo CSS para customizações adicionais
 import HotelSearchTemplate from './HotelSearchTemplate';
 import { ISearchCriteria } from '../interfaces/ISearchCriteria';
-import { ServiceResponse } from '../interfaces/authTypes';
+import { IServiceResponse } from '../interfaces/IAuthTypes';
 import { IHotelSemanticResult } from '../interfaces/IHotelSemanticResult';
 import { EnvironmentService } from '../services/EnvironmentService';
 
@@ -11,7 +11,7 @@ const HotelSearch: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [tags, setTags] = useState<string[]>([]); // Inicializando como array vazio
-  const [serviceResponse, setServiceResponse] = useState<ServiceResponse<IHotelSemanticResult> | null>(null);
+  const [serviceResponse, setServiceResponse] = useState<IServiceResponse<IHotelSemanticResult> | null>(null);
   const [searched, setSearched] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -50,7 +50,7 @@ const HotelSearch: React.FC = () => {
         searchTextCriteria: searchTerm,
         tagsCriteria: selectedTags,
       };
-      const response: ServiceResponse<IHotelSemanticResult> = await semanticSearch(criteria);
+      const response: IServiceResponse<IHotelSemanticResult> = await semanticSearch(criteria);
 
       if (response.data.hotelsVectorResult.length === 0 && response.data.hotelsIAResult.length === 0) {
         setError('Nenhum hotel foi localizado com o critério digitado.');

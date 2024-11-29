@@ -1,8 +1,8 @@
 import React from 'react';
 import { FaRobot, FaUser } from 'react-icons/fa';
-import { ChatMessageProps } from '../interfaces/ChatbotModalProps';
+import { IChatMessageProps } from '../interfaces/IChatbotModalProps';
 
-const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => (
+const ChatMessage: React.FC<IChatMessageProps> = ({ message }) => (
   <div className={`chat-message ${message.sender}`}>
     {message.sender === 'bot' ? (
       <div className="bot-message">

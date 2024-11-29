@@ -1,8 +1,8 @@
-export interface AskAssistantResponse {
+export interface IAskAssistantResponse {
     response: string;
   }
 
-  export interface Message {
+  export interface IMessage {
     sender: 'user' | 'bot';
     text: string;
 }

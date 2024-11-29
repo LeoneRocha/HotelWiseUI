@@ -4,7 +4,7 @@ import { getAllHotels, getHotelById, addVectorById, createHotel, updateHotel, de
 import { IHotel } from '../../interfaces/IHotel';
 import { ISearchCriteria } from '../../interfaces/ISearchCriteria';
 import { IHotelSemanticResult } from '../../interfaces/IHotelSemanticResult';
-import { ServiceResponse } from '../../interfaces/authTypes';
+import { IServiceResponse } from '../../interfaces/IAuthTypes';
 
 describe('HotelService', () => {
   let mock: MockAdapter;
@@ -22,7 +22,7 @@ describe('HotelService', () => {
   });
 
   test('should fetch all hotels successfully', async () => {
-    const mockData: ServiceResponse<IHotel[]> = {
+    const mockData: IServiceResponse<IHotel[]> = {
       data: [{ hotelId: 1, hotelName: 'Hotel One', description: 'A great place to stay', tags: ['luxury'], stars: 5, initialRoomPrice: 200, zipCode: '12345', location: 'Center', city: 'Metropolis', stateCode: 'MP', score: 9.8, isHotelInVectorStore: true }],
       success: true,
       message: 'Success',
@@ -44,7 +44,7 @@ describe('HotelService', () => {
   });
 
   test('should fetch a hotel by ID successfully', async () => {
-    const mockData: ServiceResponse<IHotel> = {
+    const mockData: IServiceResponse<IHotel> = {
       data: { hotelId: 1, hotelName: 'Hotel One', description: 'A great place to stay', tags: ['luxury'], stars: 5, initialRoomPrice: 200, zipCode: '12345', location: 'Center', city: 'Metropolis', stateCode: 'MP', score: 9.8, isHotelInVectorStore: true },
       success: true,
       message: 'Success',
@@ -66,7 +66,7 @@ describe('HotelService', () => {
   });
 
   test('should add vector by ID successfully', async () => {
-    const mockData: ServiceResponse<IHotel> = {
+    const mockData: IServiceResponse<IHotel> = {
       data: { hotelId: 1, hotelName: 'Hotel One', description: 'A great place to stay', tags: ['luxury'], stars: 5, initialRoomPrice: 200, zipCode: '12345', location: 'Center', city: 'Metropolis', stateCode: 'MP', score: 9.8, isHotelInVectorStore: true },
       success: true,
       message: 'Success',
@@ -88,7 +88,7 @@ describe('HotelService', () => {
   });
 
   test('should create a hotel successfully', async () => {
-    const mockData: ServiceResponse<void> = {
+    const mockData: IServiceResponse<void> = {
       data: undefined,
       success: true,
       message: 'Hotel created successfully',
@@ -112,7 +112,7 @@ describe('HotelService', () => {
   });
 
   test('should update a hotel successfully', async () => {
-    const mockData: ServiceResponse<void> = {
+    const mockData: IServiceResponse<void> = {
       data: undefined,
       success: true,
       message: 'Hotel updated successfully',
@@ -136,7 +136,7 @@ describe('HotelService', () => {
   });
 
   test('should delete a hotel successfully', async () => {
-    const mockData: ServiceResponse<void> = {
+    const mockData: IServiceResponse<void> = {
       data: undefined,
       success: true,
       message: 'Hotel deleted successfully',
@@ -156,7 +156,7 @@ describe('HotelService', () => {
   });
 
   test('should perform semantic search successfully', async () => {
-    const mockData: ServiceResponse<IHotelSemanticResult> = {
+    const mockData: IServiceResponse<IHotelSemanticResult> = {
       data: {
         hotelsVectorResult: [{ hotelId: 1, hotelName: 'Hotel One', description: 'A great place to stay', tags: ['luxury'], stars: 5, initialRoomPrice: 200, zipCode: '12345', location: 'Center', city: 'Metropolis', stateCode: 'MP', score: 9.8, isHotelInVectorStore: true }],
         hotelsIAResult: [],
@@ -186,7 +186,7 @@ describe('HotelService', () => {
   });
 
   test('should generate hotel by IA successfully', async () => {
-    const mockData: ServiceResponse<IHotel> = {
+    const mockData: IServiceResponse<IHotel> = {
       data: { hotelId: 1, hotelName: 'Hotel One', description: 'A great place to stay', tags: ['luxury'], stars: 5, initialRoomPrice: 200, zipCode: '12345', location: 'Center', city: 'Metropolis', stateCode: 'MP', score: 9.8, isHotelInVectorStore: true },
       success: true,
       message: 'Success',

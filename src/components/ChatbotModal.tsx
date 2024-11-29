@@ -1,10 +1,10 @@
 import React from 'react';
 import { Button, Spinner, Alert } from 'react-bootstrap';
 import ChatMessage from './ChatMessage'; 
-import { ChatbotModalProps } from '../interfaces/ChatbotModalProps';
+import { IChatbotModalProps } from '../interfaces/IChatbotModalProps';
 
 
-const ChatbotModal: React.FC<ChatbotModalProps> = ({
+const ChatbotModal: React.FC<IChatbotModalProps> = ({
   messages, isTyping, showAlert, input,
   handleSubmit, handleClearHistory, setInput, toggleModal
 }) => (

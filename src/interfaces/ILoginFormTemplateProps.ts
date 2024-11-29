@@ -1,5 +1,5 @@
 import React from 'react'; 
-export interface LoginFormTemplateProps {
+export interface ILoginFormTemplateProps {
   username: string;
   password: string;
   rememberMe: boolean;

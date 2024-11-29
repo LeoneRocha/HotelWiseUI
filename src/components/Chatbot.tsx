@@ -6,12 +6,12 @@ import Button from 'react-bootstrap/Button';
 import ChatbotModal from './ChatbotModal';
 import '../css/Chatbot.css';
 import DOMPurify from 'dompurify';
-import { Message } from '../interfaces/AskAssistantResponse';
+import { IMessage } from '../interfaces/IAskAssistantResponse';
 import LocalStorageService from '../services/localStorageService';
 
 const Chatbot: React.FC = () => {
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState<Message[]>(getChatHistory());
+  const [messages, setMessages] = useState<IMessage[]>(getChatHistory());
   const [show, setShow] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
@@ -39,7 +39,7 @@ const Chatbot: React.FC = () => {
   }, []);
 
   const addMessage = useCallback((sender: 'user' | 'bot', text: string) => {
-    const newMessage: Message = { sender, text };
+    const newMessage: IMessage = { sender, text };
     setMessages((prevMessages) => [...prevMessages, newMessage]);
     saveMessage(newMessage);
   }, []);

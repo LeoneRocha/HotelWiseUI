@@ -5,9 +5,9 @@ import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { FiLogOut } from 'react-icons/fi';
 import '../css/Navbar.css';
-import { NavbarProps } from '../interfaces/NavbarProps';
+import { INavbarProps } from '../interfaces/INavbarProps';
 
-const NavbarTemplate: React.FC<NavbarProps> = ({ 
+const NavbarTemplate: React.FC<INavbarProps> = ({ 
   showLogoutModal, 
   confirmLogout,
   handleLogoutClose,

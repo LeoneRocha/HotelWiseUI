@@ -1,14 +1,14 @@
 import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import ChatbotModal from '../components/ChatbotModal';
-import { Message } from '../interfaces/AskAssistantResponse';
+import { IMessage } from '../interfaces/IAskAssistantResponse';
 
 describe('ChatbotModal component', () => {
     const mockProps = {
         messages: [
             { sender: 'user', text: 'Hello' },
             { sender: 'bot', text: 'Hi there!' }
-        ] as Message[],
+        ] as IMessage[],
         isTyping: false,
         showAlert: false,
         input: '',

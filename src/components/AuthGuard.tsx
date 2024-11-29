@@ -1,10 +1,10 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import LocalStorageService from '../services/localStorageService';
-import SecurityService from '../services/securityService';
-import { AuthGuardProps } from '../interfaces/AuthGuardProps';
+import SecurityService from '../services/securityService'; 
+import { IAuthGuardProps } from '../interfaces/IAuthGuardProps';
 
-const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
+const AuthGuard: React.FC<IAuthGuardProps> = ({ children }) => {
   const token = LocalStorageService.getItem('token');
 
   // Verificação se o token é válido

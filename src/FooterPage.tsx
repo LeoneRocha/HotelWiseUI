@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { getAppInformationVersionProduct } from './services/appInformationService';
+import AppInformationService from './services/appInformationService';
 import { EnvironmentService } from './services/EnvironmentService';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
@@ -17,7 +17,7 @@ const FooterPage: React.FC = () => {
       if (hasFetchedData.current) return;
       hasFetchedData.current = true;
       try {
-        const data = await getAppInformationVersionProduct();
+        const data = await AppInformationService.getAppInformationVersionProduct();
         if (data && data.length > 0) {
           setApiVersion(data[0].version);
         }

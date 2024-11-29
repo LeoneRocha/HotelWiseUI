@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import ChatMessage from '../components/ChatMessage';
-import { Message } from '../interfaces/AskAssistantResponse';
+import { IMessage } from '../interfaces/IAskAssistantResponse';
 
 
 // Mock the chat history manager and assistant service
@@ -27,14 +27,14 @@ describe('ChatMessage component', () => {
         jest.spyOn(console, 'error').mockImplementation(() => { });
     });
     test('renders user message correctly', () => {
-        const message: Message = { sender: 'user', text: 'Hello!' };
+        const message: IMessage = { sender: 'user', text: 'Hello!' };
         const { getByText } = render(<ChatMessage message={message} />);
 
         expect(getByText('Hello!')).toBeInTheDocument();
     });
 
     test('renders bot message correctly with HTML', () => {
-        const message: Message = { sender: 'bot', text: '<strong>Hello!</strong>' };
+        const message: IMessage = { sender: 'bot', text: '<strong>Hello!</strong>' };
         const { getByText } = render(<ChatMessage message={message} />);
 
         expect(getByText('Hello!')).toBeInTheDocument();

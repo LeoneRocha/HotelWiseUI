@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import '../css/HotelFormTemplate.css';
 import { FaPlusCircle, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
-import { HotelFormTemplateProps } from '../interfaces/HotelFormTemplateProps';
+import { IHotelFormTemplateProps } from '../interfaces/IHotelFormTemplateProps';
 
-const HotelFormTemplate: React.FC<HotelFormTemplateProps> = ({
+const HotelFormTemplate: React.FC<IHotelFormTemplateProps> = ({
   formData,
   handleChange,
   handleSubmit,

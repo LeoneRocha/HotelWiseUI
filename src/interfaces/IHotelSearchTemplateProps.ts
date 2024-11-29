@@ -1,10 +1,10 @@
-import { ServiceResponse } from "./authTypes";
+import { IServiceResponse } from "./IAuthTypes";
 import { IHotelSemanticResult } from "./IHotelSemanticResult";
      
-export interface HotelSearchTemplateProps {
+export interface IHotelSearchTemplateProps {
   searchTerm: string;
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
-  serviceResponse: ServiceResponse<IHotelSemanticResult> | null;
+  serviceResponse: IServiceResponse<IHotelSemanticResult> | null;
   searched: boolean;
   error: string | null;
   loading: boolean;

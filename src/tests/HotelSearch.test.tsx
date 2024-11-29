@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import HotelSearch from '../components/HotelSearch'; // Ajuste o caminho conforme necessário
 import { semanticSearch, getTags } from '../services/hotelService';
-import { ServiceResponse } from '../interfaces/authTypes';
+import { IServiceResponse } from '../interfaces/IAuthTypes';
 import { IHotelSemanticResult } from '../interfaces/IHotelSemanticResult';
 
 // Mock do arquivo CSS para evitar problemas durante o teste
@@ -16,7 +16,7 @@ jest.mock('../services/hotelService', () => ({
 
 const mockTags = ['Tag1', 'Tag2', 'Tag3'];
 
-const mockServiceResponse: ServiceResponse<IHotelSemanticResult> = {
+const mockServiceResponse: IServiceResponse<IHotelSemanticResult> = {
   data: {
     hotelsVectorResult: [
       { hotelId: 1, hotelName: 'Hotel Vector One', description: 'Description One', tags: [], stars: 5, initialRoomPrice: 100, zipCode: '', location: '', city: '', stateCode: '', score: 8.9, isHotelInVectorStore: false },

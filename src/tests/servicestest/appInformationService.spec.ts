@@ -1,6 +1,6 @@
 
 import MockAdapter from 'axios-mock-adapter';
-import { getAppInformationVersionProduct } from '../../services/appInformationService';
+import   IAppInformationService   from '../../services/appInformationService';
 import { IAppInformation } from '../../interfaces/IAppInformation'; 
 
 // Mock EnvironmentService to return a fixed base URL
@@ -36,7 +36,7 @@ describe('appInformationService', () => {
 
     mock.onGet('/GetAppInformationVersionProduct').reply(200, mockData);
 
-    const data = await getAppInformationVersionProduct();
+    const data = await IAppInformationService.getAppInformationVersionProduct();
 
     expect(data).toEqual(mockData);
   });
@@ -44,6 +44,6 @@ describe('appInformationService', () => {
   test('should handle error', async () => {
     mock.onGet('/GetAppInformationVersionProduct').reply(404);
 
-    await expect(getAppInformationVersionProduct()).rejects.toThrow('Request failed with status code 404');
+    await expect( IAppInformationService.getAppInformationVersionProduct()).rejects.toThrow('Request failed with status code 404');
   });
 });

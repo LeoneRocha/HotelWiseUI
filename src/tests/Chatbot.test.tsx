@@ -21,6 +21,8 @@ jest.mock('../services/LocalStorageService', () => ({
 }));
 
 describe('Chatbot component', () => {
+    const nameChat : string ='Fale com o assistente';
+
     beforeEach(() => {
         jest.clearAllMocks();
         // Mock do console.warn para suprimir os avisos durante os testes
@@ -37,7 +39,7 @@ describe('Chatbot component', () => {
 
         render(<Chatbot />);
 
-        fireEvent.click(screen.getByText('Chat')); // Abrir o modal
+        fireEvent.click(screen.getByText(nameChat)); // Abrir o modal
 
         expect(screen.getByText('Hello')).toBeInTheDocument();
         expect(screen.getByText('Hi there!')).toBeInTheDocument();
@@ -49,7 +51,7 @@ describe('Chatbot component', () => {
 
         render(<Chatbot />);
 
-        fireEvent.click(screen.getByText('Chat')); // Abrir o modal
+        fireEvent.click(screen.getByText(nameChat)); // Abrir o modal
 
         fireEvent.change(screen.getByPlaceholderText('Digite sua mensagem...'), {
             target: { value: 'How are you?' },
@@ -76,7 +78,7 @@ describe('Chatbot component', () => {
 
         render(<Chatbot />);
 
-        fireEvent.click(screen.getByText('Chat')); // Abrir o modal
+        fireEvent.click(screen.getByText(nameChat)); // Abrir o modal
 
         fireEvent.change(screen.getByPlaceholderText('Digite sua mensagem...'), {
             target: { value: 'How are you?' },
@@ -97,7 +99,7 @@ describe('Chatbot component', () => {
 
         render(<Chatbot />);
 
-        fireEvent.click(screen.getByText('Chat')); // Abrir o modal
+        fireEvent.click(screen.getByText(nameChat)); // Abrir o modal
 
         fireEvent.change(screen.getByPlaceholderText('Digite sua mensagem...'), {
             target: { value: 'How are you?' },
@@ -117,7 +119,7 @@ describe('Chatbot component', () => {
     test('clears chat history', async () => {
         render(<Chatbot />);
 
-        fireEvent.click(screen.getByText('Chat')); // Abrir o modal
+        fireEvent.click(screen.getByText(nameChat)); // Abrir o modal
 
         fireEvent.click(screen.getByText('Limpar Histórico'));
 
@@ -135,7 +137,7 @@ describe('Chatbot component', () => {
 
         render(<Chatbot />);
 
-        fireEvent.click(screen.getByText('Chat')); // Abrir o modal
+        fireEvent.click(screen.getByText(nameChat)); // Abrir o modal
 
         await waitFor(() => {
             expect(screen.getByText('Hello')).toBeInTheDocument();

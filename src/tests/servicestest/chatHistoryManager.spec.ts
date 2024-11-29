@@ -1,4 +1,4 @@
-import { Message } from "../../interfaces/AskAssistantResponse";
+import { IMessage } from "../../interfaces/IAskAssistantResponse";
 import { clearChatHistory, getChatHistory,  saveMessage } from "../../services/chatHistoryManager";
 import { getFromSession, removeFromSession, saveToSession } from "../../services/sessionManagerService";
 
@@ -15,8 +15,8 @@ describe('chatHistoryManager', () => {
     });
 
     test('should save a message to session storage', () => {
-        const message: Message = { sender: 'user', text: 'Hello' };
-        const history: Message[] = [];
+        const message: IMessage = { sender: 'user', text: 'Hello' };
+        const history: IMessage[] = [];
 
         (getFromSession as jest.Mock).mockReturnValue(history);
         saveMessage(message);
@@ -26,7 +26,7 @@ describe('chatHistoryManager', () => {
     });
 
     test('should retrieve chat history from session storage', () => {
-        const history: Message[] = [
+        const history: IMessage[] = [
             { sender: 'user', text: 'Hello' },
             { sender: 'bot', text: 'Hi there!' },
         ];

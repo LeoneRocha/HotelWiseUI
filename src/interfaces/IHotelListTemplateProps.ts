@@ -1,6 +1,6 @@
 import { IHotel } from "./IHotel";
 
-export interface HotelListTemplateProps {
+export interface IHotelListTemplateProps {
     hotels: IHotel[];
     totalHotels: number;
     currentPage: number;

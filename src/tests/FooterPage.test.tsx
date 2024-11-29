@@ -1,6 +1,6 @@
 import { render, screen, waitFor, act } from '@testing-library/react';
 import FooterPage from '../FooterPage';
-import { getAppInformationVersionProduct } from '../services/appInformationService';
+import AppInformationService from '../services/appInformationService';
 
 // Mock the EnvironmentService
 jest.mock('../services/EnvironmentService', () => ({
@@ -18,7 +18,7 @@ jest.mock('../services/appInformationService', () => ({
 
 describe('FooterPage', () => {
     beforeEach(() => {
-        (getAppInformationVersionProduct as jest.Mock).mockResolvedValue([{ version: '1.2.3' }]);
+        (AppInformationService.getAppInformationVersionProduct as jest.Mock).mockResolvedValue([{ version: '1.2.3' }]);
     });
 
     afterEach(() => {
@@ -45,10 +45,10 @@ describe('FooterPage', () => {
             expect(screen.getByText('1.2.3')).toBeInTheDocument();
         });
     });
- 
+
 
     test('should handle errors when fetching the API version', async () => {
-        (getAppInformationVersionProduct as jest.Mock).mockRejectedValue(new Error('Erro ao buscar a versão da API'));
+        (AppInformationService.getAppInformationVersionProduct as jest.Mock).mockRejectedValue(new Error('Erro ao buscar a versão da API'));
 
         await act(async () => {
             render(<FooterPage />);

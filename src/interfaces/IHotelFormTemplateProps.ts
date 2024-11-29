@@ -1,6 +1,6 @@
 import { IHotel } from "./IHotel";
 
-export interface HotelFormTemplateProps {
+export interface IHotelFormTemplateProps {
     formData: IHotel;
     handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     handleSubmit: (e: React.FormEvent) => void;

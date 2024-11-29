@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { IHotel } from '../interfaces/IHotel';
-import { ServiceResponse } from '../interfaces/authTypes';
+import { IServiceResponse } from '../interfaces/IAuthTypes';
 import { ISearchCriteria } from '../interfaces/ISearchCriteria';
 import { IHotelSemanticResult } from '../interfaces/IHotelSemanticResult';
 import { EnvironmentService } from './EnvironmentService';
@@ -21,7 +21,7 @@ api_hotelservice.interceptors.request.use((config) => {
 
 // Funções do serviço
 export const getAllHotels = async (): Promise<IHotel[]> => {
-  const response = await api_hotelservice.get<ServiceResponse<IHotel[]>>('/');
+  const response = await api_hotelservice.get<IServiceResponse<IHotel[]>>('/');
   if (response.data.success) {
     return response.data.data;
   } else {
@@ -30,7 +30,7 @@ export const getAllHotels = async (): Promise<IHotel[]> => {
 };
 
 export const getHotelById = async (id: number): Promise<IHotel> => {
-  const response = await api_hotelservice.get<ServiceResponse<IHotel>>(`/${id}`);
+  const response = await api_hotelservice.get<IServiceResponse<IHotel>>(`/${id}`);
   if (response.data.success) {
     return response.data.data;
   } else {
@@ -39,7 +39,7 @@ export const getHotelById = async (id: number): Promise<IHotel> => {
 };
 
 export const addVectorById = async (id: number): Promise<IHotel> => {
-  const response = await api_hotelservice.get<ServiceResponse<IHotel>>(`/addvector/${id}`);
+  const response = await api_hotelservice.get<IServiceResponse<IHotel>>(`/addvector/${id}`);
   if (response.data.success) {
     return response.data.data;
   } else {
@@ -48,29 +48,29 @@ export const addVectorById = async (id: number): Promise<IHotel> => {
 };
 
 export const createHotel = async (hotel: IHotel): Promise<void> => {
-  const response = await api_hotelservice.post<ServiceResponse<void>>('/', hotel);
+  const response = await api_hotelservice.post<IServiceResponse<void>>('/', hotel);
   if (!response.data.success) {
     throw new Error(response.data.message || 'Erro ao criar hotel');
   }
 };
 
 export const updateHotel = async (id: number, hotel: IHotel): Promise<void> => {
-  const response = await api_hotelservice.put<ServiceResponse<void>>(`/${id}`, hotel);
+  const response = await api_hotelservice.put<IServiceResponse<void>>(`/${id}`, hotel);
   if (!response.data.success) {
     throw new Error(response.data.message || 'Erro ao atualizar hotel');
   }
 };
 
 export const deleteHotel = async (id: number): Promise<void> => {
-  const response = await api_hotelservice.delete<ServiceResponse<void>>(`/${id}`);
+  const response = await api_hotelservice.delete<IServiceResponse<void>>(`/${id}`);
   if (!response.data.success) {
     throw new Error(response.data.message || 'Erro ao deletar hotel');
   }
 };
 
 // Função de busca semântica
-export const semanticSearch = async (criteria: ISearchCriteria): Promise<ServiceResponse<IHotelSemanticResult>> => {
-  const response = await api_hotelservice.post<ServiceResponse<IHotelSemanticResult>>('/semanticsearch', criteria);
+export const semanticSearch = async (criteria: ISearchCriteria): Promise<IServiceResponse<IHotelSemanticResult>> => {
+  const response = await api_hotelservice.post<IServiceResponse<IHotelSemanticResult>>('/semanticsearch', criteria);
   if (EnvironmentService.isNotTestEnvironment()) {
     console.log(response);
   }
@@ -82,7 +82,7 @@ export const semanticSearch = async (criteria: ISearchCriteria): Promise<Service
 };
 
 export const generateHotelByIA = async (): Promise<IHotel> => {
-  const response = await api_hotelservice.get<ServiceResponse<IHotel>>('/generate');
+  const response = await api_hotelservice.get<IServiceResponse<IHotel>>('/generate');
   if (response.data.success) {
     return response.data.data;
   } else {

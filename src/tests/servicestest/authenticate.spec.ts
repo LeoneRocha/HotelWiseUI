@@ -1,6 +1,6 @@
 import MockAdapter from 'axios-mock-adapter';
 import { authenticate } from '../../services/authService';
-import { GetUserAuthenticatedDto, ServiceResponse, UserLoginDto } from '../../interfaces/authTypes';
+import { IGetUserAuthenticatedDto, IServiceResponse, IUserLoginDto } from '../../interfaces/IAuthTypes';
 
 // Mock EnvironmentService to return a fixed base URL
 jest.mock('../../services/EnvironmentService', () => ({
@@ -27,13 +27,13 @@ describe('authService', () => {
     mock.restore();
   });
 
-  const loginData: UserLoginDto = {
+  const loginData: IUserLoginDto = {
     login: 'testuser',
     password: 'testpassword',
   };
 
   test('should authenticate user successfully', async () => {
-    const mockResponse: ServiceResponse<GetUserAuthenticatedDto> = {
+    const mockResponse: IServiceResponse<IGetUserAuthenticatedDto> = {
       data: {
         name: 'TestUser',
         language: 'EN',
@@ -59,7 +59,7 @@ describe('authService', () => {
   });
 
   test('should handle authentication error with unauthorized message', async () => {
-    const mockResponse: ServiceResponse<null> = {
+    const mockResponse: IServiceResponse<null> = {
       data: null,
       success: false,
       message: 'Unauthorized access',
@@ -83,7 +83,7 @@ describe('authService', () => {
   });
 
   test('should handle authentication with error messages', async () => {
-    const mockResponse: ServiceResponse<null> = {
+    const mockResponse: IServiceResponse<null> = {
       data: null,
       success: false,
       message: 'Validation failed',

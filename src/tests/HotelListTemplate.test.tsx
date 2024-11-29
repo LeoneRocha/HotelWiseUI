@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import HotelListTemplate from '../components/HotelListTemplate'; // Ajuste o caminho conforme necessário
-import { HotelListTemplateProps } from '../interfaces/HotelListTemplateProps';
+import { IHotelListTemplateProps } from '../interfaces/IHotelListTemplateProps';
 
 // Mock do arquivo CSS para evitar problemas durante o teste
 jest.mock('../css/HotelList.css', () => ({}));
@@ -11,8 +11,8 @@ const mockHotels = [
     { hotelId: 2, hotelName: 'Hotel Two', description: 'Description Two', tags: [], stars: 4, initialRoomPrice: 150, zipCode: '', location: '', city: '', stateCode: '', score: 9.2, isHotelInVectorStore: false },
 ];
 
-const renderComponent = (props: Partial<HotelListTemplateProps> = {}) => {
-    const defaultProps: HotelListTemplateProps = {
+const renderComponent = (props: Partial<IHotelListTemplateProps> = {}) => {
+    const defaultProps: IHotelListTemplateProps = {
         hotels: mockHotels,
         totalHotels: mockHotels.length,
         currentPage: 1,

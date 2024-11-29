@@ -1,5 +1,5 @@
 import MockAdapter from 'axios-mock-adapter'; 
-import { AskAssistantResponse } from '../../interfaces/AskAssistantResponse'; 
+import { IAskAssistantResponse } from '../../interfaces/IAskAssistantResponse'; 
 // Mock EnvironmentService to return a fixed base URL
 jest.mock('../../services/EnvironmentService', () => ({
   EnvironmentService: {
@@ -32,7 +32,7 @@ describe('assistantService', () => {
   };
 
   test('should get chat completion successfully', async () => {
-    const mockData: AskAssistantResponse[] = [
+    const mockData: IAskAssistantResponse[] = [
       { response: 'This is a mock response from the assistant.' }
     ];
 

@@ -1,12 +1,12 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import LoginFormTemplate from '../components/LoginFormTemplate'; // Ajuste o caminho conforme necessário
-import { LoginFormTemplateProps } from '../interfaces/LoginFormTemplateProps';
+import { ILoginFormTemplateProps } from '../interfaces/ILoginFormTemplateProps';
 
 // Mock do arquivo CSS para evitar problemas durante o teste
 jest.mock('../css/Login.css', () => ({}));
 
-const renderComponent = (props: Partial<LoginFormTemplateProps> = {}) => {
-  const defaultProps: LoginFormTemplateProps = {
+const renderComponent = (props: Partial<ILoginFormTemplateProps> = {}) => {
+  const defaultProps: ILoginFormTemplateProps = {
     username: '',
     password: '',
     rememberMe: false,

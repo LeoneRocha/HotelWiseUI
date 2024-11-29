@@ -2,9 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Pagination } from 'react-bootstrap';
 import '../css/HotelList.css'; // Adicione um arquivo CSS para customizações adicionais
-import { HotelListTemplateProps } from '../interfaces/HotelListTemplateProps';
+import { IHotelListTemplateProps } from '../interfaces/IHotelListTemplateProps';
 
-const HotelListTemplate: React.FC<HotelListTemplateProps> = ({
+const HotelListTemplate: React.FC<IHotelListTemplateProps> = ({
   hotels,
   totalHotels,
   currentPage,

@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import HotelFormTemplate from '../components/HotelFormTemplate'; // Ajuste o caminho conforme necessário
-import { HotelFormTemplateProps } from '../interfaces/HotelFormTemplateProps';
+import { IHotelFormTemplateProps } from '../interfaces/IHotelFormTemplateProps';
 
 // Mock do arquivo CSS para evitar problemas durante o teste
 jest.mock('../css/HotelFormTemplate.css', () => ({}));
@@ -20,8 +20,8 @@ const mockFormData = {
     isHotelInVectorStore: false,
 };
 
-const renderComponent = (props: Partial<HotelFormTemplateProps> = {}) => {
-    const defaultProps: HotelFormTemplateProps = {
+const renderComponent = (props: Partial<IHotelFormTemplateProps> = {}) => {
+    const defaultProps: IHotelFormTemplateProps = {
         formData: mockFormData,
         handleChange: jest.fn(),
         handleSubmit: jest.fn(),
