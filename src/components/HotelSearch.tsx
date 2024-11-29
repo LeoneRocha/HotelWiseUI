@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { semanticSearch, getTags } from '../services/hotelService';
+import HotelService from '../services/hotelService';
 import '../css/HotelSearch.css'; // Adicione um arquivo CSS para customizações adicionais
 import HotelSearchTemplate from './HotelSearchTemplate';
 import { ISearchCriteria } from '../interfaces/ISearchCriteria';
@@ -20,7 +20,7 @@ const HotelSearch: React.FC = () => {
   useEffect(() => {
     const fetchTags = async () => {
       try {
-        const fetchedTags = await getTags();
+        const fetchedTags = await HotelService.getTags();
         setTags(fetchedTags);
       } catch (err) {
         if (EnvironmentService.isNotTestEnvironment()) {
@@ -50,7 +50,7 @@ const HotelSearch: React.FC = () => {
         searchTextCriteria: searchTerm,
         tagsCriteria: selectedTags,
       };
-      const response: IServiceResponse<IHotelSemanticResult> = await semanticSearch(criteria);
+      const response: IServiceResponse<IHotelSemanticResult> = await HotelService.semanticSearch(criteria);
 
       if (response.data.hotelsVectorResult.length === 0 && response.data.hotelsIAResult.length === 0) {
         setError('Nenhum hotel foi localizado com o critério digitado.');

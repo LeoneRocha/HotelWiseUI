@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getHotelById, createHotel, updateHotel, generateHotelByIA, addVectorById } from '../services/hotelService';
+import  HotelService  from '../services/hotelService';
 import { IHotel } from '../interfaces/IHotel';
 import HotelFormTemplate from './HotelFormTemplate';
 import Modal from 'react-bootstrap/Modal';
@@ -41,7 +41,7 @@ const HotelForm: React.FC<IHotelFormProps> = ({ onSave }) => {
       isFetching.current = true;
       const fetchHotel = async () => {
         try {
-          const hotel = await getHotelById(Number(id));
+          const hotel = await HotelService.getHotelById(Number(id));
           setFormData(hotel);
         } catch (error) {
           setModalMessage('Erro ao buscar dados do hotel. Por favor, tente novamente.');
@@ -64,12 +64,12 @@ const HotelForm: React.FC<IHotelFormProps> = ({ onSave }) => {
     e.preventDefault();
     try {
       if (formData.hotelId === 0) {
-        await createHotel(formData);
+        await HotelService.createHotel(formData);
         setModalMessage('Hotel criado com sucesso!');
         setModalType('success');
         setShowModal(true);
       } else {
-        await updateHotel(formData.hotelId, formData);
+        await HotelService.updateHotel(formData.hotelId, formData);
         setModalMessage('Hotel atualizado com sucesso!');
         setModalType('success');
         setShowModal(true);
@@ -107,7 +107,7 @@ const HotelForm: React.FC<IHotelFormProps> = ({ onSave }) => {
 
   const handleAutoFill = async () => {
     try {
-      const generatedHotel = await generateHotelByIA();
+      const generatedHotel = await HotelService.generateHotelByIA();
       setFormData(generatedHotel);
     } catch (error) {
       setModalMessage('Erro ao gerar dados do hotel. Por favor, tente novamente.');
@@ -119,7 +119,7 @@ const HotelForm: React.FC<IHotelFormProps> = ({ onSave }) => {
   const handleAddToVectorStore = async () => {
     try {
       if (formData.hotelId > 0) {
-        await addVectorById(formData.hotelId);
+        await HotelService.addVectorById(formData.hotelId);
         navigate('/list');
       }
     } catch (error) {

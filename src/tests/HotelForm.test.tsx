@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import HotelForm from '../components/HotelForm'; // Ajuste o caminho conforme necessário
-import { getHotelById, createHotel, updateHotel } from '../services/hotelService';
+import HotelService from '../services/hotelService';
 
 jest.mock('../css/HotelFormTemplate.css', () => ({}));
 // Mock dos serviços
@@ -54,7 +54,7 @@ describe('HotelForm component', () => {
             isHotelInVectorStore: false,
         };
 
-        (getHotelById as jest.Mock).mockResolvedValue(mockHotel);
+        (HotelService.getHotelById as jest.Mock).mockResolvedValue(mockHotel);
 
         renderComponent(['/1']);
 
@@ -66,7 +66,7 @@ describe('HotelForm component', () => {
     });
 
     test('creates a new hotel', async () => {
-        (createHotel as jest.Mock).mockResolvedValue({});
+        (HotelService.createHotel as jest.Mock).mockResolvedValue({});
 
         renderComponent();
 
@@ -79,7 +79,7 @@ describe('HotelForm component', () => {
 
         // Verifica se o hotel foi criado
         await waitFor(() => {
-            expect(createHotel).toHaveBeenCalled();
+            expect(HotelService.createHotel).toHaveBeenCalled();
             expect(screen.getByText('Hotel criado com sucesso!')).toBeInTheDocument();
         });
     });
@@ -100,7 +100,7 @@ describe('HotelForm component', () => {
             isHotelInVectorStore: false,
         };
 
-        (getHotelById as jest.Mock).mockResolvedValue(mockHotel);
+        (HotelService.getHotelById as jest.Mock).mockResolvedValue(mockHotel);
 
         renderComponent(['/1']);
 
@@ -114,13 +114,13 @@ describe('HotelForm component', () => {
 
         // Verifica se o hotel foi atualizado
         await waitFor(() => {
-            expect(updateHotel).toHaveBeenCalled();
+            expect(HotelService.updateHotel).toHaveBeenCalled();
             expect(screen.getByText('Hotel atualizado com sucesso!')).toBeInTheDocument();
         });
     });
 
     test('handles errors during form submission', async () => {
-        (createHotel as jest.Mock).mockRejectedValue(new Error('Create Hotel Error'));
+        (HotelService.createHotel as jest.Mock).mockRejectedValue(new Error('Create Hotel Error'));
 
         renderComponent();
 

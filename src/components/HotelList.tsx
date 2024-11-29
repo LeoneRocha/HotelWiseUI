@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { getAllHotels, deleteHotel } from '../services/hotelService';
+import HotelService from '../services/hotelService';
 import { IHotel } from '../interfaces/IHotel';
 import HotelListTemplate from './HotelListTemplate';
 
@@ -15,7 +15,7 @@ const HotelList: React.FC = () => {
     if (!isFetching.current) {
       isFetching.current = true;
       const fetchHotels = async () => {
-        const hotels = await getAllHotels();
+        const hotels = await HotelService.getAllHotels();
         setHotels(hotels);
         setFilteredHotels(hotels); // Inicializa o estado dos hotéis filtrados
         isFetching.current = false; // Marca como executado
@@ -25,7 +25,7 @@ const HotelList: React.FC = () => {
   }, []);
 
   const handleDelete = async (id: number) => {
-    await deleteHotel(id);
+    await HotelService.deleteHotel(id);
     setHotels(hotels.filter(hotel => hotel.hotelId !== id));
     setFilteredHotels(filteredHotels.filter(hotel => hotel.hotelId !== id)); // Atualiza os hotéis filtrados
   };

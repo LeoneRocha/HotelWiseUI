@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import HotelSearch from '../components/HotelSearch'; // Ajuste o caminho conforme necessário
-import { semanticSearch, getTags } from '../services/hotelService';
+import HotelService from '../services/hotelService';
 import { IServiceResponse } from '../interfaces/IAuthTypes';
 import { IHotelSemanticResult } from '../interfaces/IHotelSemanticResult';
 
@@ -34,7 +34,7 @@ const mockServiceResponse: IServiceResponse<IHotelSemanticResult> = {
 describe('HotelSearch component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    (getTags as jest.Mock).mockResolvedValue(mockTags);
+    (HotelService.getTags as jest.Mock).mockResolvedValue(mockTags);
      // Mock do console.warn para suprimir os avisos durante os testes
      jest.spyOn(console, 'warn').mockImplementation(() => { });
   });
@@ -64,7 +64,7 @@ describe('HotelSearch component', () => {
   });
 
   test('performs a search and displays results', async () => {
-    (semanticSearch as jest.Mock).mockResolvedValue(mockServiceResponse);
+    (HotelService.semanticSearch as jest.Mock).mockResolvedValue(mockServiceResponse);
 
     render(<HotelSearch />);
 
@@ -82,7 +82,7 @@ describe('HotelSearch component', () => {
   });
 
   test('displays error message when no hotels are found', async () => {
-    (semanticSearch as jest.Mock).mockResolvedValue({
+    (HotelService.semanticSearch as jest.Mock).mockResolvedValue({
       data: { hotelsVectorResult: [], hotelsIAResult: [], promptResultContent: '' },
       success: true,
       message: '',
@@ -105,7 +105,7 @@ describe('HotelSearch component', () => {
   });
 
   test('displays error message on search failure', async () => {
-    (semanticSearch as jest.Mock).mockRejectedValue(new Error('Search Error'));
+    (HotelService.semanticSearch as jest.Mock).mockRejectedValue(new Error('Search Error'));
 
     render(<HotelSearch />);
 

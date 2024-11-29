@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import HotelList from '../components/HotelList'; // Ajuste o caminho conforme necessário
-import { getAllHotels, deleteHotel } from '../services/hotelService';
+import HotelService from '../services/hotelService';
 import { IHotel } from '../interfaces/IHotel';
 
 
@@ -22,7 +22,7 @@ const mockHotels: IHotel[] = [
 describe('HotelList component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    (getAllHotels as jest.Mock).mockResolvedValue(mockHotels);
+    (HotelService.getAllHotels as jest.Mock).mockResolvedValue(mockHotels);
      // Mock do console.warn para suprimir os avisos durante os testes
      jest.spyOn(console, 'warn').mockImplementation(() => { });
   });
@@ -68,7 +68,7 @@ describe('HotelList component', () => {
 
     // Verifica se o serviço de exclusão foi chamado
     await waitFor(() => {
-      expect(deleteHotel).toHaveBeenCalledWith(1);
+      expect(HotelService.deleteHotel).toHaveBeenCalledWith(1);
     });
 
     // Verifica se o hotel foi removido da lista
