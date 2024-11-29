@@ -1,3 +1,4 @@
+// ChatMessage.tsx
 import React from 'react';
 import { FaRobot, FaUser } from 'react-icons/fa';
 import { IChatMessageProps } from '../interfaces/IChatbotModalProps';
@@ -7,12 +8,12 @@ const ChatMessage: React.FC<IChatMessageProps> = ({ message }) => (
     {message.sender === 'bot' ? (
       <div className="bot-message">
         <FaRobot className="message-icon" />
-        <span dangerouslySetInnerHTML={{ __html: message.text }} />
+        <div className="message-content" dangerouslySetInnerHTML={{ __html: message.text }} />
       </div>
     ) : (
       <div className="user-message">
         <FaUser className="message-icon" />
-        <span>{message.text}</span>
+        <div className="message-content">{message.text}</div>
       </div>
     )}
   </div>
