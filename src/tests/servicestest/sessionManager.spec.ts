@@ -1,5 +1,5 @@
 // sessionManager.test.ts
-import { getFromSession, removeFromSession, saveToSession } from "../../services/sessionManagerService";
+import SessionManagerService from "../../services/sessionManagerService";
 
 describe('sessionManagerService', () => {
   beforeEach(() => {
@@ -9,7 +9,7 @@ describe('sessionManagerService', () => {
   test('should save data to session storage', () => {
     const key = 'testKey';
     const value = { name: 'Test User', age: 30 };
-    saveToSession(key, value);
+    SessionManagerService.saveToSession(key, value);
 
     const storedValue = sessionStorage.getItem(key);
     expect(storedValue).toBe(JSON.stringify(value));
@@ -20,13 +20,13 @@ describe('sessionManagerService', () => {
     const value = { name: 'Test User', age: 30 };
     sessionStorage.setItem(key, JSON.stringify(value));
 
-    const retrievedValue = getFromSession<typeof value>(key);
+    const retrievedValue = SessionManagerService.getFromSession<typeof value>(key);
     expect(retrievedValue).toEqual(value);
   });
 
   test('should return null if key does not exist in session storage', () => {
     const key = 'nonExistentKey';
-    const retrievedValue = getFromSession(key);
+    const retrievedValue = SessionManagerService.getFromSession(key);
     expect(retrievedValue).toBeNull();
   });
 
@@ -35,7 +35,7 @@ describe('sessionManagerService', () => {
     const value = { name: 'Test User', age: 30 };
     sessionStorage.setItem(key, JSON.stringify(value));
 
-    removeFromSession(key);
+    SessionManagerService.removeFromSession(key);
     const storedValue = sessionStorage.getItem(key);
     expect(storedValue).toBeNull();
   });

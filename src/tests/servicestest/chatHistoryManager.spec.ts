@@ -1,6 +1,6 @@
 import { IMessage } from "../../interfaces/IAskAssistantResponse";
 import ChatHistoryManager from "../../services/chatHistoryManager";
-import { getFromSession, removeFromSession, saveToSession } from "../../services/sessionManagerService";
+import SessionManagerService from "../../services/sessionManagerService";
 
 // chatHistoryManager.test.ts 
 jest.mock('../../services/sessionManagerService', () => ({
@@ -18,11 +18,11 @@ describe('chatHistoryManager', () => {
         const message: IMessage = { sender: 'user', text: 'Hello' };
         const history: IMessage[] = [];
 
-        (getFromSession as jest.Mock).mockReturnValue(history);
+        (SessionManagerService.getFromSession as jest.Mock).mockReturnValue(history);
         ChatHistoryManager.saveMessage(message);
 
-        expect(getFromSession).toHaveBeenCalledWith('chatHistory');
-        expect(saveToSession).toHaveBeenCalledWith('chatHistory', [message]);
+        expect(SessionManagerService.getFromSession).toHaveBeenCalledWith('chatHistory');
+        expect(SessionManagerService.saveToSession).toHaveBeenCalledWith('chatHistory', [message]);
     });
 
     test('should retrieve chat history from session storage', () => {
@@ -31,24 +31,24 @@ describe('chatHistoryManager', () => {
             { sender: 'bot', text: 'Hi there!' },
         ];
 
-        (getFromSession as jest.Mock).mockReturnValue(history);
+        (SessionManagerService.getFromSession as jest.Mock).mockReturnValue(history);
         const retrievedHistory = ChatHistoryManager.getChatHistory();
 
-        expect(getFromSession).toHaveBeenCalledWith('chatHistory');
+        expect(SessionManagerService.getFromSession).toHaveBeenCalledWith('chatHistory');
         expect(retrievedHistory).toEqual(history);
     });
 
     test('should return an empty array if chat history does not exist in session storage', () => {
-        (getFromSession as jest.Mock).mockReturnValue(null);
+        (SessionManagerService.getFromSession as jest.Mock).mockReturnValue(null);
         const retrievedHistory = ChatHistoryManager.getChatHistory();
 
-        expect(getFromSession).toHaveBeenCalledWith('chatHistory');
+        expect(SessionManagerService.getFromSession).toHaveBeenCalledWith('chatHistory');
         expect(retrievedHistory).toEqual([]);
     });
 
     test('should clear chat history from session storage', () => {
         ChatHistoryManager.clearChatHistory();
 
-        expect(removeFromSession).toHaveBeenCalledWith('chatHistory');
+        expect(SessionManagerService.removeFromSession).toHaveBeenCalledWith('chatHistory');
     });
 });

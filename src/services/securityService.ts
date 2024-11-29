@@ -1,11 +1,13 @@
-import { jwtDecode, JwtPayload } from 'jwt-decode';
-import LocalStorageService from './localStorageService';
-import EnvironmentService from './EnvironmentService';
+// services/SecurityService.ts
+import { jwtDecode, JwtPayload } from 'jwt-decode'; 
+import EnvironmentService from './EnvironmentService'; 
+import { ISecurityService } from '../interfaces/services/ISecurityService';
+import LocalStorageService from './localStorageService'
 
-class SecurityService {
-    static isTokenValid(token: string | null): boolean {
+class SecurityService implements ISecurityService {
+    isTokenValid(token: string | null): boolean {
         if (token === null) {
-            token = SecurityService.getToken();
+            token = this.getToken();
         }
         try {
             if (token !== null) {
@@ -30,22 +32,23 @@ class SecurityService {
         }
     }
 
-    static isTokenExpired(token: string): boolean {
+    isTokenExpired(token: string): boolean {
         return !this.isTokenValid(token);
     }
 
-    static getToken(): string | null {
+    getToken(): string | null {
         return LocalStorageService.getItem('token');
     }
 
-    static setToken(token: string): void {
+    setToken(token: string): void {
         LocalStorageService.setItem('token', token);
     }
 
-    static removeToken(): void {
+    removeToken(): void {
         LocalStorageService.removeItem('token');
     }
-    static formatTimestamp(timestamp: number): string {
+
+    formatTimestamp(timestamp: number): string {
         const date = new Date(timestamp * 1000); // Convertendo de segundos para milissegundos
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
@@ -57,4 +60,4 @@ class SecurityService {
     }
 }
 
-export default SecurityService;
+export default new SecurityService();

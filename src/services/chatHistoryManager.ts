@@ -1,22 +1,22 @@
 // services/chatHistoryManager.ts
 import { IMessage } from '../interfaces/IAskAssistantResponse';
 import { IChatHistoryManager } from '../interfaces/services/IChatHistoryManager';
-import { saveToSession, getFromSession, removeFromSession } from './sessionManagerService';
+import SessionManagerService from './sessionManagerService';
 
 const SESSION_KEY = 'chatHistory';
 class ChatHistoryManager implements IChatHistoryManager {
   saveMessage(message: IMessage): void {
     const history = this.getChatHistory();
     history.push(message);
-    saveToSession(SESSION_KEY, history);
+    SessionManagerService.saveToSession(SESSION_KEY, history);
   }
 
   getChatHistory(): IMessage[] {
-    return getFromSession<IMessage[]>(SESSION_KEY) || [];
+    return SessionManagerService.getFromSession<IMessage[]>(SESSION_KEY) || [];
   }
 
   clearChatHistory(): void {
-    removeFromSession(SESSION_KEY);
+    SessionManagerService.removeFromSession(SESSION_KEY);
   }
 }
 
