@@ -1,11 +1,11 @@
-
 import MockAdapter from 'axios-mock-adapter';
-import   IAppInformationService   from '../../services/appInformationService';
-import { IAppInformation } from '../../interfaces/IAppInformation'; 
+import AppInformationService from '../../services/appInformationService';
+import { IAppInformation } from '../../interfaces/IAppInformation';
 
 // Mock EnvironmentService to return a fixed base URL
 jest.mock('../../services/EnvironmentService', () => ({
-  EnvironmentService: {
+  __esModule: true,
+  default: {
     getApiBaseUrl: jest.fn(() => 'http://mockapi.com')
   }
 }));
@@ -36,7 +36,7 @@ describe('appInformationService', () => {
 
     mock.onGet('/GetAppInformationVersionProduct').reply(200, mockData);
 
-    const data = await IAppInformationService.getAppInformationVersionProduct();
+    const data = await AppInformationService.getAppInformationVersionProduct();
 
     expect(data).toEqual(mockData);
   });
@@ -44,6 +44,6 @@ describe('appInformationService', () => {
   test('should handle error', async () => {
     mock.onGet('/GetAppInformationVersionProduct').reply(404);
 
-    await expect( IAppInformationService.getAppInformationVersionProduct()).rejects.toThrow('Request failed with status code 404');
+    await expect(AppInformationService.getAppInformationVersionProduct()).rejects.toThrow('Request failed with status code 404');
   });
 });

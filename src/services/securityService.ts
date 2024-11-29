@@ -1,6 +1,6 @@
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import LocalStorageService from './localStorageService';
-import { EnvironmentService } from './EnvironmentService';
+import EnvironmentService from './EnvironmentService';
 
 class SecurityService {
     static isTokenValid(token: string | null): boolean {

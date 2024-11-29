@@ -3,7 +3,7 @@ import { IHotel } from '../interfaces/IHotel';
 import { IServiceResponse } from '../interfaces/IAuthTypes';
 import { ISearchCriteria } from '../interfaces/ISearchCriteria';
 import { IHotelSemanticResult } from '../interfaces/IHotelSemanticResult';
-import { EnvironmentService } from './EnvironmentService';
+import EnvironmentService from './EnvironmentService';
 
 // Criação da instância Axios
 export const api_hotelservice = axios.create({

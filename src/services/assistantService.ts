@@ -1,7 +1,7 @@
 // services/AssistantService.ts
 import axios from 'axios';
 import { IAskAssistantResponse } from '../interfaces/IAskAssistantResponse';
-import { EnvironmentService } from './EnvironmentService'; 
+import EnvironmentService from './EnvironmentService';
 import { IAssistantService } from '../interfaces/services/IAssistantService';
 
 // Criação da instância Axios

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Draggable from 'react-draggable';
-import { saveMessage, getChatHistory, clearChatHistory } from '../services/chatHistoryManager';
+import ChatHistoryManager from '../services/chatHistoryManager';
 import AssistantService from '../services/assistantService';
 import Button from 'react-bootstrap/Button';
 import ChatbotModal from './ChatbotModal';
@@ -11,7 +11,7 @@ import LocalStorageService from '../services/localStorageService';
 
 const Chatbot: React.FC = () => {
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState<IMessage[]>(getChatHistory());
+  const [messages, setMessages] = useState<IMessage[]>(ChatHistoryManager.getChatHistory());
   const [show, setShow] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
@@ -41,7 +41,7 @@ const Chatbot: React.FC = () => {
   const addMessage = useCallback((sender: 'user' | 'bot', text: string) => {
     const newMessage: IMessage = { sender, text };
     setMessages((prevMessages) => [...prevMessages, newMessage]);
-    saveMessage(newMessage);
+    ChatHistoryManager.saveMessage(newMessage);
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -72,7 +72,7 @@ const Chatbot: React.FC = () => {
   };
 
   const handleClearHistory = () => {
-    clearChatHistory();
+    ChatHistoryManager.clearChatHistory();
     setMessages([]);
   };
 

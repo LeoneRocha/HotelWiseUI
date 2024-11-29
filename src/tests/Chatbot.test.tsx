@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import * as chatHistoryManager from '../services/chatHistoryManager';
-import  AssistantService from '../services/assistantService';
+import ChatHistoryManager from '../services/chatHistoryManager';
+import  AssistantService  from '../services/assistantService';
 import Chatbot from '../components/Chatbot';
 import LocalStorageService from '../services/localStorageService';
 
@@ -16,12 +16,12 @@ jest.mock('../services/assistantService', () => ({
     getChatCompletion: jest.fn(),
 }));
 
-jest.mock('../services/LocalStorageService', () => ({
+jest.mock('../services/localStorageService', () => ({
     getItem: jest.fn(),
 }));
 
 describe('Chatbot component', () => {
-    const nameChat : string ='Fale com o assistente';
+    const nameChat = 'Fale com o assistente';
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -35,7 +35,7 @@ describe('Chatbot component', () => {
             { sender: 'user', text: 'Hello' },
             { sender: 'bot', text: 'Hi there!' },
         ];
-        (chatHistoryManager.getChatHistory as jest.Mock).mockReturnValue(messages);
+        (ChatHistoryManager.getChatHistory as jest.Mock).mockReturnValue(messages);
 
         render(<Chatbot />);
 
@@ -61,11 +61,11 @@ describe('Chatbot component', () => {
         await waitFor(() => {
             expect(screen.getByText('How are you?')).toBeInTheDocument();
             expect(screen.getByText('I am fine, thank you!')).toBeInTheDocument();
-            expect(chatHistoryManager.saveMessage).toHaveBeenCalledWith({
+            expect(ChatHistoryManager.saveMessage).toHaveBeenCalledWith({
                 sender: 'user',
                 text: 'How are you?',
             });
-            expect(chatHistoryManager.saveMessage).toHaveBeenCalledWith({
+            expect(ChatHistoryManager.saveMessage).toHaveBeenCalledWith({
                 sender: 'bot',
                 text: 'I am fine, thank you!',
             });
@@ -87,7 +87,7 @@ describe('Chatbot component', () => {
 
         await waitFor(() => {
             expect(screen.getByText('Ocorreu um erro ao consultar a API. Por favor, tente novamente.')).toBeInTheDocument();
-            expect(chatHistoryManager.saveMessage).toHaveBeenCalledWith({
+            expect(ChatHistoryManager.saveMessage).toHaveBeenCalledWith({
                 sender: 'bot',
                 text: 'Ocorreu um erro ao consultar a API. Por favor, tente novamente.',
             });
@@ -108,8 +108,8 @@ describe('Chatbot component', () => {
 
         await waitFor(() => {
             expect(screen.getByText('Para utilizar o assistente, você precisa fazer login.')).toBeInTheDocument();
-            expect(chatHistoryManager.saveMessage).toHaveBeenCalledTimes(0); // Verifica se nenhuma mensagem foi salva
-            expect(chatHistoryManager.saveMessage).not.toHaveBeenCalledWith(expect.objectContaining({
+            expect(ChatHistoryManager.saveMessage).toHaveBeenCalledTimes(0); // Verifica se nenhuma mensagem foi salva
+            expect(ChatHistoryManager.saveMessage).not.toHaveBeenCalledWith(expect.objectContaining({
                 sender: 'user',
                 text: 'How are you?',
             }));
@@ -124,7 +124,7 @@ describe('Chatbot component', () => {
         fireEvent.click(screen.getByText('Limpar Histórico'));
 
         await waitFor(() => {
-            expect(chatHistoryManager.clearChatHistory).toHaveBeenCalled();
+            expect(ChatHistoryManager.clearChatHistory).toHaveBeenCalled();
             expect(screen.queryByText('Hello')).not.toBeInTheDocument();
         });
     });
@@ -133,7 +133,7 @@ describe('Chatbot component', () => {
         const messages = [
             { sender: 'user', text: 'Hello' },
         ];
-        (chatHistoryManager.getChatHistory as jest.Mock).mockReturnValue(messages);
+        (ChatHistoryManager.getChatHistory as jest.Mock).mockReturnValue(messages);
 
         render(<Chatbot />);
 

@@ -5,7 +5,7 @@ import HotelSearchTemplate from './HotelSearchTemplate';
 import { ISearchCriteria } from '../interfaces/ISearchCriteria';
 import { IServiceResponse } from '../interfaces/IAuthTypes';
 import { IHotelSemanticResult } from '../interfaces/IHotelSemanticResult';
-import { EnvironmentService } from '../services/EnvironmentService';
+import  EnvironmentService  from '../services/EnvironmentService';
 
 const HotelSearch: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');

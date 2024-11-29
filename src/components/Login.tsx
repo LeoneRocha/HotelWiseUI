@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authenticate } from '../services/authService';
+import AuthenticateService   from '../services/authService';
 import SecurityService from '../services/securityService';
 import LocalStorageService from '../services/localStorageService';
 import LoginFormTemplate from './LoginFormTemplate';
@@ -35,7 +35,7 @@ const Login: React.FC = () => {
     const sanitizedPassword = password.replace(/[^a-zA-Z0-9]/g, '');
 
     try {
-      const response = await authenticate({ login: sanitizedUsername, password: sanitizedPassword });
+      const response = await AuthenticateService.authenticate({ login: sanitizedUsername, password: sanitizedPassword });
       if (response.success) {
         SecurityService.setToken(response.data.tokenAuth.accessToken);
 

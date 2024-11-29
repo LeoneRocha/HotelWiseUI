@@ -2,7 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Login from '../components/Login'; // Ajuste o caminho conforme necessário
-import { authenticate } from '../services/authService';
+import AuthenticateService from '../services/authService';
 import SecurityService from '../services/securityService';
 import LocalStorageService from '../services/localStorageService';
 
@@ -40,7 +40,7 @@ describe('Login component', () => {
   });
 
   test('renders login form and handles login successfully', async () => {
-    (authenticate as jest.Mock).mockResolvedValue({
+    (AuthenticateService.authenticate as jest.Mock).mockResolvedValue({
       success: true,
       data: { tokenAuth: { accessToken: 'mockToken' } },
     });
@@ -60,7 +60,7 @@ describe('Login component', () => {
 
     // Verifica se a função authenticate foi chamada com os valores sanitizados
     await waitFor(() => {
-      expect(authenticate).toHaveBeenCalledWith({ login: 'testUser', password: 'testPassword' });
+      expect(AuthenticateService.authenticate).toHaveBeenCalledWith({ login: 'testUser', password: 'testPassword' });
     });
 
     // Verifica se o token foi definido e o redirecionamento ocorreu
@@ -71,7 +71,7 @@ describe('Login component', () => {
   });
 
   test('displays error message on login failure', async () => {
-    (authenticate as jest.Mock).mockResolvedValue({
+    (AuthenticateService.authenticate as jest.Mock).mockResolvedValue({
       success: false,
       data: {},
     });

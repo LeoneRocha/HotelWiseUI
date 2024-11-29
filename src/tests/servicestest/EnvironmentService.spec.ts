@@ -1,4 +1,4 @@
-import { EnvironmentService } from '../../services/EnvironmentService';
+import EnvironmentService from '../../services/EnvironmentService';
 
 describe('EnvironmentService', () => {
 

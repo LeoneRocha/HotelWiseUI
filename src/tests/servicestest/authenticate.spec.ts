@@ -1,10 +1,11 @@
 import MockAdapter from 'axios-mock-adapter';
-import { authenticate } from '../../services/authService';
+import AuthenticateService from '../../services/authService';
 import { IGetUserAuthenticatedDto, IServiceResponse, IUserLoginDto } from '../../interfaces/IAuthTypes';
 
 // Mock EnvironmentService to return a fixed base URL
 jest.mock('../../services/EnvironmentService', () => ({
-  EnvironmentService: {
+  __esModule: true,
+  default: {
     getApiBaseUrl: jest.fn(() => 'http://mockapi.com')
   }
 }));
@@ -53,7 +54,7 @@ describe('authService', () => {
 
     mock.onPost('/').reply(200, mockResponse);
 
-    const data = await authenticate(loginData);
+    const data = await AuthenticateService.authenticate(loginData);
 
     expect(data).toEqual(mockResponse);
   });
@@ -70,7 +71,7 @@ describe('authService', () => {
     mock.onPost('/').reply(401, mockResponse);
 
     try {
-      await authenticate(loginData);
+      await AuthenticateService.authenticate(loginData);
     } catch (error) {
         expect(error).not.toBeNull();
     }
@@ -79,7 +80,7 @@ describe('authService', () => {
   test('should handle server error', async () => {
     mock.onPost('/').reply(500);
 
-    await expect(authenticate(loginData)).rejects.toThrow('Request failed with status code 500');
+    await expect(AuthenticateService.authenticate(loginData)).rejects.toThrow('Request failed with status code 500');
   });
 
   test('should handle authentication with error messages', async () => {
@@ -94,7 +95,7 @@ describe('authService', () => {
     mock.onPost('/').reply(400, mockResponse);
 
     try {
-      await authenticate(loginData);
+      await AuthenticateService.authenticate(loginData);
     } catch (error) {
       expect(error).not.toBeNull();
     }

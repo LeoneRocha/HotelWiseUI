@@ -3,12 +3,14 @@ import FooterPage from '../FooterPage';
 import AppInformationService from '../services/appInformationService';
 
 // Mock the EnvironmentService
+
 jest.mock('../services/EnvironmentService', () => ({
-    EnvironmentService: {
+    __esModule: true,
+    default: {
         getUIVersion: jest.fn(() => '1.0'),
         getApiBaseUrl: jest.fn(() => 'http://localhost:3000/api'),
         isNotTestEnvironment: jest.fn(() => false),
-    },
+    }
 }));
 
 // Mock the getAppInformationVersionProduct service

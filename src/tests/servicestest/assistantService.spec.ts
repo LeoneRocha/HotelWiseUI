@@ -2,7 +2,8 @@ import MockAdapter from 'axios-mock-adapter';
 import { IAskAssistantResponse } from '../../interfaces/IAskAssistantResponse';
 // Mock EnvironmentService to return a fixed base URL
 jest.mock('../../services/EnvironmentService', () => ({
-  EnvironmentService: {
+  __esModule: true,
+  default: {
     getApiBaseUrl: jest.fn(() => 'http://mockapi.com')
   }
 }));
