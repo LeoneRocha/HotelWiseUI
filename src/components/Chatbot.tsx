@@ -89,7 +89,7 @@ const Chatbot: React.FC = () => {
   return (
     <div className="chatbot-container">
       <Button variant="primary" onClick={toggleModal} className="chatbot-toggle">
-        {show ? 'Fechar' : 'Chat'}
+        {show ? 'Fechar' : 'Fale com o assistente'}
       </Button>
       {show && (isMobile ? <ChatbotModal 
                             messages={messages} 
