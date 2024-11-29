@@ -1,19 +1,19 @@
+// ChatbotModal.tsx
 import React from 'react';
 import { Button, Spinner, Alert } from 'react-bootstrap';
-import ChatMessage from './ChatMessage'; 
+import ChatMessage from './ChatMessage';
 import { IChatbotModalProps } from '../interfaces/IChatbotModalProps';
-
 
 const ChatbotModal: React.FC<IChatbotModalProps> = ({
   messages, isTyping, showAlert, input,
   handleSubmit, handleClearHistory, setInput, toggleModal
 }) => (
-  <div className="chatbot-modal">
+  <div className="chatbot-modal" role="dialog" aria-labelledby="chatbot-title" aria-modal="true">
     <div className="chatbot-modal-header">
-      <span>Assistente</span>
-      <Button variant="link" onClick={toggleModal} className="chatbot-close">&times;</Button>
+      <span id="chatbot-title">Assistente</span>
+      <Button variant="link" onClick={toggleModal} className="chatbot-close" aria-label="Fechar">&times;</Button>
     </div>
-    <div className="chat-messages" id="chat-container">
+    <div className="chat-messages" id="chat-container" aria-live="polite" aria-relevant="additions">
       {messages.map((msg, index) => (
         <ChatMessage key={index} message={msg} />
       ))}
@@ -31,11 +31,12 @@ const ChatbotModal: React.FC<IChatbotModalProps> = ({
         onChange={(e) => setInput(e.target.value)}
         placeholder="Digite sua mensagem..."
         className="chat-input"
+        aria-label="Digite sua mensagem"
       />
       <button type="submit">Enviar</button>
     </form>
     {showAlert && (
-      <Alert variant="warning" className="login-alert">
+      <Alert variant="warning" className="login-alert" role="alert">
         Para utilizar o assistente, você precisa fazer login.
       </Alert>
     )}

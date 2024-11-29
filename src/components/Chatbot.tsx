@@ -1,3 +1,4 @@
+// Chatbot.tsx
 import React, { useState, useEffect, useCallback } from 'react';
 import Draggable from 'react-draggable';
 import ChatHistoryManager from '../services/chatHistoryManager';
@@ -88,29 +89,31 @@ const Chatbot: React.FC = () => {
 
   return (
     <div className="chatbot-container">
-      <Button variant="primary" onClick={toggleModal} className="chatbot-toggle">
+      <Button variant="primary" onClick={toggleModal} className="chatbot-toggle" aria-controls="chat-container">
         {show ? 'Fechar' : 'Fale com o assistente'}
       </Button>
-      {show && (isMobile ? <ChatbotModal 
-                            messages={messages} 
-                            isTyping={isTyping} 
-                            showAlert={showAlert} 
-                            input={input} 
-                            handleSubmit={handleSubmit} 
-                            handleClearHistory={handleClearHistory} 
-                            setInput={setInput} 
-                            toggleModal={toggleModal} 
-                          /> 
-                        : <Draggable><ChatbotModal 
-                                        messages={messages} 
-                                        isTyping={isTyping} 
-                                        showAlert={showAlert} 
-                                        input={input} 
-                                        handleSubmit={handleSubmit} 
-                                        handleClearHistory={handleClearHistory} 
-                                        setInput={setInput} 
-                                        toggleModal={toggleModal} 
-                                      /></Draggable>)}
+      {show && (isMobile ? <ChatbotModal
+        messages={messages}
+        isTyping={isTyping}
+        showAlert={showAlert}
+        input={input}
+        handleSubmit={handleSubmit}
+        handleClearHistory={handleClearHistory}
+        setInput={setInput}
+        toggleModal={toggleModal}
+      />
+        : <Draggable>
+          <ChatbotModal
+            messages={messages}
+            isTyping={isTyping}
+            showAlert={showAlert}
+            input={input}
+            handleSubmit={handleSubmit}
+            handleClearHistory={handleClearHistory}
+            setInput={setInput}
+            toggleModal={toggleModal}
+          />
+        </Draggable>)}
     </div>
   );
 };
