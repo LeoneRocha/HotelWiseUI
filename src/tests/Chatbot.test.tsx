@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import * as chatHistoryManager from '../services/chatHistoryManager';
-import { getChatCompletion } from '../services/assistantService';
+import  AssistantService from '../services/assistantService';
 import Chatbot from '../components/Chatbot';
 import LocalStorageService from '../services/localStorageService';
 
@@ -46,7 +46,7 @@ describe('Chatbot component', () => {
     });
 
     test('sends a message and saves to history', async () => {
-        (getChatCompletion as jest.Mock).mockResolvedValue([{ response: 'I am fine, thank you!' }]);
+        (AssistantService.getChatCompletion as jest.Mock).mockResolvedValue([{ response: 'I am fine, thank you!' }]);
         (LocalStorageService.getItem as jest.Mock).mockReturnValue('dummy-token');
 
         render(<Chatbot />);
@@ -73,7 +73,7 @@ describe('Chatbot component', () => {
     });
 
     test('handles API error and displays error message', async () => {
-        (getChatCompletion as jest.Mock).mockRejectedValue(new Error('Erro na API'));
+        (AssistantService.getChatCompletion as jest.Mock).mockRejectedValue(new Error('Erro na API'));
         (LocalStorageService.getItem as jest.Mock).mockReturnValue('dummy-token');
 
         render(<Chatbot />);

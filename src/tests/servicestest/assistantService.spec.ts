@@ -1,5 +1,5 @@
-import MockAdapter from 'axios-mock-adapter'; 
-import { IAskAssistantResponse } from '../../interfaces/IAskAssistantResponse'; 
+import MockAdapter from 'axios-mock-adapter';
+import { IAskAssistantResponse } from '../../interfaces/IAskAssistantResponse';
 // Mock EnvironmentService to return a fixed base URL
 jest.mock('../../services/EnvironmentService', () => ({
   EnvironmentService: {
@@ -8,7 +8,7 @@ jest.mock('../../services/EnvironmentService', () => ({
 }));
 
 // Import the axios instance created in assistantService
-import { getChatCompletion } from '../../services/assistantService';
+import AssistantService from '../../services/assistantService';
 import { api_assistantService } from '../../services/assistantService';
 
 describe('assistantService', () => {
@@ -38,7 +38,7 @@ describe('assistantService', () => {
 
     mock.onPost('/').reply(200, mockData);
 
-    const data = await getChatCompletion(criteria);
+    const data = await AssistantService.getChatCompletion(criteria);
 
     expect(data).toEqual(mockData);
   });
@@ -46,6 +46,6 @@ describe('assistantService', () => {
   test('should handle error', async () => {
     mock.onPost('/').reply(500);
 
-    await expect(getChatCompletion(criteria)).rejects.toThrow('Request failed with status code 500');
+    await expect(AssistantService.getChatCompletion(criteria)).rejects.toThrow('Request failed with status code 500');
   });
 });

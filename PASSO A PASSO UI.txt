@@ -26,6 +26,12 @@
 12) GERAR IMAGENS DE HOTEL POR IA  
 
 ------------- TODO -------------
+--- Refatoracao criar interfaces dos services 
+
+***Refatore o service criando interface colocando metodos nessa interface
+
+
+--- Injetar os services via injecao de dependencia 
 
 
 npm uninstall crypto-js

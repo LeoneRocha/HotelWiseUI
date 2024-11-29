@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Draggable from 'react-draggable';
 import { saveMessage, getChatHistory, clearChatHistory } from '../services/chatHistoryManager';
-import { getChatCompletion } from '../services/assistantService';
+import AssistantService from '../services/assistantService';
 import Button from 'react-bootstrap/Button';
 import ChatbotModal from './ChatbotModal';
 import '../css/Chatbot.css';
@@ -60,7 +60,7 @@ const Chatbot: React.FC = () => {
     setInput(''); // Clear input field
 
     try {
-      const response = await getChatCompletion({ maxHotelRetrieve: 0, searchTextCriteria: input });
+      const response = await AssistantService.getChatCompletion({ maxHotelRetrieve: 0, searchTextCriteria: input });
       const sanitizedResponse = DOMPurify.sanitize(response[0].response);
       addMessage('bot', sanitizedResponse);
     } catch (error) {

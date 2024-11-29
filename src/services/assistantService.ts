@@ -1,7 +1,9 @@
+// services/AssistantService.ts
 import axios from 'axios';
 import { IAskAssistantResponse } from '../interfaces/IAskAssistantResponse';
-import { EnvironmentService } from './EnvironmentService';
- 
+import { EnvironmentService } from './EnvironmentService'; 
+import { IAssistantService } from '../interfaces/services/IAssistantService';
+
 // Criação da instância Axios
 export const api_assistantService = axios.create({
   baseURL: EnvironmentService.getApiBaseUrl() + '/Assistant/v1/ask',
@@ -16,8 +18,11 @@ api_assistantService.interceptors.request.use((config) => {
   return config;
 });
 
-// Função do serviço
-export const getChatCompletion = async (criteria: { maxHotelRetrieve: number; searchTextCriteria: string }): Promise<IAskAssistantResponse[]> => {
-  const response = await api_assistantService.post<IAskAssistantResponse[]>('/', criteria);
-  return response.data;
-};
+class AssistantService implements IAssistantService {
+  async getChatCompletion(criteria: { maxHotelRetrieve: number; searchTextCriteria: string }): Promise<IAskAssistantResponse[]> {
+    const response = await api_assistantService.post<IAskAssistantResponse[]>('/', criteria);
+    return response.data;
+  }
+}
+
+export default new AssistantService();

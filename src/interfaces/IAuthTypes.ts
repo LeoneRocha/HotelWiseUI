@@ -17,7 +17,7 @@ export interface IServiceResponse<T> {
   data: T;
   success: boolean;
   message: string;
-  errors: Array<ErrorResponse>;
+  errors: Array<IErrorResponse>;
   unauthorized: boolean;
 }
 
@@ -26,7 +26,7 @@ export interface IUserLoginDto {
   password: string;
 }
 
-export interface ErrorResponse {
+export interface IErrorResponse {
   message?: string;
   name?: string;
   errorCode?: string;
