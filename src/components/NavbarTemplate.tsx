@@ -7,18 +7,12 @@ import { FiLogOut } from 'react-icons/fi';
 import '../css/Navbar.css';
 import { NavbarProps } from '../interfaces/NavbarProps';
 
-const NavbarTemplate: React.FC<NavbarProps> = ({
-  query,
-  response,
-  showModal,
-  showLogoutModal,
-  handleInputChange,
-  handleSubmit,
+const NavbarTemplate: React.FC<NavbarProps> = ({ 
+  showLogoutModal, 
   confirmLogout,
   handleLogoutClose,
   handleLogoutConfirm,
-  setShowModal,
-}) => {
+  }) => {
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const handleCloseOffcanvas = () => setShowOffcanvas(false);
   const handleShowOffcanvas = () => setShowOffcanvas(true);
@@ -78,34 +72,7 @@ const NavbarTemplate: React.FC<NavbarProps> = ({
           </ul>
         </Offcanvas.Body>
       </Offcanvas>
-
-      <div className="container-fluid bg-dark mt-3 mb-3 assistant-search-form">
-        <form className="d-flex flex-column flex-md-row assistant-search-form" onSubmit={handleSubmit}>
-          <input
-            className="form-control me-md-2 assistant-search-input"
-            type="search"
-            placeholder="Pergunte ao Assistente..."
-            aria-label="Search"
-            value={query}
-            onChange={handleInputChange}
-          />
-          <button className="btn btn-success mt-2 mt-md-0 ms-md-2" type="submit">Enviar</button>
-        </form>
-      </div>
-
       <div>
-        <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-          <Modal.Header closeButton>
-            <Modal.Title>Resposta do Assistente</Modal.Title>
-          </Modal.Header>
-          <Modal.Body dangerouslySetInnerHTML={{ __html: response }}></Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowModal(false)}>
-              Fechar
-            </Button>
-          </Modal.Footer>
-        </Modal>
-
         <Modal show={showLogoutModal} onHide={handleLogoutClose} centered>
           <Modal.Header closeButton>
             <Modal.Title>Confirmar Logout</Modal.Title>
