@@ -11,3 +11,8 @@ export const msalConfig: Configuration = {
       storeAuthStateInCookie: true
     }
   };
+
+  // Can be found in the API Permissions of the ASP.NET Web API
+export const loginApiRequest = {
+  scopes: ["api://f2eb5d9c-f553-4f8b-a539-f5a396a62092/api.scope"],//RESTCLIENT
+}; 
