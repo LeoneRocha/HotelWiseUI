@@ -27,7 +27,8 @@ Tenho uma api C# .net 8 em rest e um front end em react typscript como implantar
 
 --- 11.1) AJUSTADO API PARA SUPORTAR AD - APAREMENTE ok 
 --- 11.2) AJUSTADO FRONT PARA FAZER AUTENTICACAO AD - ok 
---- 11.3) AJUSTADO FRONT PARA ENVIAR A API DE FORMA USANDO O AD ENTRA ID 
+--- 11.3) AJUSTADO FRONT PARA ENVIAR A API DE FORMA USANDO O AD ENTRA ID ----------- PAREI AQUI  <<<<<<<<<<<<<<<<<<<<
+
 --- 11.4) RECUPERAR ID DO USUARIO POR INFORMACAO DO ENTRA ID NA API  buscar usuario (EMAIL)
 
 --- 11.5) Separar informacoes do tenant e url no arquivo de ambiente
