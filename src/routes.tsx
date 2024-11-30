@@ -8,6 +8,8 @@ import NotFound from './components/NotFound';
 import AccessDenied from './components/AccessDenied'; // Novo componente
 import AuthGuard from './components/AuthGuard'; 
 import PrivacyPolicy from './components/PrivacyPolicy';
+import Callback from './components/Callback';
+import UserProfile from './components/UserProfile';
 
 const AppRoutes: React.FC = () => {
   const handleSave = () => {
@@ -39,6 +41,8 @@ const AppRoutes: React.FC = () => {
       <Route path="/access-denied" element={<AccessDenied />} /> {/* Rota para acesso negado */}
       <Route path="*" element={<NotFound />} /> {/* Rota de fallback */} 
       <Route path="/privacy-policy" element={<PrivacyPolicy />} /> 
+      <Route path="/callback" element={<Callback/>} />
+      <Route path="/profile"  element={<UserProfile/>} />
     </Routes>
     
   );

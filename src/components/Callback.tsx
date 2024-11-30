@@ -9,7 +9,8 @@ const Callback: React.FC = () => {
   useEffect(() => {
     instance.handleRedirectPromise().then((response) => {
       if (response) {
-        navigate('/search');  
+        //navigate('/search');  
+        navigate('/profile');  
       }
     }).catch((error) => {
       console.error(error);
