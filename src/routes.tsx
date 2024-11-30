@@ -43,6 +43,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/privacy-policy" element={<PrivacyPolicy />} /> 
       <Route path="/callback" element={<Callback/>} />
       <Route path="/profile"  element={<UserProfile/>} />
+      <Route path="/perfil"  element={<UserProfile/>} />
     </Routes>
     
   );

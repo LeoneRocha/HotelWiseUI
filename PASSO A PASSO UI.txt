@@ -25,6 +25,12 @@
 
 Tenho uma api C# .net 8 em rest e um front end em react typscript como implantar autenticacao Azure Active Directory Entra ID, me fale detalhadamente o passo a passo, atualmente a api usa autenticacao JwtBeare quero que seja possivel usar ambos 
 
+--- 11.1) AJUSTADO API PARA SUPORTAR AD - APAREMENTE ok 
+--- 11.2) AJUSTADO FRONT PARA FAZER AUTENTICACAO AD - ok 
+--- 11.3) AJUSTADO FRONT PARA ENVIAR A API DE FORMA USANDO O AD ENTRA ID 
+--- 11.4) RECUPERAR ID DO USUARIO POR INFORMACAO DO ENTRA ID NA API  buscar usuario (EMAIL)
+
+
 12) GERAR IMAGENS DE HOTEL POR IA  
 
 ------------- TODO -------------
