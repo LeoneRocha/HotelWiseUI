@@ -30,8 +30,11 @@ Tenho uma api C# .net 8 em rest e um front end em react typscript como implantar
 --- 11.3) AJUSTADO FRONT PARA ENVIAR A API DE FORMA USANDO O AD ENTRA ID 
 --- 11.4) RECUPERAR ID DO USUARIO POR INFORMACAO DO ENTRA ID NA API  buscar usuario (EMAIL)
 
+12) ATUA NOS ERROS DO SONAR CLOUD SEJA API E FRONT 
 
-12) GERAR IMAGENS DE HOTEL POR IA  
+13) AJUSTAR O SEMANTIC KERNEL E IA REVISAR PROCESSO PARA CORRIGIR E MELHORAR 
+
+14) GERAR IMAGENS DE HOTEL POR IA  
 
 ------------- TODO -------------
 --- Refatoracao criar interfaces dos services 
