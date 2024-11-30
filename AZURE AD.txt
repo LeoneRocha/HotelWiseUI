@@ -1,0 +1,172 @@
+ 
+npm install @azure/msal-browser @azure/msal-react
+
+http://localhost:5173/callback
+https://hotelwiseui-f7a7b5gqf0amdfdg.brazilsouth-01.azurewebsites.net/callback
+
+
+Application (client) ID : f2eb5d9c-f553-4f8b-a539-f5a396a62092
+Object ID : b912d400-6c00-4e4a-9886-b99fd0c1c5aa
+Directory (tenant) ID : e054ddc0-6326-41a4-b944-7bff0fd9cf07
+
+
+icrosoft.Identity.Web
+
+
+Claro, vou detalhar como configurar a autenticação Azure Active Directory Entra ID (AAD) na sua API C# .NET 8 e no front end React TypeScript, mantendo a compatibilidade com a autenticação JWT Bearer já existente.
+
+### Passo a Passo para Implementar a Autenticação Azure Active Directory Entra ID e JWT Bearer
+
+#### 1. **Configurar o Azure Active Directory (AAD)**
+1. **Criar um aplicativo Web no AAD:**
+   - Acesse o portal do Azure e vá para **Azure Active Directory** > **Registros de Aplicativos**.
+   - Clique em **Adicionar** e insira um nome para o seu aplicativo (por exemplo, "MeuAppAPI").
+   - Defina o URI de redirecionamento para `https://your-app-url/callback`.
+
+2. **Obter a ID do Cliente:**
+   - Após criar o aplicativo, você verá a **ID do Cliente**. Anote essa informação, pois será usada no seu projeto.
+
+#### 2. **Configurar a API C# .NET 8**
+1. **Adicionar Dependências:**
+   - No seu projeto C# .NET, adicione as seguintes dependências no arquivo `csproj`:
+     ```xml
+     <ItemGroup>
+       <PackageReference Include="Microsoft.Identity.Web" Version="1.0.0" />
+       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.0" />
+     </ItemGroup>
+     ```
+
+2. **Configurar o Middleware de Autenticação:**
+   - No arquivo `Program.cs`, configure o middleware para usar tanto AAD quanto JWT Bearer:
+     ```csharp
+     public class Startup
+     {
+         public void ConfigureServices(IServiceCollection services)
+         {
+             services.AddAuthentication(options =>
+             {
+                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+             })
+             .AddJwtBearer(options =>
+             {
+                 options.TokenValidationParameters = new TokenValidationParameters
+                 {
+                     ValidateIssuer = true,
+                     ValidateAudience = true,
+                     ValidateLifetime = true,
+                     ValidateIssuerSigningKey = true,
+                     ValidIssuer = Configuration["Jwt:Issuer"],
+                     ValidAudience = Configuration["Jwt:Audience"],
+                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                 };
+             })
+             .AddMicrosoftIdentityWebApi(Configuration, "AzureAd");
+
+             services.AddControllers();
+         }
+
+         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+         {
+             if (env.IsDevelopment())
+             {
+                 app.UseDeveloperExceptionPage();
+             }
+
+             app.UseHttpsRedirection();
+             app.UseRouting();
+             app.UseAuthentication();
+             app.UseAuthorization();
+             app.UseEndpoints(endpoints =>
+             {
+                 endpoints.MapControllers();
+             });
+         }
+     }
+     ```
+
+3. **Configurar o Web API:**
+   - No arquivo `appsettings.json`, adicione as configurações do AAD e JWT:
+     ```json
+     {
+       "AzureAd": {
+         "Instance": "https://login.microsoftonline.com/",
+         "Domain": "YOUR_TENANT_DOMAIN",
+         "TenantId": "YOUR_TENANT_ID",
+         "ClientId": "YOUR_CLIENT_ID",
+         "CallbackPath": "/signin-oidc",
+         "SignedOutCallbackPath": "/signout-callback-oidc"
+       },
+       "Jwt": {
+         "Key": "YOUR_SECRET_KEY",
+         "Issuer": "YOUR_ISSUER",
+         "Audience": "YOUR_AUDIENCE"
+       }
+     }
+     ```
+
+#### 3. **Configurar o Front End React TypeScript**
+1. **Adicionar Dependências:**
+   - No seu projeto React, adicione as seguintes dependências no arquivo `package.json`:
+     ```json
+     {
+       "dependencies": {
+         "@azure/msal-browser": "^2.0.0",
+         "@azure/msal-react": "^1.0.0",
+         "jwt-decode": "^3.1.2"
+       }
+     }
+     ```
+
+2. **Configurar o MSAL React:**
+   - No arquivo `App.tsx` ou `index.tsx`, configure o MSAL React:
+     ```javascript
+     import React from 'react';
+     import { PublicClientApplication, Configuration } from '@azure/msal-browser';
+     import { MsalProvider, useMsal } from '@azure/msal-react';
+
+     const config: Configuration = {
+       auth: {
+         clientId: 'YOUR_CLIENT_ID',
+         authority: 'https://login.microsoftonline.com/YOUR_TENANT_ID',
+         redirectUri: window.location.origin,
+       },
+     };
+
+     const pca = new PublicClientApplication(config);
+
+     function App() {
+       return (
+         <MsalProvider instance={pca}>
+           <div className="App">
+             {/* Your components here */}
+           </div>
+         </MsalProvider>
+       );
+     }
+
+     export default App;
+     ```
+
+3. **Usar o MSAL React nos Componentes:**
+   - No seu componente, utilize o hook `useMsal` para autenticar usuários:
+     ```javascript
+     import React from 'react';
+     import { useMsal } from '@azure/msal-react';
+
+     function ProtectedComponent() {
+       const { accounts, instance } = useMsal();
+       if (!accounts || accounts.length === 0) {
+         return <div>Please login.</div>;
+       }
+
+       return <div>Welcome, {accounts[0].username}!</div>;
+     }
+
+     export default ProtectedComponent;
+     ```
+
+### Conclusão
+Com esses passos, você deve conseguir implementar a autenticação Azure Active Directory Entra ID na sua API C# .NET 8 e no seu front end React TypeScript, mantendo a compatibilidade com a autenticação JWT Bearer. Se precisar de mais detalhes ou tiver alguma dúvida específica, estou aqui para ajudar!
+
+Boa sorte com o seu projeto! 🚀

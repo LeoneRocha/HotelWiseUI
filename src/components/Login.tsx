@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AuthenticateService   from '../services/authService';
+import AuthenticateService from '../services/authService';
 import SecurityService from '../services/securityService';
 import LocalStorageService from '../services/localStorageService';
 import LoginFormTemplate from './LoginFormTemplate';
+import { useMsal } from '@azure/msal-react';
 import '../css/Login.css';
 
 const Login: React.FC = () => {
@@ -12,6 +13,7 @@ const Login: React.FC = () => {
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { instance } = useMsal();
 
   useEffect(() => {
     const token = SecurityService.getToken();
@@ -52,11 +54,12 @@ const Login: React.FC = () => {
       }
     } catch (error) {
       setError('Ocorreu um erro ao tentar fazer login. Por favor, tente novamente.');
+      console.log(error);
     }
   };
 
   const handleAzureLogin = () => {
-    window.location.href = 'URL_DO_AZURE_AD';
+    instance.loginRedirect();
   };
 
   return (

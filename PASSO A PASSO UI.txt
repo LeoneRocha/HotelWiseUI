@@ -23,6 +23,8 @@
 
 11) AUTENTICACAO VIA AZURE AD 
 
+Tenho uma api C# .net 8 em rest e um front end em react typscript como implantar autenticacao Azure Active Directory Entra ID, me fale detalhadamente o passo a passo, atualmente a api usa autenticacao JwtBeare quero que seja possivel usar ambos 
+
 12) GERAR IMAGENS DE HOTEL POR IA  
 
 ------------- TODO -------------
