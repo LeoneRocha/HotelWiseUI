@@ -36,7 +36,7 @@ class AzureAuthService {
         account: account,
       });
 
-      const responseToken = `Bearer ${msalResponse.accessToken}`;
+      const responseToken = `${msalResponse.accessToken}`;
       console.log("Recuperou o token do azure");
       //axios.defaults.headers.common['Authorization'] = responseToken;
       LocalStorageService.setItem(nameStorageTokenAzureAD, responseToken);

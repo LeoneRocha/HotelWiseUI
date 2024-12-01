@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import AzureAuthService from '../services/AzureAuthService';  
+import AzureAuthService from '../services/AzureAuthService';
+import AssistantService from '../services/assistantService';
 import { IAccountInfo } from '../interfaces/IAzureAuthService';
+import { IAskAssistantResponse } from '../interfaces/IAskAssistantResponse';
 
 const UserProfile: React.FC = () => {
   const [accountInfo, setAccountInfo] = useState<IAccountInfo | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [apiResponse, setApiResponse] = useState<IAskAssistantResponse[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -35,6 +38,18 @@ const UserProfile: React.FC = () => {
     AzureAuthService.logout();
   };
 
+  const handleApiTest = async () => {
+    try {
+      const response = await AssistantService.getChatCompletion({
+        maxHotelRetrieve: 5,
+        searchTextCriteria: 'test'
+      });
+      setApiResponse(response);
+    } catch (err) {
+      setError('Erro ao chamar a API: ' + err);
+    }
+  };
+
   return (
     <div className="user-profile">
       <h2>Informações do Usuário Autenticado</h2>
@@ -60,6 +75,15 @@ const UserProfile: React.FC = () => {
           <br/>
           <br/>
           <button onClick={handleLogout}>Logout</button>
+          <br/>
+          <br/>
+          <button onClick={handleApiTest}>Testar API</button>
+          {apiResponse && (
+            <div>
+              <h3>Resposta da API:</h3>
+              <pre>{JSON.stringify(apiResponse, null, 2)}</pre>
+            </div>
+          )}
         </>
       ) : (
         <p>Você não está autenticado.</p>

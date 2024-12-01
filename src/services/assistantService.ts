@@ -3,7 +3,7 @@ import axios from 'axios';
 import { IAskAssistantResponse } from '../interfaces/IAskAssistantResponse';
 import EnvironmentService from './EnvironmentService';
 import { IAssistantService } from '../interfaces/services/IAssistantService';
-import { nameStorageTokenJWT } from '../auth-config';
+import { nameStorageTokenAzureAD, nameStorageTokenJWT } from '../auth-config';
 
 // Criação da instância Axios
 export const api_assistantService = axios.create({
@@ -12,10 +12,25 @@ export const api_assistantService = axios.create({
 
 // Interceptor para adicionar o token de autenticação
 api_assistantService.interceptors.request.use((config) => {
-  const token = localStorage.getItem(nameStorageTokenJWT);
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  const azureToken = localStorage.getItem(nameStorageTokenAzureAD);
+  const jwtToken = localStorage.getItem(nameStorageTokenJWT);
+  
+  // Adiciona o token apropriado no header Authorization
+  if (azureToken) {
+    //config.headers.Authorization = `AzureAd ${azureToken}`;
+    config.headers.Authorization = `Bearer ${jwtToken}`;
+  } else if (jwtToken) {
+    config.headers.Authorization = `Bearer ${jwtToken}`;
   }
+
+  // Logando as informações da requisição no console
+  console.log('Requisição Axios:', {
+    url: config.url,
+    method: config.method,
+    headers: config.headers,
+    data: config.data,
+  });
+
   return config;
 });
 
