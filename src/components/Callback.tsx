@@ -12,8 +12,7 @@ const Callback: React.FC = () => {
     instance.handleRedirectPromise().then((response) => {
       if (response && response.accessToken) {
         // Armazenando o token no LocalStorage
-        LocalStorageService.setItem(nameStorageTokenAzureAD, response.accessToken);
-        //LocalStorageService.setItem('token', response.accessToken);
+        LocalStorageService.setItem(nameStorageTokenAzureAD, response.accessToken); 
         // Redirecionar para a página de perfil
         navigate('/login');  
       }

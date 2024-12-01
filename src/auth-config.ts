@@ -18,3 +18,5 @@ export const loginApiRequest = {
 };
 
 export const nameStorageTokenAzureAD: string = 'Authorization_Token_AzureAD';
+
+export const nameStorageTokenJWT: string = 'token';

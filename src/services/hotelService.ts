@@ -6,6 +6,7 @@ import { ISearchCriteria } from '../interfaces/ISearchCriteria';
 import { IHotelSemanticResult } from '../interfaces/IHotelSemanticResult';
 import EnvironmentService from './EnvironmentService'; 
 import { IHotelService } from '../interfaces/services/IHotelService';
+import { nameStorageTokenJWT } from '../auth-config';
 
 // Criação da instância Axios
 export const api_hotelservice = axios.create({
@@ -14,7 +15,7 @@ export const api_hotelservice = axios.create({
 
 // Interceptor para adicionar o token de autenticação
 api_hotelservice.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem(nameStorageTokenJWT);
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

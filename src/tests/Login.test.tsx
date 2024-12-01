@@ -35,8 +35,8 @@ describe('Login component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
-     // Mock do console.warn para suprimir os avisos durante os testes
-     jest.spyOn(console, 'warn').mockImplementation(() => { });
+    // Mock do console.warn para suprimir os avisos durante os testes
+    jest.spyOn(console, 'warn').mockImplementation(() => { });
   });
 
   test('renders login form and handles login successfully', async () => {
@@ -65,7 +65,7 @@ describe('Login component', () => {
 
     // Verifica se o token foi definido e o redirecionamento ocorreu
     await waitFor(() => {
-      expect(SecurityService.setToken).toHaveBeenCalledWith('mockToken');
+      expect(SecurityService.setToken).toHaveBeenCalledWith('token', 'mockToken');
       expect(mockNavigate).toHaveBeenCalledWith('/search');
     });
   });
@@ -94,7 +94,6 @@ describe('Login component', () => {
       expect(screen.getByText('Autenticação falhou. Por favor, verifique suas credenciais.')).toBeInTheDocument();
     });
   });
- 
 
   test('loads remembered username on mount', async () => {
     (LocalStorageService.getItem as jest.Mock).mockReturnValue('rememberedUser');

@@ -2,6 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar'; // Ajuste o caminho conforme necessário
 import LocalStorageService from '../services/localStorageService';
+import { nameStorageTokenJWT } from '../auth-config';
  
 // Mock do arquivo CSS para evitar problemas durante o teste
 jest.mock('../css/Navbar.css', () => ({}));
@@ -50,7 +51,7 @@ describe('Navbar component', () => {
     fireEvent.click(logoutButtons[logoutButtons.length - 1]);
 
     await waitFor(() => {
-      expect(LocalStorageService.removeItem).toHaveBeenCalledWith('token');
+      expect(LocalStorageService.removeItem).toHaveBeenCalledWith(nameStorageTokenJWT);
       expect(mockNavigate).toHaveBeenCalledWith('/login');
     });
   });

@@ -15,6 +15,12 @@ jest.mock('react-router-dom', () => ({
     useNavigate: jest.fn(),
 }));
 
+jest.mock('../components/UserProfile', () => {
+    return function DummyUserProfile() {
+      return <div>UserProfile</div>;
+    };
+  });
+
 describe('SinglePage', () => {
     const mockNavigate = jest.fn();
 

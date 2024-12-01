@@ -6,6 +6,7 @@ import LocalStorageService from '../services/localStorageService';
 import LoginFormTemplate from './LoginFormTemplate';
 import { useMsal } from '@azure/msal-react';
 import '../css/Login.css';
+import { nameStorageTokenJWT } from '../auth-config';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -16,8 +17,8 @@ const Login: React.FC = () => {
   const { instance } = useMsal();
 
   useEffect(() => {
-    const token = SecurityService.getToken();
-    const isvalidToken = SecurityService.isTokenValid(token);
+    const token = SecurityService.getToken(nameStorageTokenJWT);
+    const isvalidToken = SecurityService.isTokenValid(nameStorageTokenJWT, token);
 
     if (token && isvalidToken) {
       navigate('/search');
@@ -39,7 +40,7 @@ const Login: React.FC = () => {
     try {
       const response = await AuthenticateService.authenticate({ login: sanitizedUsername, password: sanitizedPassword });
       if (response.success) {
-        SecurityService.setToken(response.data.tokenAuth.accessToken);
+        SecurityService.setToken(nameStorageTokenJWT, response.data.tokenAuth.accessToken);
 
         if (rememberMe) {
           console.log('Remember me is checked. Setting item in localStorage.');

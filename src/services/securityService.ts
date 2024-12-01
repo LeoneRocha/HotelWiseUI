@@ -1,13 +1,13 @@
 // services/SecurityService.ts
-import { jwtDecode, JwtPayload } from 'jwt-decode'; 
-import EnvironmentService from './EnvironmentService'; 
+import { jwtDecode, JwtPayload } from 'jwt-decode';
+import EnvironmentService from './EnvironmentService';
 import { ISecurityService } from '../interfaces/services/ISecurityService';
-import LocalStorageService from './localStorageService'
+import LocalStorageService from './localStorageService';
 
 class SecurityService implements ISecurityService {
-    isTokenValid(token: string | null): boolean {
+    isTokenValid(storageKey: string, token: string | null): boolean {
         if (token === null) {
-            token = this.getToken();
+            token = this.getToken(storageKey);
         }
         try {
             if (token !== null) {
@@ -32,20 +32,20 @@ class SecurityService implements ISecurityService {
         }
     }
 
-    isTokenExpired(token: string): boolean {
-        return !this.isTokenValid(token);
+    isTokenExpired(storageKey: string, token: string): boolean {
+        return !this.isTokenValid(storageKey, token);
     }
 
-    getToken(): string | null {
-        return LocalStorageService.getItem('token');
+    getToken(storageKey: string): string | null {
+        return LocalStorageService.getItem(storageKey);
     }
 
-    setToken(token: string): void {
-        LocalStorageService.setItem('token', token);
+    setToken(storageKey: string, token: string): void {
+        LocalStorageService.setItem(storageKey, token);
     }
 
-    removeToken(): void {
-        LocalStorageService.removeItem('token');
+    removeToken(storageKey: string): void {
+        LocalStorageService.removeItem(storageKey);
     }
 
     formatTimestamp(timestamp: number): string {

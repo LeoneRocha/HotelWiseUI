@@ -9,6 +9,7 @@ import LocalStorageService from './services/localStorageService';
 import CookieConsent from './components/CookieConsent';
 import SecurityService from './services/securityService';
 import Chatbot from './components/Chatbot';
+import { nameStorageTokenJWT } from './auth-config';
 
 const SinglePage: React.FC = () => {
     const location = useLocation();
@@ -30,7 +31,7 @@ const SinglePage: React.FC = () => {
 };
 
 const isLoggedIn = (): boolean => {
-    return LocalStorageService.hasItem('token') && SecurityService.isTokenValid(SecurityService.getToken());
+    return LocalStorageService.hasItem(nameStorageTokenJWT) && SecurityService.isTokenValid(nameStorageTokenJWT, null);
 };
 
 export default SinglePage;

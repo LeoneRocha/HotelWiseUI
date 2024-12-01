@@ -3,6 +3,7 @@ import axios from 'axios';
 import { IAskAssistantResponse } from '../interfaces/IAskAssistantResponse';
 import EnvironmentService from './EnvironmentService';
 import { IAssistantService } from '../interfaces/services/IAssistantService';
+import { nameStorageTokenJWT } from '../auth-config';
 
 // Criação da instância Axios
 export const api_assistantService = axios.create({
@@ -11,7 +12,7 @@ export const api_assistantService = axios.create({
 
 // Interceptor para adicionar o token de autenticação
 api_assistantService.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem(nameStorageTokenJWT);
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

@@ -41,8 +41,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/access-denied" element={<AccessDenied />} /> {/* Rota para acesso negado */}
       <Route path="*" element={<NotFound />} /> {/* Rota de fallback */} 
       <Route path="/privacy-policy" element={<PrivacyPolicy />} /> 
-      <Route path="/callback" element={<Callback/>} />
-      <Route path="/profile"  element={<UserProfile/>} />
+      <Route path="/callback" element={<Callback/>} /> 
       <Route path="/perfil"  element={<UserProfile/>} />
     </Routes>
     

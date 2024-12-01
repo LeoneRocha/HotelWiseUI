@@ -9,6 +9,7 @@ import '../css/Chatbot.css';
 import DOMPurify from 'dompurify';
 import { IMessage } from '../interfaces/IAskAssistantResponse';
 import LocalStorageService from '../services/localStorageService';
+import { nameStorageTokenJWT } from '../auth-config';
 
 const Chatbot: React.FC = () => {
   const [input, setInput] = useState('');
@@ -35,7 +36,7 @@ const Chatbot: React.FC = () => {
   }, [messages]);
 
   const isAuthenticated = useCallback(() => {
-    const token = LocalStorageService.getItem('token');
+    const token = LocalStorageService.getItem(nameStorageTokenJWT);
     return !!token;
   }, []);
 

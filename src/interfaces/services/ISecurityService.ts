@@ -1,9 +1,9 @@
 // interfaces/ISecurityService.ts
 export interface ISecurityService {
-  isTokenValid(token: string | null): boolean;
-  isTokenExpired(token: string): boolean;
-  getToken(): string | null;
-  setToken(token: string): void;
-  removeToken(): void;
+  isTokenValid(storageKey: string, token: string | null): boolean;
+  isTokenExpired(storageKey: string, token: string): boolean;
+  getToken(storageKey: string, token: string): string | null;
+  setToken(storageKey: string, token: string): void;
+  removeToken(storageKey: string, token: string): void;
   formatTimestamp(timestamp: number): string;
 }

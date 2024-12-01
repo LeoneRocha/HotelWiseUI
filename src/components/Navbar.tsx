@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import LocalStorageService from '../services/localStorageService'; 
 import NavbarTemplate from './NavbarTemplate';
+import { nameStorageTokenJWT } from '../auth-config';
 
 const Navbar: React.FC = () => { 
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const navigate = useNavigate();
  
   const handleLogout = () => {
-    LocalStorageService.removeItem('token');
+    LocalStorageService.removeItem(nameStorageTokenJWT);
     navigate('/login');
   };
 
