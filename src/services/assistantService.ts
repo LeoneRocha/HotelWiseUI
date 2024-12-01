@@ -18,6 +18,7 @@ api_assistantService.interceptors.request.use((config) => {
   // Adiciona o token apropriado no header Authorization
   if (azureToken) {
     //config.headers.Authorization = `AzureAd ${azureToken}`;
+    //config.headers.Authorization = `Bearer ${azureToken}`;
     config.headers.Authorization = `Bearer ${jwtToken}`;
   } else if (jwtToken) {
     config.headers.Authorization = `Bearer ${jwtToken}`;
@@ -31,6 +32,7 @@ api_assistantService.interceptors.request.use((config) => {
     data: config.data,
   });
 
+  //ver o exemplo que fiz anterior mente e compara parece que falta o scope ----------------------- TODO: 
   return config;
 });
 
