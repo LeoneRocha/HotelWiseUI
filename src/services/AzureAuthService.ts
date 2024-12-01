@@ -1,8 +1,8 @@
 // services/AzureAuthService.ts
-import axios from 'axios';
+//import axios from 'axios';
 import { PublicClientApplication, AuthenticationResult, AccountInfo } from '@azure/msal-browser';
 import LocalStorageService from './localStorageService';
-import { loginApiRequest, msalConfig } from '../auth-config';
+import { loginApiRequest, msalConfig, nameStorageTokenAzureAD } from '../auth-config';
 
 class AzureAuthService {
   private msalInstance: PublicClientApplication;
@@ -23,7 +23,7 @@ class AzureAuthService {
     // Verifica se a instância foi inicializada
     await this.initialize();
 
-    const responseTokenStorage = LocalStorageService.getItem('Authorization_Token');
+    const responseTokenStorage = LocalStorageService.getItem(nameStorageTokenAzureAD);
     if (responseTokenStorage == null) {
       const accounts = this.getAccounts();
       if (accounts.length === 0) {
@@ -38,10 +38,8 @@ class AzureAuthService {
 
       const responseToken = `Bearer ${msalResponse.accessToken}`;
       console.log("Recuperou o token do azure");
-
-      axios.defaults.headers.common['Authorization'] = responseToken;
-
-      LocalStorageService.setItem('Authorization_Token', responseToken);
+      //axios.defaults.headers.common['Authorization'] = responseToken;
+      LocalStorageService.setItem(nameStorageTokenAzureAD, responseToken);
 
       return responseToken;
     } else {
@@ -53,7 +51,7 @@ class AzureAuthService {
   public logout(): void {
     this.msalInstance.logoutRedirect({
       onRedirectNavigate: () => {
-        LocalStorageService.removeItem('azureAccessToken');
+        LocalStorageService.removeItem(nameStorageTokenAzureAD);
         return true;
       }
     });
