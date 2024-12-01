@@ -1,29 +1,70 @@
-import React from 'react';
-import { useMsal } from '@azure/msal-react';
+import React, { useEffect, useState } from 'react';
+import AzureAuthService from '../services/AzureAuthService';  
+import { IAccountInfo } from '../interfaces/IAzureAuthService';
 
 const UserProfile: React.FC = () => {
-  const { accounts } = useMsal();
+  const [accountInfo, setAccountInfo] = useState<IAccountInfo | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  if (accounts.length === 0) {
-    return <div>Você não está autenticado.</div>;
-  }
+  useEffect(() => {
+    const fetchAccountInfo = async () => {
+      try {
+        const accounts = AzureAuthService.getAccounts();
+        if (accounts.length > 0) {
+          const account = accounts[0];
+          setAccountInfo({
+            name: account.name,
+            username: account.username,
+            localAccountId: account.localAccountId,
+            idTokenClaims: account.idTokenClaims
+          });
 
-  const account = accounts[0];
-  
+          const token = await AzureAuthService.getTokenAccess();
+          setAccessToken(token);
+        }
+      } catch (err) {
+        setError('Erro ao adquirir token: ' + err);
+      }
+    };
+
+    fetchAccountInfo();
+  }, []);
+
+  const handleLogout = () => {
+    AzureAuthService.logout();
+  };
+
   return (
     <div className="user-profile">
       <h2>Informações do Usuário Autenticado</h2>
-      <p><strong>Nome Completo:</strong> {account.name}</p>
-      <p><strong>Username:</strong> {account.username}</p>
-      <p><strong>Localidade:</strong> {account.localAccountId}</p>
-      <p><strong>Identidade (IdTokenClaims):</strong></p>
-      <ul>
-        {Object.entries(account.idTokenClaims || {}).map(([key, value]) => (
-          <li key={key}>
-            <strong>{key}:</strong> {JSON.stringify(value)}
-          </li>
-        ))}
-      </ul>
+      {accountInfo ? (
+        <>
+          <p><strong>Nome Completo:</strong> {accountInfo.name}</p>
+          <p><strong>Username:</strong> {accountInfo.username}</p>
+          <p><strong>Localidade:</strong> {accountInfo.localAccountId}</p>
+          <p><strong>Identidade (IdTokenClaims):</strong></p>
+          <ul>
+            {Object.entries(accountInfo.idTokenClaims || {}).map(([key, value]) => (
+              <li key={key}>
+                <strong>{key}:</strong> {JSON.stringify(value)}
+              </li>
+            ))}
+          </ul>
+          <h2>Token de Acesso</h2>
+          {accessToken ? (
+            <span>{accessToken}</span>
+          ) : (
+            <p>Carregando token...</p>
+          )}
+          <br/>
+          <br/>
+          <button onClick={handleLogout}>Logout</button>
+        </>
+      ) : (
+        <p>Você não está autenticado.</p>
+      )}
+      {error && <p>{error}</p>}
     </div>
   );
 };
