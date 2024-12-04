@@ -12,15 +12,16 @@ export const api_assistantService = axios.create({
 
 // Interceptor para adicionar o token de autenticação
 api_assistantService.interceptors.request.use((config) => {
-  const azureToken = localStorage.getItem(nameStorageTokenAzureAD);
   const jwtToken = localStorage.getItem(nameStorageTokenJWT);
-  
+  const azureToken = localStorage.getItem(nameStorageTokenAzureAD);
+
   // Adiciona o token apropriado no header Authorization
   if (azureToken) {
     //config.headers.Authorization = `AzureAd ${azureToken}`;
     //config.headers.Authorization = `Bearer ${azureToken}`;
-    config.headers.Authorization = `Bearer ${jwtToken}`;
-  } else if (jwtToken) {
+    config.headers.Authorization = `AzureAd ${azureToken}`;
+  }
+  if (jwtToken) {
     config.headers.Authorization = `Bearer ${jwtToken}`;
   }
 

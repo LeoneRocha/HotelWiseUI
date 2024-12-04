@@ -6,7 +6,7 @@ import LocalStorageService from '../services/localStorageService';
 import LoginFormTemplate from './LoginFormTemplate';
 import { useMsal } from '@azure/msal-react';
 import '../css/Login.css';
-import { nameStorageTokenJWT } from '../auth-config';
+import { loginApiRequest, nameStorageTokenJWT } from '../auth-config';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -60,7 +60,7 @@ const Login: React.FC = () => {
   };
 
   const handleAzureLogin = () => {
-    instance.loginRedirect();
+    instance.loginRedirect(loginApiRequest);
   };
 
   return (
