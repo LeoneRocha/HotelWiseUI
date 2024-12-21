@@ -1,0 +1,16 @@
+1) Corrigir apontamento do sonar cloud para o projeto front end do hotel 
+2) Corrigir apontamento do sonar cloud para o projeto back end do hotel 
+3) Corrigir apontamento do sonar cloud para o projeto back end de psicologia 
+4) Desenvolver o front end do calendario 
+5) Voltar a tentar configurar o azure ad no projeto de hotel. 
+6) Melhorar o chat bot para entender contexto anteriores. 
+7) Implmentar do cadastro de idiomas para que ia gere nos idiomas selecionados disponieveis (ingles, portugues e espanhol se selecionado ingles so aparece as outras para ser gerado por ia)
+
+
+
+-------------- FURUTAMENTE PARA O HOTEL 
+
+CRIAR UM PROCESSO DE CRIAR QUARTO E SUA DISPONIBILIDADE E PRECO POR PERIODO "DIAS"
+CRIAR UM PROCESSO DE RESERVAR DE HOTEL COM BAIXA DA DISPONIBILIDADE 
+MELHORAR O CHATR BOT PARA RESPONDER SOBRE A RESERVA DE HOTEL feitas e em andamento
+
