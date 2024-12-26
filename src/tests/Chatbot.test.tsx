@@ -1,9 +1,10 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import ChatHistoryManager from '../services/chatHistoryManager';
-import  AssistantService  from '../services/assistantService';
+import AssistantService from '../services/assistantService';
 import Chatbot from '../components/Chatbot';
 import LocalStorageService from '../services/localStorageService';
+import { IMessage } from '../interfaces/IAskAssistantResponse';
 
 // Mock the chat history manager and assistant service
 jest.mock('../services/chatHistoryManager', () => ({
@@ -31,9 +32,9 @@ describe('Chatbot component', () => {
     });
 
     test('renders chat messages from history', () => {
-        const messages = [
-            { sender: 'user', text: 'Hello' },
-            { sender: 'bot', text: 'Hi there!' },
+        const messages: IMessage[] = [
+            { sender: 'user', text: 'Hello', id: '1' },
+            { sender: 'bot', text: 'Hi there!', id: '2' },
         ];
         (ChatHistoryManager.getChatHistory as jest.Mock).mockReturnValue(messages);
 
@@ -63,11 +64,11 @@ describe('Chatbot component', () => {
             expect(screen.getByText('I am fine, thank you!')).toBeInTheDocument();
             expect(ChatHistoryManager.saveMessage).toHaveBeenCalledWith({
                 sender: 'user',
-                text: 'How are you?',
+                text: 'How are you?', id: '3'
             });
             expect(ChatHistoryManager.saveMessage).toHaveBeenCalledWith({
                 sender: 'bot',
-                text: 'I am fine, thank you!',
+                text: 'I am fine, thank you!', id: '4'
             });
         });
     });
@@ -81,7 +82,7 @@ describe('Chatbot component', () => {
         fireEvent.click(screen.getByText(nameChat)); // Abrir o modal
 
         fireEvent.change(screen.getByPlaceholderText('Digite sua mensagem...'), {
-            target: { value: 'How are you?' },
+            target: { value: 'How are you?' ,id: '3'},
         });
         fireEvent.submit(screen.getByRole('button', { name: /enviar/i }));
 
@@ -89,7 +90,7 @@ describe('Chatbot component', () => {
             expect(screen.getByText('Ocorreu um erro ao consultar a API. Por favor, tente novamente.')).toBeInTheDocument();
             expect(ChatHistoryManager.saveMessage).toHaveBeenCalledWith({
                 sender: 'bot',
-                text: 'Ocorreu um erro ao consultar a API. Por favor, tente novamente.',
+                text: 'Ocorreu um erro ao consultar a API. Por favor, tente novamente.', id: '4'
             });
         });
     });
@@ -130,8 +131,8 @@ describe('Chatbot component', () => {
     });
 
     test('does not add welcome messages if chat history exists', async () => {
-        const messages = [
-            { sender: 'user', text: 'Hello' },
+        const messages: IMessage[] = [
+            { sender: 'user', text: 'Hello', id: '1' },
         ];
         (ChatHistoryManager.getChatHistory as jest.Mock).mockReturnValue(messages);
 

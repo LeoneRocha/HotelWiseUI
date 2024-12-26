@@ -27,14 +27,14 @@ describe('ChatMessage component', () => {
         jest.spyOn(console, 'error').mockImplementation(() => { });
     });
     test('renders user message correctly', () => {
-        const message: IMessage = { sender: 'user', text: 'Hello!' };
+        const message: IMessage = { sender: 'user', text: 'Hello!', id: '1' };
         const { getByText } = render(<ChatMessage message={message} />);
 
         expect(getByText('Hello!')).toBeInTheDocument();
     });
 
     test('renders bot message correctly with HTML', () => {
-        const message: IMessage = { sender: 'bot', text: '<strong>Hello!</strong>' };
+        const message: IMessage = { sender: 'bot', text: '<strong>Hello!</strong>', id: '1'  };
         const { getByText } = render(<ChatMessage message={message} />);
 
         expect(getByText('Hello!')).toBeInTheDocument();
