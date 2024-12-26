@@ -1,11 +1,11 @@
-// services/AzureAuthService.ts
+// AzureAuthService.ts
 //import axios from 'axios';
 import { PublicClientApplication, AuthenticationResult, AccountInfo } from '@azure/msal-browser';
 import LocalStorageService from './localStorageService';
 import { loginApiRequest, msalConfig, nameStorageTokenAzureAD } from '../auth-config';
 
 class AzureAuthService {
-  private msalInstance: PublicClientApplication;
+  private readonly msalInstance: PublicClientApplication;
 
   constructor() {
     this.msalInstance = new PublicClientApplication(msalConfig);
@@ -37,10 +37,8 @@ class AzureAuthService {
       });
 
       const responseToken = `${msalResponse.accessToken}`;
-      console.log("Recuperou o token do azure");
-      //axios.defaults.headers.common['Authorization'] = responseToken;
+      console.log("Recuperou o token do azure");      
       LocalStorageService.setItem(nameStorageTokenAzureAD, responseToken);
-
       return responseToken;
     } else {
       console.log("Uso o token do storage");

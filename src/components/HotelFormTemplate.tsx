@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../css/HotelFormTemplate.css';
 import { FaPlusCircle, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import { IHotelFormTemplateProps } from '../interfaces/IHotelFormTemplateProps';
+import { v4 as uuidv4 } from 'uuid';
 
 const HotelFormTemplate: React.FC<IHotelFormTemplateProps> = ({
   formData,
@@ -13,10 +14,10 @@ const HotelFormTemplate: React.FC<IHotelFormTemplateProps> = ({
   setFormData,
 }) => {
   const [tagInput, setTagInput] = useState('');
-  const [tags, setTags] = useState<string[]>(formData.tags);
+  const [tags, setTags] = useState<{ id: string, value: string }[]>(formData.tags.map(tag => ({ id: uuidv4(), value: tag })));
 
   useEffect(() => {
-    setTags(formData.tags);
+    setTags(formData.tags.map(tag => ({ id: uuidv4(), value: tag })));
   }, [formData.tags]);
 
   const handleTagInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,18 +25,18 @@ const HotelFormTemplate: React.FC<IHotelFormTemplateProps> = ({
   };
 
   const handleAddTag = () => {
-    if (tagInput.trim() && !tags.includes(tagInput.trim())) {
-      const newTags = [...tags, tagInput.trim()];
+    if (tagInput.trim() && !tags.some(tag => tag.value === tagInput.trim())) {
+      const newTags = [...tags, { id: uuidv4(), value: tagInput.trim() }];
       setTags(newTags);
-      setFormData({ ...formData, tags: newTags });
+      setFormData({ ...formData, tags: newTags.map(tag => tag.value) });
       setTagInput('');
     }
   };
 
-  const handleRemoveTag = (tag: string) => {
-    const newTags = tags.filter(t => t !== tag);
+  const handleRemoveTag = (tagId: string) => {
+    const newTags = tags.filter(t => t.id !== tagId);
     setTags(newTags);
-    setFormData({ ...formData, tags: newTags });
+    setFormData({ ...formData, tags: newTags.map(tag => tag.value) });
   };
 
   return (
@@ -80,9 +81,9 @@ const HotelFormTemplate: React.FC<IHotelFormTemplateProps> = ({
               <button type="button" className="btn btn-primary" onClick={handleAddTag}>Adicionar</button>
             </div>
             <div className="mt-2">
-              {tags.map((tag, index) => (
-                <span key={index} className="badge bg-success me-2">
-                  {tag} <button type="button" className="btn-close btn-close-white ms-1" onClick={() => handleRemoveTag(tag)}></button>
+              {tags.map((tag) => (
+                <span key={tag.id} className="badge bg-success me-2">
+                  {tag.value} <button type="button" className="btn-close btn-close-white ms-1" onClick={() => handleRemoveTag(tag.id)}></button>
                 </span>
               ))}
             </div>

@@ -1,4 +1,4 @@
-// services/AssistantService.ts
+//AssistantService.ts
 import axios from 'axios';
 import { IAskAssistantResponse } from '../interfaces/IAskAssistantResponse';
 import EnvironmentService from './EnvironmentService';
@@ -33,7 +33,7 @@ api_assistantService.interceptors.request.use((config) => {
     data: config.data,
   });
 
-  //ver o exemplo que fiz anterior mente e compara parece que falta o scope ----------------------- TODO: 
+  //ver o exemplo que fiz anterior mente e compara parece que falta o scope  
   return config;
 });
 

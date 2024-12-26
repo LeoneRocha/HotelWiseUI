@@ -21,8 +21,8 @@ const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
   const filteredTags = tags.filter(tag => tag.toLowerCase().includes(filterTerm.toLowerCase()));
 
   const renderStars = (stars: number) => {
-    return [...Array(stars)].map((_, i) => (
-      <i key={i} className="fas fa-star star-gold"></i>
+    return [...Array(stars)].map(() => (
+      <i className="fas fa-star star-gold"></i>
     ));
   };
 
@@ -130,8 +130,8 @@ const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
             <div className="alert alert-danger alert-dismissible fade show mt-4" role="alert">
               <strong>Erros:</strong>
               <ul>
-                {serviceResponse.errors.map((err, index) => (
-                  <li key={index}>{err.message || 'Erro desconhecido'}</li>
+                {serviceResponse.errors.map((err) => (
+                  <li>{err.message || 'Erro desconhecido'}</li>
                 ))}
               </ul>
               <button type="button" className="btn-close" aria-label="Close" onClick={() => setShowAlert(false)}></button>

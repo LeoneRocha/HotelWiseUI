@@ -1,4 +1,4 @@
-// interfaces/services/IAzureAuthService.ts
+//  IAzureAuthService.ts
 export interface IAzureAuthService {
   getAccounts(): object[];
   acquireTokenSilent(scopes: string[]): Promise<string>;
