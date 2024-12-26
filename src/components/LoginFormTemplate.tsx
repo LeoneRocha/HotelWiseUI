@@ -17,7 +17,7 @@ const LoginFormTemplate: React.FC<ILoginFormTemplateProps> = ({
       <div className="login-card">
         <h2 className="text-center mb-4">Login</h2>
         {error && <div className="alert alert-danger">{error}</div>}
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} role="form">
           <div className="form-group mb-3">
             <label htmlFor="username">Usuário</label>
             <input
