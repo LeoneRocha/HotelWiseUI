@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import AppInformationService from './services/appInformationService';
 import EnvironmentService from './services/EnvironmentService';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
+import reactLogo from './assets/react.svg'; 
 import './css/FooterPage.css';
 
 const FooterPage: React.FC = () => {
@@ -44,7 +43,7 @@ const FooterPage: React.FC = () => {
             <img src={reactLogo} className="logo react" alt="React" title='React' />
           </a>
           <a href="https://vite.dev" target="_blank">
-            <img src={viteLogo} className="logo" alt="Vite" title='Vite' />
+            <img src='/vite.svg' className="logo" alt="Vite" title='Vite' />
           </a>
           <div className="server-info">
             <a href="https://getbootstrap.com/" target="_blank" rel="noopener noreferrer">

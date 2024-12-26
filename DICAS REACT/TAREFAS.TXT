@@ -14,3 +14,23 @@ CRIAR UM PROCESSO DE CRIAR QUARTO E SUA DISPONIBILIDADE E PRECO POR PERIODO "DIA
 CRIAR UM PROCESSO DE RESERVAR DE HOTEL COM BAIXA DA DISPONIBILIDADE 
 MELHORAR O CHATR BOT PARA RESPONDER SOBRE A RESERVA DE HOTEL feitas e em andamento
 
+
+------
+
+Como corrigir o erro reportado pelo sonar cloud do projeto react typescript
+
+"Do not use Array index in keys"
+
+Codigo 
+
+   <div className="chat-messages" id="chat-container" aria-live="polite" aria-relevant="additions">
+      {messages.map((msg, index) => (
+        <ChatMessage key={index} message={msg} />
+      ))}
+      {isTyping && (
+        <div className="chat-message bot">
+          <Spinner animation="border" size="sm" role="status" aria-hidden="true" />
+          <span> O robô está digitando...</span>
+        </div>
+      )}
+    </div>

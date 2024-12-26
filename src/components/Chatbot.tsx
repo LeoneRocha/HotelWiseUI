@@ -19,6 +19,15 @@ const Chatbot: React.FC = () => {
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
 
+  // Inicializar nextId com o valor do maior ID + 1
+  const getNextId = () => {
+    if (messages.length === 0) return 1;
+    const maxId = Math.max(...messages.map((msg) => parseInt(msg.id)));
+    return maxId + 1;
+  };
+
+  const [nextId, setNextId] = useState(getNextId());
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 600);
@@ -40,11 +49,13 @@ const Chatbot: React.FC = () => {
     return !!token;
   }, []);
 
-  const addMessage = useCallback((sender: 'user' | 'bot', text: string) => {
-    const newMessage: IMessage = { sender, text };
+  const addMessage = useCallback((sender: 'user' | 'bot', text: string, id?: number) => {
+    const messageId = id ?? nextId; // Use o ID fornecido ou o nextId
+    const newMessage: IMessage = { id: messageId.toString(), sender, text };
     setMessages((prevMessages) => [...prevMessages, newMessage]);
     ChatHistoryManager.saveMessage(newMessage);
-  }, []);
+    setNextId((prevId) => prevId + 1); // Incrementa o ID para a próxima mensagem
+  }, [nextId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,17 +68,24 @@ const Chatbot: React.FC = () => {
       return;
     }
 
-    addMessage('user', input);
+    const userMessageId = getNextId();
+    addMessage('user', input, userMessageId);
+    setNextId(userMessageId + 1);
+
     setIsTyping(true);
     setInput(''); // Clear input field
 
     try {
       const response = await AssistantService.getChatCompletion({ maxHotelRetrieve: 0, searchTextCriteria: input });
       const sanitizedResponse = DOMPurify.sanitize(response[0].response);
-      addMessage('bot', sanitizedResponse);
+      const botMessageId = getNextId() + 1;
+      addMessage('bot', sanitizedResponse, botMessageId);
+      setNextId((prevId) => prevId + 1);
     } catch (error) {
       console.error('Erro ao consultar a API de chat completion:', error);
-      addMessage('bot', 'Ocorreu um erro ao consultar a API. Por favor, tente novamente.');
+      const botErrorMessageId = getNextId() + 1;
+      addMessage('bot', 'Ocorreu um erro ao consultar a API. Por favor, tente novamente.', botErrorMessageId);
+      setNextId((prevId) => prevId + 1);
     } finally {
       setIsTyping(false);
     }
@@ -76,13 +94,15 @@ const Chatbot: React.FC = () => {
   const handleClearHistory = () => {
     ChatHistoryManager.clearChatHistory();
     setMessages([]);
+    setNextId(1); // Reset the ID counter when clearing history
   };
 
   const toggleModal = () => {
     setShow((prevShow) => {
       if (!prevShow && messages.length === 0) {
-        addMessage('bot', 'Olá! Eu sou seu assistente virtual. Como posso ajudar você hoje?');
-        addMessage('bot', 'Posso ajudar com várias tarefas, como responder perguntas, dar dicas e suporte, ou simplesmente bater um papo. O que você precisa?');
+        addMessage('bot', 'Olá! Eu sou seu assistente virtual. Como posso ajudar você hoje?', 1);
+        addMessage('bot', 'Posso ajudar com várias tarefas, como responder perguntas, dar dicas e suporte, ou simplesmente bater um papo. O que você precisa?', 2);
+        setNextId(3); // Ajustar nextId para o próximo valor após mensagens iniciais
       }
       return !prevShow;
     });

@@ -14,8 +14,8 @@ const ChatbotModal: React.FC<IChatbotModalProps> = ({
       <Button variant="link" onClick={toggleModal} className="chatbot-close" aria-label="Fechar">&times;</Button>
     </div>
     <div className="chat-messages" id="chat-container" aria-live="polite" aria-relevant="additions">
-      {messages.map((msg, index) => (
-        <ChatMessage key={index} message={msg} />
+      {messages.map((msg) => (
+        <ChatMessage key={msg.id} message={msg} />
       ))}
       {isTyping && (
         <div className="chat-message bot">
