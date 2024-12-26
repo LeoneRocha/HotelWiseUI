@@ -1,5 +1,4 @@
-// AzureAuthService.ts
-//import axios from 'axios';
+// AzureAuthService.ts 
 import { PublicClientApplication, AuthenticationResult, AccountInfo } from '@azure/msal-browser';
 import LocalStorageService from './localStorageService';
 import { loginApiRequest, msalConfig, nameStorageTokenAzureAD } from '../auth-config';

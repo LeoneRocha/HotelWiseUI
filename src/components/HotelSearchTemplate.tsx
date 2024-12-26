@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../css/HotelSearchTemplate.css';
 import { IHotelSearchTemplateProps } from '../interfaces/IHotelSearchTemplateProps';
+import { v4 as uuidv4 } from 'uuid';
 
 const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
   searchTerm,
@@ -22,7 +23,7 @@ const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
 
   const renderStars = (stars: number) => {
     return [...Array(stars)].map(() => (
-      <i className="fas fa-star star-gold"></i>
+      <i key={uuidv4()} className="fas fa-star star-gold"></i>
     ));
   };
 
@@ -131,7 +132,7 @@ const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
               <strong>Erros:</strong>
               <ul>
                 {serviceResponse.errors.map((err) => (
-                  <li>{err.message || 'Erro desconhecido'}</li>
+                  <li key={uuidv4()} >{err.message ?? 'Erro desconhecido'}</li>
                 ))}
               </ul>
               <button type="button" className="btn-close" aria-label="Close" onClick={() => setShowAlert(false)}></button>
