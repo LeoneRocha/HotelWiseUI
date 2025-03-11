@@ -31,6 +31,11 @@ npm install --save-dev jest babel-jest @babel/preset-env @babel/preset-react rea
 
 npm install --save-dev @testing-library/react
 
+Atualizar 
+
+npm install -g npm-check-updates
+
+
 Melhore o codigo do formulario criando um botao "auto preencher" quando for adicionar novo hotel para requisitar a api endpoint a baixo para buscar dados do hotel e carregar nos campos do forumlario 
  
 

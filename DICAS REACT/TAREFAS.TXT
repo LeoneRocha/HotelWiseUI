@@ -1,9 +1,14 @@
-1) Corrigir apontamento do sonar cloud para o projeto front end do hotel 
-2) Corrigir apontamento do sonar cloud para o projeto back end do hotel 
-3) Corrigir apontamento do sonar cloud para o projeto back end de psicologia 
-4) Desenvolver o front end do calendario 
+1) Corrigir apontamento do sonar cloud para o projeto front end do hotel - FEITO 
+2) Corrigir apontamento do sonar cloud para o projeto back end do hotel - FEITO 
+
+3) Corrigir apontamento do sonar cloud para o projeto back end de psicologia - FEITO NAO TEM ATUALIZACAO POR ENQUANTO 
+ 
+4) Desenvolver o front end do calendario ------------ PENDENTE 
+
 5) Voltar a tentar configurar o azure ad no projeto de hotel. 
+
 6) Melhorar o chat bot para entender contexto anteriores. 
+
 7) Implmentar do cadastro de idiomas para que ia gere nos idiomas selecionados disponieveis (ingles, portugues e espanhol se selecionado ingles so aparece as outras para ser gerado por ia)
 
 
@@ -23,14 +28,4 @@ Como corrigir o erro reportado pelo sonar cloud do projeto react typescript
 
 Codigo 
 
-   <div className="chat-messages" id="chat-container" aria-live="polite" aria-relevant="additions">
-      {messages.map((msg, index) => (
-        <ChatMessage key={index} message={msg} />
-      ))}
-      {isTyping && (
-        <div className="chat-message bot">
-          <Spinner animation="border" size="sm" role="status" aria-hidden="true" />
-          <span> O robô está digitando...</span>
-        </div>
-      )}
-    </div>
+Em C# .net 8  Como corrigir suprimindo o erro do sonar cloud "Change this code to not disclose the stack traces." Stack traces should not be disclosed roslyn.sonaranalyzer.security.cs:S6776
