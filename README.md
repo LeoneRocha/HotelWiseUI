@@ -27,7 +27,7 @@ https://lionscorp.visualstudio.com/VariousStudies/_build
 
 ## SonarCloud
 
-https://sonarcloud.io/project/overview?id=lionscorp_hotelwiseapi
+[https://sonarcloud.io/project/overview?id=lionscorp_hotelwiseapi](https://sonarcloud.io/project/branches_list?id=lionscorp_hotelwiseui)
 
 ## GO LIVE 
 
