@@ -21,6 +21,15 @@
     <li><strong>Qualidade de Código:</strong> Análise contínua do código com SonarCloud.</li>
 </ul>
 
+## DevOPS
+
+https://lionscorp.visualstudio.com/VariousStudies/_build
+
+## SonarCloud
+
+https://sonarcloud.io/project/overview?id=lionscorp_hotelwiseapi
+
+## GO LIVE 
 
 [LINK API](https://hotelwiseapi-hbcca8d5a7fae7hp.brazilsouth-01.azurewebsites.net/swagger/index.html)
 
