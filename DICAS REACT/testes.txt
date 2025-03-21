@@ -1,3 +1,9 @@
+- [System]: Você é um assistente especializado em reservas de hotel.
+- [User]: Quais são os melhores hotéis perto de São Paulo?
+- [Assistant]: Aqui estão os melhores hotéis perto de você: Hotel X, Hotel Y, Hotel Z.
+
+
+
 https://dev.to/vitorrios1001/implementando-testes-com-jest-em-projetos-react-typescript-2j2
 
 

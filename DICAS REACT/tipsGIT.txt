@@ -1,0 +1,85 @@
+
+
+
+
+mkdir gitcz
+
+
+
+Configuração Inicial:
+git config --global user.name "Seu Nome"
+git config --global user.email "seuemail@exemplo.com"
+
+Inicializar um Repositório:
+git init
+
+Clonar um Repositório:
+git clone <URL-do-repositório>
+
+Status e Histórico:
+git status
+git log
+
+Adicionar Arquivos:
+git add <nome-do-arquivo>
+git add .
+
+Commitar Alterações:
+git commit -m "Sua mensagem do commit"
+
+Enviar Alterações para o Repositório Remoto:
+git push origin <nome-da-branch>
+
+Atualizar o Repositório Local:
+git pull
+
+Trabalhar com Branches:
+git branch <nome-da-branch>
+git checkout <nome-da-branch>
+git merge <nome-da-branch>
+
+Desfazer Alterações:
+git checkout -- <nome-do-arquivo>
+git reset <nome-do-arquivo>
+git reset --soft HEAD~1
+
+Comandos Essenciais do Linux:
+
+Navegação pelo Sistema de Arquivos:
+ls
+cd <diretório>
+cd ..
+pwd
+
+Manipulação de Arquivos:
+touch <nome-do-arquivo>
+mkdir <nome-do-diretório>
+cp <origem> <destino>
+mv <origem> <destino>
+rm <nome-do-arquivo>
+rm -r <nome-do-diretório>
+
+Visualização de Arquivos:
+cat <nome-do-arquivo>
+head <nome-do-arquivo>
+tail <nome-do-arquivo>
+
+Gerenciamento de Processos:
+ps
+top
+kill <PID>
+
+Permissões e Propriedade:
+chmod <permissões> <nome-do-arquivo>
+chown <usuário>:<grupo> <nome-do-arquivo>
+
+Rede:
+ping <endereço>
+ifconfig
+
+Outros Comandos Úteis:
+df -h
+free -h
+grep <padrão> <arquivo>
+find <caminho> -name <nome-do-arquivo>
+

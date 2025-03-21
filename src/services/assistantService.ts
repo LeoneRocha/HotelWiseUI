@@ -1,9 +1,10 @@
 //AssistantService.ts
 import axios from 'axios';
-import { IAskAssistantResponse } from '../interfaces/IAskAssistantResponse';
 import EnvironmentService from './EnvironmentService';
-import { IAssistantService } from '../interfaces/services/IAssistantService';
 import { nameStorageTokenAzureAD, nameStorageTokenJWT } from '../auth-config';
+import { IAskAssistantResponse } from '../interfaces/IAskAssistantResponse';
+import { IAskAssistantRequest } from '../interfaces/IAskAssistantRequest';
+import { IAssistantService } from '../interfaces/services/IAssistantService';
 
 // Criação da instância Axios
 export const api_assistantService = axios.create({
@@ -38,8 +39,9 @@ api_assistantService.interceptors.request.use((config) => {
 });
 
 class AssistantService implements IAssistantService {
-  async getChatCompletion(criteria: { maxHotelRetrieve: number; searchTextCriteria: string }): Promise<IAskAssistantResponse[]> {
+  async getChatCompletion(criteria: IAskAssistantRequest): Promise<IAskAssistantResponse[]> {
     const response = await api_assistantService.post<IAskAssistantResponse[]>('/', criteria);
+    console.log('Resposta da API:', response.data);
     return response.data;
   }
 }

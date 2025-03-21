@@ -76,8 +76,9 @@ const Chatbot: React.FC = () => {
     setInput(''); // Clear input field
 
     try {
-      const response = await AssistantService.getChatCompletion({ maxHotelRetrieve: 0, searchTextCriteria: input });
-      const sanitizedResponse = DOMPurify.sanitize(response[0].response);
+      const response = await AssistantService.getChatCompletion({ message: input });
+      console.log('Chatbot Resposta da API:', response);
+      const sanitizedResponse = DOMPurify.sanitize(response[0].message);
       const botMessageId = getNextId() + 1;
       addMessage('bot', sanitizedResponse, botMessageId);
       setNextId((prevId) => prevId + 1);

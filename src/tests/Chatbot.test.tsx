@@ -47,7 +47,7 @@ describe('Chatbot component', () => {
     });
 
     test('sends a message and saves to history', async () => {
-        (AssistantService.getChatCompletion as jest.Mock).mockResolvedValue([{ response: 'I am fine, thank you!' }]);
+        (AssistantService.getChatCompletion as jest.Mock).mockResolvedValue([{ message: 'I am fine, thank you!' }]);
         (LocalStorageService.getItem as jest.Mock).mockReturnValue('dummy-token');
 
         render(<Chatbot />);

@@ -27,14 +27,13 @@ describe('assistantService', () => {
     mock.restore();
   });
 
-  const criteria = {
-    maxHotelRetrieve: 3,
-    searchTextCriteria: 'example search text',
+  const criteria = { 
+    message: 'example search text',
   };
 
   test('should get chat completion successfully', async () => {
     const mockData: IAskAssistantResponse[] = [
-      { response: 'This is a mock response from the assistant.' }
+      { message: 'This is a mock response from the assistant.' }
     ];
 
     mock.onPost('/').reply(200, mockData);

@@ -1,9 +1,9 @@
 export interface IAskAssistantResponse {
-    response: string;
+    message: string;
   }
 
   export interface IMessage {
      id: string;
     sender: 'user' | 'bot';
     text: string;
-}
+} 

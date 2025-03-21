@@ -40,9 +40,8 @@ const UserProfile: React.FC = () => {
 
   const handleApiTest = async () => {
     try {
-      const response = await AssistantService.getChatCompletion({
-        maxHotelRetrieve: 5,
-        searchTextCriteria: 'test'
+      const response = await AssistantService.getChatCompletion({       
+        message: 'test'
       });
       setApiResponse(response);
     } catch (err) {
