@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import DOMPurify from 'dompurify';
 import '../css/HotelSearchTemplate.css';
 import { IHotelSearchTemplateProps } from '../interfaces/IHotelSearchTemplateProps';
 import { v4 as uuidv4 } from 'uuid';
@@ -19,15 +20,32 @@ const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
 }) => {
   const [filterTerm, setFilterTerm] = useState('');
 
-  const filteredTags = tags.filter(tag => tag.toLowerCase().includes(filterTerm.toLowerCase()));
+  // Filtra as tags com base no termo digitado
+  const filteredTags = tags.filter(tag =>
+    tag.toLowerCase().includes(filterTerm.toLowerCase())
+  );
 
+  // Renderizar as estrelas com base na quantidade
   const renderStars = (stars: number) => {
     return [...Array(stars)].map(() => (
       <i key={uuidv4()} className="fas fa-star star-gold"></i>
     ));
   };
 
-  // Separando a lógica de renderização em variáveis independentes
+  // Sanitiza o conteúdo do promptResultContent
+  const sanitizedPromptContent = serviceResponse?.data?.promptResultContent
+    ? DOMPurify.sanitize(serviceResponse.data.promptResultContent)
+    : '';
+
+  // Renderiza o conteúdo HTML sanitizado
+  const renderSanitizedContent = sanitizedPromptContent && (
+    <div
+      className="sanitized-content"
+      dangerouslySetInnerHTML={{ __html: sanitizedPromptContent }}
+    ></div>
+  );
+
+  // Renderização dos diferentes estados
   const renderLoading = loading && (
     <div className="text-center my-4">
       <div className="spinner-border text-primary" role="status">
@@ -49,66 +67,118 @@ const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
   );
 
   const renderHotels = !loading && searched && !error && serviceResponse && (
-
     <div className="row w-100">
-      {serviceResponse?.data.hotelsVectorResult.length > 0 && (
+      {serviceResponse?.data.hotelsVectorResult.length > 0 &&
         serviceResponse.data.hotelsVectorResult.map(hotel => (
           <div key={hotel.hotelId} className="col-md-4 mb-4">
             <div className="card h-100">
-              <div className="card-img-top d-flex justify-content-center align-items-center" style={{ height: '200px', backgroundColor: '#f8f9fa' }}>
+              <div
+                className="card-img-top d-flex justify-content-center align-items-center"
+                style={{ height: '200px', backgroundColor: '#f8f9fa' }}
+              >
                 <i className="fas fa-hotel fa-4x text-muted"></i>
               </div>
               <div className="card-body">
-                <h5 className="card-title">{hotel.hotelName}
-                  <i className="fas fa-info-circle text-muted" title={`Pontuação: ${hotel.score}`} style={{ marginLeft: '10px' }}></i>
+                <h5 className="card-title">
+                  {hotel.hotelName}
+                  <i
+                    className="fas fa-info-circle text-muted"
+                    title={`Pontuação: ${hotel.score}`}
+                    style={{ marginLeft: '10px' }}
+                  ></i>
                 </h5>
-                <p className="card-text"><strong>Descrição:</strong> {hotel.description}</p>
-                <p className="card-text"><strong>Tags:</strong> {hotel.tags.join(', ')}</p>
-                <p className="card-text"><strong>Estrelas:</strong> {renderStars(hotel.stars)}</p>
-                <p className="card-text"><strong>Preço Inicial:</strong> R${hotel.initialRoomPrice.toFixed(2)}</p>
-                <p className="card-text"><strong>Localização:</strong> {hotel.location}, {hotel.city} - {hotel.stateCode}</p>
-                <p className="card-text"><strong>CEP:</strong> {hotel.zipCode}</p>
+                <p className="card-text">
+                  <strong>Descrição:</strong> {hotel.description}
+                </p>
+                <p className="card-text">
+                  <strong>Tags:</strong> {hotel.tags.join(', ')}
+                </p>
+                <p className="card-text">
+                  <strong>Estrelas:</strong> {renderStars(hotel.stars)}
+                </p>
+                <p className="card-text">
+                  <strong>Preço Inicial:</strong> R$
+                  {hotel.initialRoomPrice.toFixed(2)}
+                </p>
+                <p className="card-text">
+                  <strong>Localização:</strong> {hotel.location}, {hotel.city} -{' '}
+                  {hotel.stateCode}
+                </p>
+                <p className="card-text">
+                  <strong>CEP:</strong> {hotel.zipCode}
+                </p>
               </div>
             </div>
           </div>
-        ))
-      )}
-      {serviceResponse?.data.hotelsIAResult.length > 0 && (
+        ))}
+      {serviceResponse?.data.hotelsIAResult.length > 0 &&
         serviceResponse.data.hotelsIAResult.map(hotel => (
           <div key={hotel.hotelId} className="col-md-4 mb-4">
             <div className="card h-100">
-              <div className="card-img-top d-flex justify-content-center align-items-center" style={{ height: '200px', backgroundColor: '#f8f9fa' }}>
+              <div
+                className="card-img-top d-flex justify-content-center align-items-center"
+                style={{ height: '200px', backgroundColor: '#f8f9fa' }}
+              >
                 <i className="fas fa-hotel fa-4x text-muted"></i>
               </div>
               <div className="card-body">
-                <h5 className="card-title">{hotel.hotelName}
-                  <i className="fas fa-info-circle text-muted" title={`Pontuação: ${hotel.score}`} style={{ marginLeft: '10px' }}></i>
+                <h5 className="card-title">
+                  {hotel.hotelName}
+                  <i
+                    className="fas fa-info-circle text-muted"
+                    title={`Pontuação: ${hotel.score}`}
+                    style={{ marginLeft: '10px' }}
+                  ></i>
                 </h5>
-                <p className="card-text"><strong>Descrição:</strong> {hotel.description}</p>
-                <p className="card-text"><strong>Tags:</strong> {hotel.tags.join(', ')}</p>
-                <p className="card-text"><strong>Estrelas:</strong> {renderStars(hotel.stars)}</p>
-                <p className="card-text"><strong>Preço Inicial:</strong> R${hotel.initialRoomPrice.toFixed(2)}</p>
-                <p className="card-text"><strong>Localização:</strong> {hotel.location}, {hotel.city} - {hotel.stateCode}</p>
-                <p className="card-text"><strong>CEP:</strong> {hotel.zipCode}</p>
+                <p className="card-text">
+                  <strong>Descrição:</strong> {hotel.description}
+                </p>
+                <p className="card-text">
+                  <strong>Tags:</strong> {hotel.tags.join(', ')}
+                </p>
+                <p className="card-text">
+                  <strong>Estrelas:</strong> {renderStars(hotel.stars)}
+                </p>
+                <p className="card-text">
+                  <strong>Preço Inicial:</strong> R$
+                  {hotel.initialRoomPrice.toFixed(2)}
+                </p>
+                <p className="card-text">
+                  <strong>Localização:</strong> {hotel.location}, {hotel.city} -{' '}
+                  {hotel.stateCode}
+                </p>
+                <p className="card-text">
+                  <strong>CEP:</strong> {hotel.zipCode}
+                </p>
               </div>
             </div>
           </div>
-        ))
-      )}
+        ))}
     </div>
   );
 
-  const renderAlert = serviceResponse && serviceResponse.errors.length > 0 && showAlert && (
-    <div className="alert alert-danger alert-dismissible fade show mt-4" role="alert">
-      <strong>Erros:</strong>
-      <ul>
-        {serviceResponse.errors.map((err) => (
-          <li key={uuidv4()}>{err.message ?? 'Erro desconhecido'}</li>
-        ))}
-      </ul>
-      <button type="button" className="btn-close" aria-label="Close" onClick={() => setShowAlert(false)}></button>
-    </div>
-  );
+  const renderAlert =
+    serviceResponse &&
+    serviceResponse.errors.length > 0 &&
+    showAlert && (
+      <div
+        className="alert alert-danger alert-dismissible fade show mt-4"
+        role="alert"
+      >
+        <strong>Erros:</strong>
+        <ul>
+          {serviceResponse.errors.map(err => (
+            <li key={uuidv4()}>{err.message ?? 'Erro desconhecido'}</li>
+          ))}
+        </ul>
+        <button
+          type="button"
+          className="btn-close"
+          aria-label="Close"
+          onClick={() => setShowAlert(false)}
+        ></button>
+      </div>
+    );
 
   return (
     <div className="container-fluid mt-5">
@@ -120,7 +190,7 @@ const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
           type="text"
           className="form-control"
           value={searchTerm ?? ''}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={e => setSearchTerm(e.target.value)}
           placeholder="Buscar hotéis..."
         />
         <button type="submit" className="btn btn-primary">Buscar</button>
@@ -131,25 +201,31 @@ const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
           type="text"
           className="form-control mb-2"
           value={filterTerm}
-          onChange={(e) => setFilterTerm(e.target.value)}
+          onChange={e => setFilterTerm(e.target.value)}
           placeholder="Filtrar tags..."
         />
         <div className="d-flex flex-wrap">
-          {Array.isArray(filteredTags) && filteredTags.map(tag => (
-            <button
-              key={tag}
-              type="button"
-              className={`btn ${selectedTags.includes(tag) ? 'btn-primary' : 'btn-outline-primary'} m-1`}
-              onClick={() => handleTagChange(tag)}
-            >
-              {tag}
-            </button>
-          ))}
+          {Array.isArray(filteredTags) &&
+            filteredTags.map(tag => (
+              <button
+                key={tag}
+                type="button"
+                className={`btn ${
+                  selectedTags.includes(tag)
+                    ? 'btn-primary'
+                    : 'btn-outline-primary'
+                } m-1`}
+                onClick={() => handleTagChange(tag)}
+              >
+                {tag}
+              </button>
+            ))}
         </div>
       </div>
       {renderLoading}
       {renderNotSearched}
       {renderError}
+      {renderSanitizedContent}
       {renderHotels}
       {renderAlert}
     </div>
