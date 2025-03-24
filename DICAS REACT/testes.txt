@@ -1,3 +1,15 @@
+------------------ MELHORAR LAYOUT 
+
+
+
+
+
+
+
+
+
+
+
 - [System]: Você é um assistente especializado em reservas de hotel.
 - [User]: Quais são os melhores hotéis perto de São Paulo?
 - [Assistant]: Aqui estão os melhores hotéis perto de você: Hotel X, Hotel Y, Hotel Z.

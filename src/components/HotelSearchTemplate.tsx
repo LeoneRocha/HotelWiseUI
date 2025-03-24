@@ -40,7 +40,7 @@ const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
   // Renderiza o conteúdo HTML sanitizado
   const renderSanitizedContent = sanitizedPromptContent && (
     <div
-      className="sanitized-content"
+      className="sanitized-content mb-4"
       dangerouslySetInnerHTML={{ __html: sanitizedPromptContent }}
     ></div>
   );
@@ -68,6 +68,7 @@ const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
 
   const renderHotels = !loading && searched && !error && serviceResponse && (
     <div className="row w-100">
+      {renderSanitizedContent /* Exibe mensagem antes da listagem de hotéis */}
       {serviceResponse?.data.hotelsVectorResult.length > 0 &&
         serviceResponse.data.hotelsVectorResult.map(hotel => (
           <div key={hotel.hotelId} className="col-md-4 mb-4">
@@ -225,7 +226,6 @@ const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
       {renderLoading}
       {renderNotSearched}
       {renderError}
-      {renderSanitizedContent}
       {renderHotels}
       {renderAlert}
     </div>
