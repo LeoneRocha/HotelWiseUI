@@ -30,7 +30,7 @@ const HotelListTemplate: React.FC<IHotelListTemplateProps> = ({
           className="form-control"
           value={filter}
           onChange={(e) => handleFilterChange(e.target.value)}
-        />
+        /> 
       </div>
       <div className="row">
         {hotels.map(hotel => (
@@ -42,6 +42,7 @@ const HotelListTemplate: React.FC<IHotelListTemplateProps> = ({
               <div className="card-body">
                 <h5 className="card-title">{hotel.hotelName}<i className="fas fa-info-circle text-muted" title={`Id: ${hotel.hotelId}`} style={{ marginLeft: '10px' }} ></i></h5>
                 <p className="card-text">{hotel.description}</p>
+                <p className="card-text"><i className="fa-solid fa-city" title={`Id: ${hotel.hotelId}`} style={{ marginLeft: '10px' }} > </i> {hotel.city}</p>
                 <div className="d-flex justify-content-between">
                   <Link to={`/edit/${hotel.hotelId}`} className="btn btn-primary">
                     <i className="fas fa-edit"></i> Editar

@@ -36,7 +36,7 @@ const HotelList: React.FC = () => {
       setFilteredHotels(hotels); // Volta aos resultados anteriores se o filtro for limpo
     } else {
       setFilteredHotels(hotels.filter(hotel =>
-        hotel.hotelName.toLowerCase().includes(filterValue.toLowerCase())
+        hotel.hotelName.toLowerCase().includes(filterValue.toLowerCase()) ||  hotel.city.toLowerCase().includes(filterValue.toLowerCase()) 
       ));
     }
     setCurrentPage(1); // Reinicia a paginação ao filtrar

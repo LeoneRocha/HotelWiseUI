@@ -25,19 +25,16 @@ const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
     tag.toLowerCase().includes(filterTerm.toLowerCase())
   );
 
-  // Renderizar as estrelas com base na quantidade
   const renderStars = (stars: number) => {
     return [...Array(stars)].map(() => (
       <i key={uuidv4()} className="fas fa-star star-gold"></i>
     ));
   };
 
-  // Sanitiza o conteúdo do promptResultContent
   const sanitizedPromptContent = serviceResponse?.data?.promptResultContent
     ? DOMPurify.sanitize(serviceResponse.data.promptResultContent)
     : '';
 
-  // Renderiza o conteúdo HTML sanitizado
   const renderSanitizedContent = sanitizedPromptContent && (
     <div
       className="sanitized-content mb-4"
@@ -45,7 +42,6 @@ const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
     ></div>
   );
 
-  // Renderização dos diferentes estados
   const renderLoading = loading && (
     <div className="text-center my-4">
       <div className="spinner-border text-primary" role="status">
@@ -71,49 +67,6 @@ const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
       {renderSanitizedContent /* Exibe mensagem antes da listagem de hotéis */}
       {serviceResponse?.data.hotelsVectorResult.length > 0 &&
         serviceResponse.data.hotelsVectorResult.map(hotel => (
-          <div key={hotel.hotelId} className="col-md-4 mb-4">
-            <div className="card h-100">
-              <div
-                className="card-img-top d-flex justify-content-center align-items-center"
-                style={{ height: '200px', backgroundColor: '#f8f9fa' }}
-              >
-                <i className="fas fa-hotel fa-4x text-muted"></i>
-              </div>
-              <div className="card-body">
-                <h5 className="card-title">
-                  {hotel.hotelName}
-                  <i
-                    className="fas fa-info-circle text-muted"
-                    title={`Pontuação: ${hotel.score}`}
-                    style={{ marginLeft: '10px' }}
-                  ></i>
-                </h5>
-                <p className="card-text">
-                  <strong>Descrição:</strong> {hotel.description}
-                </p>
-                <p className="card-text">
-                  <strong>Tags:</strong> {hotel.tags.join(', ')}
-                </p>
-                <p className="card-text">
-                  <strong>Estrelas:</strong> {renderStars(hotel.stars)}
-                </p>
-                <p className="card-text">
-                  <strong>Preço Inicial:</strong> R$
-                  {hotel.initialRoomPrice.toFixed(2)}
-                </p>
-                <p className="card-text">
-                  <strong>Localização:</strong> {hotel.location}, {hotel.city} -{' '}
-                  {hotel.stateCode}
-                </p>
-                <p className="card-text">
-                  <strong>CEP:</strong> {hotel.zipCode}
-                </p>
-              </div>
-            </div>
-          </div>
-        ))}
-      {serviceResponse?.data.hotelsIAResult.length > 0 &&
-        serviceResponse.data.hotelsIAResult.map(hotel => (
           <div key={hotel.hotelId} className="col-md-4 mb-4">
             <div className="card h-100">
               <div
@@ -196,31 +149,53 @@ const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
         />
         <button type="submit" className="btn btn-primary">Buscar</button>
       </form>
-      <div className="mb-4">
-        <h5>Tags Disponíveis:</h5>
-        <input
-          type="text"
-          className="form-control mb-2"
-          value={filterTerm}
-          onChange={e => setFilterTerm(e.target.value)}
-          placeholder="Filtrar tags..."
-        />
-        <div className="d-flex flex-wrap">
-          {Array.isArray(filteredTags) &&
-            filteredTags.map(tag => (
-              <button
-                key={tag}
-                type="button"
-                className={`btn ${
-                  selectedTags.includes(tag)
-                    ? 'btn-primary'
-                    : 'btn-outline-primary'
-                } m-1`}
-                onClick={() => handleTagChange(tag)}
-              >
-                {tag}
-              </button>
-            ))}
+      <div className="accordion mb-4" id="tagsAccordion">
+        <div className="accordion-item">
+          <h2 className="accordion-header" id="tagsHeading">
+            <button
+              className="accordion-button"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#tagsCollapse"
+              aria-expanded="true"
+              aria-controls="tagsCollapse"
+            >
+              Adicionar filtro por tags:
+            </button>
+          </h2>
+          <div
+            id="tagsCollapse"
+            className="accordion-collapse collapse show"
+            aria-labelledby="tagsHeading"
+            data-bs-parent="#tagsAccordion"
+          >
+            <div className="accordion-body">
+              <input
+                type="text"
+                className="form-control mb-2"
+                value={filterTerm}
+                onChange={e => setFilterTerm(e.target.value)}
+                placeholder="Filtrar tags..."
+              />
+              <div className="d-flex flex-wrap">
+                {Array.isArray(filteredTags) &&
+                  filteredTags.map(tag => (
+                    <button
+                      key={tag}
+                      type="button"
+                      className={`btn ${
+                        selectedTags.includes(tag)
+                          ? 'btn-primary'
+                          : 'btn-outline-primary'
+                      } m-1`}
+                      onClick={() => handleTagChange(tag)}
+                    >
+                      {tag}
+                    </button>
+                  ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       {renderLoading}
