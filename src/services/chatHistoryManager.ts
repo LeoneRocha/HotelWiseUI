@@ -18,6 +18,18 @@ class ChatHistoryManager implements IChatHistoryManager {
   clearChatHistory(): void {
     SessionManagerService.removeFromSession(SESSION_KEY);
   }
+  getChatHistoryToken(): string {
+    let lastToken: string = ''
+    const chatHistory = this.getChatHistory();
+    // Encontra o primeiro token válido
+    if (chatHistory != undefined && chatHistory != null && chatHistory.length > 0) {
+      const validTokenMessage = chatHistory.find(
+        (msg) => msg.token && msg.token !== '' && msg.token !== null && msg.token !== undefined
+      );
+      lastToken = validTokenMessage ? validTokenMessage.token : ''; // Retorna o token ou string vazia
+    }  
+    return lastToken; // Retorna o token encontrado
+  }
 }
 
 export default new ChatHistoryManager();

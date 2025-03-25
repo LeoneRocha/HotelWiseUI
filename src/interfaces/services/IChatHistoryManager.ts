@@ -7,4 +7,5 @@ export interface IChatHistoryManager {
   saveMessage(message: IMessage): void;
   getChatHistory(): IMessage[];
   clearChatHistory(): void;
+  getChatHistoryToken(): string;
 }
