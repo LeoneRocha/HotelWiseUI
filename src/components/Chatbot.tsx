@@ -49,48 +49,64 @@ const Chatbot: React.FC = () => {
     return !!token;
   }, []);
 
-  const addMessage = useCallback((sender: 'user' | 'bot', text: string, id?: number) => {
+  const addMessage = useCallback((sender: 'user' | 'bot', text: string, token: string, id?: number) => {
     const messageId = id ?? nextId; // Use o ID fornecido ou o nextId
-    const newMessage: IMessage = { id: messageId.toString(), sender, text };
+    const newMessage: IMessage = { id: messageId.toString(), sender, text, token: token };
     setMessages((prevMessages) => [...prevMessages, newMessage]);
-    ChatHistoryManager.saveMessage(newMessage);
+    ChatHistoryManager.saveMessage(newMessage);    
     setNextId((prevId) => prevId + 1); // Incrementa o ID para a próxima mensagem
   }, [nextId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setShowAlert(false);
-    if (!input.trim()) return;
+    if (!input.trim()) return; // Ignora se o campo de entrada estiver vazio.
 
     if (!isAuthenticated()) {
-      setShowAlert(true);
-      setInput(''); // Clear input field
-      return;
+        setShowAlert(true);
+        setInput(''); // Limpa o campo de entrada.
+        return;
     }
-
-    const userMessageId = getNextId();
-    addMessage('user', input, userMessageId);
-    setNextId(userMessageId + 1);
-
-    setIsTyping(true);
-    setInput(''); // Clear input field
 
     try {
-      const response = await AssistantService.getChatCompletion({ message: input });
-      console.log('Chatbot Resposta da API:', response);
-      const sanitizedResponse = DOMPurify.sanitize(response[0].message);
-      const botMessageId = getNextId() + 1;
-      addMessage('bot', sanitizedResponse, botMessageId);
-      setNextId((prevId) => prevId + 1);
+        // Recupera o token da sessão ou envia string vazia
+         // Recupera o token da última mensagem no histórico
+         const chatHistory = ChatHistoryManager.getChatHistory();
+         const lastToken = chatHistory.length > 0 ? chatHistory[chatHistory.length - 1].token : '';
+         console.log('TOKNE >>>>>>>>>>>>>>:', lastToken);
+
+
+        // Adiciona a mensagem do usuário ao histórico
+        const userMessageId = getNextId();
+        addMessage('user', input, lastToken, userMessageId);
+        setNextId(userMessageId + 1);
+
+        setIsTyping(true);
+        setInput(''); // Limpa o campo de entrada.
+
+        // Faz a chamada à API AssistantService
+        const response = await AssistantService.getChatCompletion({ message: input, token: lastToken });
+        console.log('Chatbot Resposta da API:', response);
+
+        // Adiciona a resposta do assistente ao histórico
+        const sanitizedResponse = DOMPurify.sanitize(response[0].message); // Sanitiza a mensagem para evitar ataques XSS
+        const botMessageId = getNextId();
+        addMessage('bot', sanitizedResponse, lastToken, botMessageId);
+        setNextId((prevId) => prevId + 1);
+
     } catch (error) {
-      console.error('Erro ao consultar a API de chat completion:', error);
-      const botErrorMessageId = getNextId() + 1;
-      addMessage('bot', 'Ocorreu um erro ao consultar a API. Por favor, tente novamente.', botErrorMessageId);
-      setNextId((prevId) => prevId + 1);
+        console.error('Erro ao consultar a API de chat completion:', error);
+
+        // Adiciona uma mensagem de erro ao histórico
+        const botErrorMessageId = getNextId() +1;
+        addMessage('bot', 'Ocorreu um erro ao consultar a API. Por favor, tente novamente.', '', botErrorMessageId);
+        setNextId(botErrorMessageId + 1);
+
     } finally {
-      setIsTyping(false);
+        setIsTyping(false); // Finaliza o estado de digitação
     }
-  };
+};
+
 
   const handleClearHistory = () => {
     ChatHistoryManager.clearChatHistory();
@@ -101,8 +117,8 @@ const Chatbot: React.FC = () => {
   const toggleModal = () => {
     setShow((prevShow) => {
       if (!prevShow && messages.length === 0) {
-        addMessage('bot', 'Olá! Eu sou seu assistente virtual. Como posso ajudar você hoje?', 1);
-        addMessage('bot', 'Posso ajudar com várias tarefas, como responder perguntas, dar dicas e suporte, ou simplesmente bater um papo. O que você precisa?', 2);
+        addMessage('bot', 'Olá! Eu sou seu assistente virtual. Como posso ajudar você hoje?','', 1);
+        addMessage('bot', 'Posso ajudar com várias tarefas, como responder perguntas, dar dicas e suporte, ou simplesmente bater um papo. O que você precisa?','', 2);
         setNextId(3); // Ajustar nextId para o próximo valor após mensagens iniciais
       }
       return !prevShow;
