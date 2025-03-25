@@ -41,7 +41,7 @@ const UserProfile: React.FC = () => {
   const handleApiTest = async () => {
     try {
       const response = await AssistantService.getChatCompletion({       
-        message: 'test'
+        message: 'test', token: ''
       });
       setApiResponse(response);
     } catch (err) {

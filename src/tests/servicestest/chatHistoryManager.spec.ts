@@ -15,7 +15,7 @@ describe('chatHistoryManager', () => {
     });
 
     test('should save a message to session storage', () => {
-        const message: IMessage = { sender: 'user', text: 'Hello', id: '1' };
+        const message: IMessage = { sender: 'user', text: 'Hello', id: '1', token: '' };
         const history: IMessage[] = [];
 
         (SessionManagerService.getFromSession as jest.Mock).mockReturnValue(history);
@@ -27,8 +27,8 @@ describe('chatHistoryManager', () => {
 
     test('should retrieve chat history from session storage', () => {
         const history: IMessage[] = [
-            { sender: 'user', text: 'Hello', id: '1' },
-            { sender: 'bot', text: 'Hi there!', id : '2' },
+            { sender: 'user', text: 'Hello', id: '1' , token: '' },
+            { sender: 'bot', text: 'Hi there!', id : '2', token: '' },  
         ];
 
         (SessionManagerService.getFromSession as jest.Mock).mockReturnValue(history);

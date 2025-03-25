@@ -11,6 +11,7 @@ jest.mock('../../services/EnvironmentService', () => ({
 // Import the axios instance created in assistantService
 import AssistantService from '../../services/assistantService';
 import { api_assistantService } from '../../services/assistantService';
+import { IAskAssistantRequest } from '../../interfaces/IAskAssistantRequest';
 
 describe('assistantService', () => {
   let mock: MockAdapter;
@@ -27,13 +28,15 @@ describe('assistantService', () => {
     mock.restore();
   });
 
-  const criteria = { 
-    message: 'example search text',
+  const criteria : IAskAssistantRequest = { 
+    message: 'example search text', 
+    token: '' 
+
   };
 
   test('should get chat completion successfully', async () => {
     const mockData: IAskAssistantResponse[] = [
-      { message: 'This is a mock response from the assistant.' }
+      { message: 'This is a mock response from the assistant.' , token: '' },
     ];
 
     mock.onPost('/').reply(200, mockData);
