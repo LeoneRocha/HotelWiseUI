@@ -35,12 +35,22 @@ const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
     ? DOMPurify.sanitize(serviceResponse.data.promptResultContent)
     : '';
 
-  const renderSanitizedContent = sanitizedPromptContent && (
-    <div
-      className="sanitized-content mb-4"
+ // Substitua a renderização atual do sanitizedContent por esta versão melhorada
+const renderSanitizedContent = sanitizedPromptContent && (
+  <div className="chatbot-response mb-4">
+    <div className="chatbot-header">
+      <div className="chatbot-avatar">
+        <i className="fas fa-robot"></i>
+      </div>
+      <div className="chatbot-name">Hotel Wise Assistant</div>
+    </div>
+    <div 
+      className="chatbot-message"
       dangerouslySetInnerHTML={{ __html: sanitizedPromptContent }}
     ></div>
-  );
+  </div>
+);
+
 
   const renderLoading = loading && (
     <div className="text-center my-4">

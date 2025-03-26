@@ -5,3 +5,74 @@
   .pointsIA {
     visibility: hidden;
   }
+  /* Estilo para a resposta do chatbot */
+.chatbot-response {
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 30px;
+  transition: all 0.3s ease;
+  border-left: 4px solid #0d6efd;
+}
+
+.chatbot-response:hover {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.chatbot-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.chatbot-avatar {
+  background-color: #0d6efd;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.chatbot-name {
+  font-weight: 600;
+  color: #0d6efd;
+  font-size: 1.1rem;
+}
+
+.chatbot-message {
+  color: #333;
+  line-height: 1.6;
+  font-size: 1.05rem;
+  padding: 5px 0 5px 52px; /* Alinha o texto com o nome do chatbot */
+}
+
+/* Estilização para links dentro da mensagem */
+.chatbot-message a {
+  color: #0d6efd;
+  text-decoration: none;
+  border-bottom: 1px dashed #0d6efd;
+}
+
+.chatbot-message a:hover {
+  border-bottom: 1px solid #0d6efd;
+}
+
+/* Estilização para parágrafos dentro da mensagem */
+.chatbot-message p {
+  margin-bottom: 12px;
+}
+
+/* Animação de entrada suave */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.chatbot-response {
+  animation: fadeIn 0.5s ease-out forwards;
+}
