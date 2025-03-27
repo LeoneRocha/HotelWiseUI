@@ -31,6 +31,7 @@ const ChatbotModal: React.FC<IChatbotModalProps> = ({
         onChange={(e) => setInput(e.target.value)}
         placeholder="Digite sua mensagem..."
         className="chat-input"
+        maxLength={500}
         aria-label="Digite sua mensagem"
       />
       <button type="submit">Enviar</button>

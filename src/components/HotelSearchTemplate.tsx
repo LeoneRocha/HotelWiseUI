@@ -155,6 +155,7 @@ const renderSanitizedContent = sanitizedPromptContent && (
           className="form-control"
           value={searchTerm ?? ''}
           onChange={e => setSearchTerm(e.target.value)}
+          maxLength={255}
           placeholder="Buscar hotéis..."
         />
         <button type="submit" className="btn btn-primary">Buscar</button>
