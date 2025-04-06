@@ -1,5 +1,6 @@
 import { IServiceResponse } from "../../GeneralInterfaces";
-import { IRoom } from "../../model/IRoom"; 
+import { IRoom } from "../../model/Hotel/IRoom";
+
 
 export interface IRoomService {
   getById(id: number): Promise<IServiceResponse<IRoom>>;          // Busca quarto pelo ID

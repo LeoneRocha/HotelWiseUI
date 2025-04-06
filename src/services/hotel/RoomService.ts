@@ -1,5 +1,5 @@
-import { IServiceResponse } from "../../interfaces/GeneralInterfaces";
-import { IRoom } from "../../interfaces/model/IRoom";
+import { IServiceResponse } from "../../interfaces/GeneralInterfaces"; 
+import { IRoom } from "../../interfaces/model/Hotel/IRoom";
 import { IRoomService } from "../../interfaces/services/hotel/IRoomService";
 import { GenericService } from "../Generic/GenericService";
 import EnvironmentService from '../general/EnvironmentService';

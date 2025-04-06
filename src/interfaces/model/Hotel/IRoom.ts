@@ -1,5 +1,5 @@
-import { RoomStatus } from "../../enums/hotel/RoomStatus";
-import { RoomType } from "../../enums/hotel/RoomType";
+import { RoomStatus } from "../../../enums/hotel/RoomStatus";
+import { RoomType } from "../../../enums/hotel/RoomType";
  
 export interface IRoom {
   id: number;
