@@ -17,20 +17,26 @@ const HotelSearch: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchTags = async () => {
-      try {
-        const fetchedTags = await HotelService.getTags();
-        setTags(fetchedTags.data);
-      } catch (err) {
-        if (EnvironmentService.isNotTestEnvironment()) {
-          console.error('Erro ao buscar tags:', err);
-        }
+  const fetchTags = async () => {
+    try {
+      const fetchedTags = await HotelService.getTags();
+      setTags(fetchedTags); // Atualizar estado com os dados retornados
+      console.log('Resposta da API:', fetchedTags); // Verificar o retorno completo da API
+    } catch (err) {
+      if (EnvironmentService.isNotTestEnvironment()) {
+        console.error('Erro ao buscar tags:', err);
       }
-    };
-
+    }
+  }; 
+  useEffect(() => {
+    
     fetchTags();
   }, []);
+
+  useEffect(() => {
+    console.log("Tags carregadas no componente pai:", tags);
+  }, [tags]);
+  
 
   const handleTagChange = (tag: string) => {
     setSelectedTags(prevTags =>

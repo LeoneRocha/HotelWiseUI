@@ -1,6 +1,6 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'; 
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import HotelService from '../../../services/hotel/hotelService';
-import { IServiceResponse } from '../../../interfaces/GeneralInterfaces'; 
+import { IServiceResponse } from '../../../interfaces/GeneralInterfaces';
 import { IHotelSemanticResult } from '../../../interfaces/model/Hotel/IHotelSemanticResult';
 import HotelSearch from '../../../components/hotel/HotelSearch';
 
@@ -14,13 +14,7 @@ jest.mock('../../../services/hotel/hotelService', () => ({
   getTags: jest.fn(),
 }));
 
-const mockTags: IServiceResponse<string[]> = {
-  data: ['Tag1', 'Tag2', 'Tag3'],
-  success: true,
-  message: 'Tags loaded successfully',
-  errors: [],
-  unauthorized: false,
-};
+const mockTags: string[] = ['Tag1', 'Tag2', 'Tag3'];
 
 const mockServiceResponse: IServiceResponse<IHotelSemanticResult> = {
   data: {
@@ -41,7 +35,7 @@ describe('HotelSearch component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     (HotelService.getTags as jest.Mock).mockResolvedValue(mockTags);
-    jest.spyOn(console, 'warn').mockImplementation(() => {});
+    jest.spyOn(console, 'warn').mockImplementation(() => { });
   });
 
   test('fetches and displays tags', async () => {

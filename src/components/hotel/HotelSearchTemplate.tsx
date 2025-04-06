@@ -1,29 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DOMPurify from 'dompurify';
-import '../../css/HotelSearchTemplate.css'; 
+import '../../css/HotelSearchTemplate.css';
 import { v4 as uuidv4 } from 'uuid';
 import { IHotelSearchTemplateProps } from '../../interfaces/DTO/Hotel/IHotelSearchTemplateProps';
 
 const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
-  searchTerm,
-  setSearchTerm,
+  searchTerm = '', // Garante valor padrão para `searchTerm`
+  setSearchTerm = () => { }, // Função vazia padrão para `setSearchTerm`
   serviceResponse,
-  searched,
-  error,
-  loading,
-  handleSearch,
-  showAlert,
-  setShowAlert,
-  tags,
-  selectedTags,
-  handleTagChange,
+  searched = false, // Valor padrão
+  error = '', // Valor padrão
+  loading = false, // Valor padrão
+  handleSearch = () => { }, // Função vazia padrão para `handleSearch`
+  showAlert = false, // Valor padrão
+  setShowAlert = () => { }, // Função vazia padrão para `setShowAlert`
+  tags = [], // Garante que `tags` seja sempre um array
+  selectedTags = [], // Garante que `selectedTags` seja sempre um array
+  handleTagChange = () => { }, // Função vazia padrão para `handleTagChange`
 }) => {
   const [filterTerm, setFilterTerm] = useState('');
 
+
+  useEffect(() => {
+    console.log("Tags recebidas:", tags);
+  }, [tags]);
+
   // Filtra as tags com base no termo digitado
-  const filteredTags = tags.filter(tag =>
-    tag.toLowerCase().includes(filterTerm.toLowerCase())
-  );
+  const filteredTags = Array.isArray(tags) // Verifica se `tags` é um array
+    ? tags.filter(tag =>
+      tag.toLowerCase().includes(filterTerm.toLowerCase())
+    )
+    : [];
 
   const renderStars = (stars: number) => {
     return [...Array(stars)].map(() => (
@@ -35,22 +42,20 @@ const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
     ? DOMPurify.sanitize(serviceResponse.data.promptResultContent)
     : '';
 
- // Substitua a renderização atual do sanitizedContent por esta versão melhorada
-const renderSanitizedContent = sanitizedPromptContent && (
-  <div className="chatbot-response mb-4">
-    <div className="chatbot-header">
-      <div className="chatbot-avatar">
-        <i className="fas fa-robot"></i>
+  const renderSanitizedContent = sanitizedPromptContent && (
+    <div className="chatbot-response mb-4">
+      <div className="chatbot-header">
+        <div className="chatbot-avatar">
+          <i className="fas fa-robot"></i>
+        </div>
+        <div className="chatbot-name">Hotel Wise Assistant</div>
       </div>
-      <div className="chatbot-name">Hotel Wise Assistant</div>
+      <div
+        className="chatbot-message"
+        dangerouslySetInnerHTML={{ __html: sanitizedPromptContent }}
+      ></div>
     </div>
-    <div 
-      className="chatbot-message"
-      dangerouslySetInnerHTML={{ __html: sanitizedPromptContent }}
-    ></div>
-  </div>
-);
-
+  );
 
   const renderLoading = loading && (
     <div className="text-center my-4">
@@ -153,7 +158,7 @@ const renderSanitizedContent = sanitizedPromptContent && (
         <input
           type="text"
           className="form-control"
-          value={searchTerm ?? ''}
+          value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
           maxLength={255}
           placeholder="Buscar hotéis..."
@@ -189,21 +194,19 @@ const renderSanitizedContent = sanitizedPromptContent && (
                 placeholder="Filtrar tags..."
               />
               <div className="d-flex flex-wrap">
-                {Array.isArray(filteredTags) &&
-                  filteredTags.map(tag => (
-                    <button
-                      key={tag}
-                      type="button"
-                      className={`btn ${
-                        selectedTags.includes(tag)
-                          ? 'btn-primary'
-                          : 'btn-outline-primary'
+                {filteredTags.map(tag => (
+                  <button
+                    key={tag}
+                    type="button"
+                    className={`btn ${selectedTags.includes(tag)
+                        ? 'btn-primary'
+                        : 'btn-outline-primary'
                       } m-1`}
-                      onClick={() => handleTagChange(tag)}
-                    >
-                      {tag}
-                    </button>
-                  ))}
+                    onClick={() => handleTagChange(tag)}
+                  >
+                    {tag}
+                  </button>
+                ))}
               </div>
             </div>
           </div>

@@ -12,5 +12,5 @@ export interface IHotelService {
   addVectorById(id: number): Promise<IServiceResponse<IHotel>>; // Adiciona hotel ao vetor
   semanticSearch(criteria: ISearchCriteria): Promise<IServiceResponse<IHotelSemanticResult>>; // Busca semântica
   generateHotelByIA(): Promise<IServiceResponse<IHotel>>;       // Gera hotel com IA
-  getTags(): Promise<IServiceResponse<string[]>>;               // Busca tags
+  getTags(): Promise<string[]>;               // Busca tags
 }

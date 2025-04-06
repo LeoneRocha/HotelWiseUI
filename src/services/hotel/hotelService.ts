@@ -37,11 +37,12 @@ class HotelService extends GenericService<IHotel> implements IHotelService {
     throw new Error(response.data.message || 'Erro ao gerar hotel por IA');
   }
 
-  async getTags(): Promise<IServiceResponse<string[]>> {
-    const response = await this.api.get<IServiceResponse<string[]>>(`${this.endpoint}/tags`);
+  async getTags(): Promise<string[]> {
+    const response = await this.api.get<string[]>(`${this.endpoint}/tags`);
+    console.log('Resposta da API XXX:', response.data); // Verificar o retorno completo da API    
     if (response.data) {
-      return response.data;
-    }
+      return response.data ?? [];
+    }    
     throw new Error('Erro ao buscar tags');
   }
 }
