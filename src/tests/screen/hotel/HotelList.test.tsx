@@ -1,8 +1,8 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import HotelList from '../../../components/HotelList'; // Ajuste o caminho conforme necessário
+import { MemoryRouter, Route, Routes } from 'react-router-dom'; 
 import HotelService from '../../../services/hotel/hotelService'; 
 import { IHotel } from '../../../interfaces/model/Hotel/IHotel';
+import HotelList from '../../../components/hotel/HotelList';
 
 
 // Mock do arquivo CSS para evitar problemas durante o teste

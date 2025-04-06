@@ -1,10 +1,10 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import HotelListTemplate from '../../../components/HotelListTemplate'; // Ajuste o caminho conforme necessário 
+import { MemoryRouter } from 'react-router-dom'; 
 import { IHotelListTemplateProps } from '../../../interfaces/DTO/Hotel/IHotelListTemplateProps';
+import HotelListTemplate from '../../../components/hotel/HotelListTemplate';
 
 // Mock do arquivo CSS para evitar problemas durante o teste
-jest.mock('../css/HotelList.css', () => ({}));
+jest.mock('../../css/HotelList.css', () => ({}));
 
 const mockHotels = [
     { hotelId: 1, hotelName: 'Hotel One', description: 'Description One', tags: [], stars: 5, initialRoomPrice: 100, zipCode: '', location: '', city: '', stateCode: '', score: 8.9, isHotelInVectorStore: false },

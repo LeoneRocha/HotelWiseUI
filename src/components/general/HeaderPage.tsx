@@ -1,6 +1,5 @@
 import React from 'react';
-import '../App.css';
-import '../css/HeaderPage.css'; // Importando CSS específico do header
+import '../../css/HeaderPage.css';
 
 const HeaderPage: React.FC = () => {
   return (

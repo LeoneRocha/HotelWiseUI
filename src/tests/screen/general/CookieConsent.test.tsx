@@ -1,6 +1,6 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import CookieConsent from '../../../components/CookieConsent'; // Ajuste o caminho conforme necessário
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'; 
 import LocalStorageService from '../../../services/general/localStorageService';
+import CookieConsent from '../../../components/general/CookieConsent';
 
 // Mock do arquivo CSS para evitar problemas durante o teste
 jest.mock('../../../css/CookieConsent.css', () => ({}));

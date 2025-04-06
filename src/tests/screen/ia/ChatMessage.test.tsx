@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import ChatMessage from '../../../components/ChatMessage';
+import ChatMessage from '../../../components/iaassistent/ChatMessage';
 import { IMessage } from '../../../interfaces/model/IA/IAskAssistantResponse';
 
 

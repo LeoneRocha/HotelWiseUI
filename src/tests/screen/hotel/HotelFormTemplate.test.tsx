@@ -1,9 +1,9 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import HotelFormTemplate from '../../../components/HotelFormTemplate'; // Ajuste o caminho conforme necessário 
+import { render, screen, fireEvent } from '@testing-library/react'; 
 import { IHotelFormTemplateProps } from '../../../interfaces/DTO/Hotel/IHotelFormTemplateProps';
+import HotelFormTemplate from '../../../components/hotel/HotelFormTemplate';
 
 // Mock do arquivo CSS para evitar problemas durante o teste
-jest.mock('../css/HotelFormTemplate.css', () => ({}));
+jest.mock('../../css/HotelFormTemplate.css', () => ({}));
 
 const mockFormData = {
     hotelId: 0,

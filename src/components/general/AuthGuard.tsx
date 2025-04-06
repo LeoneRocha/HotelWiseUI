@@ -1,9 +1,9 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import LocalStorageService from '../services/general/localStorageService';
-import SecurityService from '../services/general/securityService';
-import { IAuthGuardProps } from '../interfaces/DTO/IAuthGuardProps';
-import { nameStorageTokenJWT } from '../auth-config';
+import LocalStorageService from '../../services/general/localStorageService';
+import SecurityService from '../../services/general/securityService';
+import { IAuthGuardProps } from '../../interfaces/DTO/IAuthGuardProps';
+import { nameStorageTokenJWT } from '../../auth-config';
 
 const AuthGuard: React.FC<IAuthGuardProps> = ({ children }) => {
   const token = LocalStorageService.getItem(nameStorageTokenJWT);

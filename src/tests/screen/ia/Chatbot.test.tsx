@@ -2,7 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import ChatHistoryManager from '../../../services/iainteference/chatHistoryManager';
 import AssistantService from '../../../services/iainteference/assistantService';
-import Chatbot from '../../../components/Chatbot';
+import Chatbot from '../../../components/iaassistent/Chatbot';
 import LocalStorageService from '../../../services/general/localStorageService';
 import { IMessage } from '../../../interfaces/model/IA/IAskAssistantResponse';
 

@@ -1,12 +1,12 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import HotelSearch from '../../../components/HotelSearch'; // Ajuste o caminho conforme necessário
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'; 
 import HotelService from '../../../services/hotel/hotelService';
 import { IServiceResponse } from '../../../interfaces/GeneralInterfaces'; 
 import { IHotelSemanticResult } from '../../../interfaces/model/Hotel/IHotelSemanticResult';
+import HotelSearch from '../../../components/hotel/HotelSearch';
 
 // Mock do arquivo CSS para evitar problemas durante o teste
-jest.mock('../css/HotelSearch.css', () => ({}));
-jest.mock('../css/HotelSearchTemplate.css', () => ({}));
+jest.mock('../../css/HotelSearch.css', () => ({}));
+jest.mock('../../css/HotelSearchTemplate.css', () => ({}));
 
 // Mock dos serviços
 jest.mock('../../../services/hotel/hotelService', () => ({

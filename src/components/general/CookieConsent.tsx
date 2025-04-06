@@ -1,7 +1,7 @@
 // src/components/CookieConsent.tsx
 import React, { useState, useEffect } from 'react';
-import LocalStorageService from '../services/general/localStorageService';
-import '../css/CookieConsent.css';
+import LocalStorageService from '../../services/general/localStorageService';
+import '../../css/CookieConsent.css'; 
 
 const CookieConsent: React.FC = () => {
   const [visible, setVisible] = useState(false);

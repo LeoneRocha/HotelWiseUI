@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
-import HotelService from '../services/hotel/hotelService'; 
+import HotelService from '../../services/hotel/hotelService'; 
 import HotelListTemplate from './HotelListTemplate';
-import { IHotel } from '../interfaces/model/Hotel/IHotel';
+import { IHotel } from '../../interfaces/model/Hotel/IHotel';
 
 const HotelList: React.FC = () => {
   const [hotels, setHotels] = useState<IHotel[]>([]);

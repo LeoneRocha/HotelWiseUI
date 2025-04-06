@@ -1,15 +1,15 @@
 // Chatbot.tsx
 import React, { useState, useEffect, useCallback } from 'react';
 import Draggable from 'react-draggable';
-import ChatHistoryManager from '../services/iainteference/chatHistoryManager';
-import AssistantService from '../services/iainteference/assistantService';
+import ChatHistoryManager from '../../services/iainteference/chatHistoryManager';
+import AssistantService from '../../services/iainteference/assistantService';
 import Button from 'react-bootstrap/Button';
 import ChatbotModal from './ChatbotModal';
-import '../css/Chatbot.css';
+import '../../css/Chatbot.css';
 import DOMPurify from 'dompurify';
-import { IMessage } from '../interfaces/model/IA/IAskAssistantResponse';
-import LocalStorageService from '../services/general/localStorageService';
-import { nameStorageTokenJWT } from '../auth-config';
+import { IMessage } from '../../interfaces/model/IA/IAskAssistantResponse';
+import LocalStorageService from '../../services/general/localStorageService';
+import { nameStorageTokenJWT } from '../../auth-config';
 
 const Chatbot: React.FC = () => {
   const [input, setInput] = useState('');

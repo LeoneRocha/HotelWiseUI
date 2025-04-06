@@ -1,6 +1,6 @@
 import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import ChatbotModal from '../../../components/ChatbotModal';
+import ChatbotModal from '../../../components/iaassistent/ChatbotModal';
 import { IMessage } from '../../../interfaces/model/IA/IAskAssistantResponse';
 
 describe('ChatbotModal component', () => {

@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import AppRoutes from '../../../routes'; 
 
 // Mock do UserProfile
-jest.mock('../../../components/UserProfile', () => {
+jest.mock('../../../components/general/UserProfile', () => {
   return function DummyUserProfile() {
     return <div>UserProfile</div>;
   };

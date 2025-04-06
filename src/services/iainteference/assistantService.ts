@@ -2,9 +2,9 @@
 import axios from 'axios'; 
 import { nameStorageTokenAzureAD, nameStorageTokenJWT } from '../../auth-config';
 import { IAskAssistantResponse } from '../../interfaces/model/IA/IAskAssistantResponse';
-import { IAskAssistantRequest } from '../../interfaces/model/IA/IAskAssistantRequest';
-import { IAssistantService } from '../../interfaces/services/IAssistantService';
+import { IAskAssistantRequest } from '../../interfaces/model/IA/IAskAssistantRequest'; 
 import EnvironmentService from '../general/EnvironmentService';
+import { IAssistantService } from '../../interfaces/services/ia/IAssistantService';
 
 // Criação da instância Axios
 export const api_assistantService = axios.create({

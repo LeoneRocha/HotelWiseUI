@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AuthenticateService from '../services/authService';
-import SecurityService from '../services/general/securityService';
-import LocalStorageService from '../services/general/localStorageService';
+import AuthenticateService from '../../services/authService';
+import SecurityService from '../../services/general/securityService';
+import LocalStorageService from '../../services/general/localStorageService';
 import LoginFormTemplate from './LoginFormTemplate';
 import { useMsal } from '@azure/msal-react';
-import '../css/Login.css';
-import { loginApiRequest, nameStorageTokenJWT } from '../auth-config';
+import '../../css/Login.css';
+import { loginApiRequest, nameStorageTokenJWT } from '../../auth-config';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');

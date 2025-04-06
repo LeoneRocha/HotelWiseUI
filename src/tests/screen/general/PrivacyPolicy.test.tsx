@@ -1,8 +1,8 @@
-import { render, screen } from '@testing-library/react';
-import PrivacyPolicy from '../../../components/PrivacyPolicy'; // Ajuste o caminho conforme necessário
+import { render, screen } from '@testing-library/react'; 
+import PrivacyPolicy from '../../../components/general/PrivacyPolicy';
 
 // Mock do arquivo CSS para evitar problemas durante o teste
-jest.mock('../css/PrivacyPolicy.css', () => ({}));
+jest.mock('../../css/PrivacyPolicy.css', () => ({}));
 
 describe('PrivacyPolicy component', () => {
   test('renders the PrivacyPolicy component with correct headings and texts', () => {

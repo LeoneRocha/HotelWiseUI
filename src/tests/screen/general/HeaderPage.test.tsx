@@ -1,9 +1,9 @@
-import { render, screen } from '@testing-library/react';
-import HeaderPage from '../../../components/HeaderPage'; // Ajuste o caminho conforme necessário
+import { render, screen } from '@testing-library/react'; 
+import HeaderPage from '../../../components/general/HeaderPage';
 
 // Mock dos arquivos CSS para evitar problemas durante o teste
 jest.mock('../App.css', () => ({}));
-jest.mock('../css/HeaderPage.css', () => ({}));
+jest.mock('../../css/HeaderPage.css', () => ({}));
 
 describe('HeaderPage component', () => {
   test('renders the HeaderPage component with correct text', () => {

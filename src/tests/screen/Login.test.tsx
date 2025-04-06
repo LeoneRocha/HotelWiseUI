@@ -1,10 +1,10 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import Login from '../../components/Login'; // Ajuste o caminho conforme necessário
+import { useNavigate } from 'react-router-dom'; 
 import AuthenticateService from '../../services/authService';
 import SecurityService from '../../services/general/securityService';
 import LocalStorageService from '../../services/general/localStorageService';
+import Login from '../../components/general/Login';
 
 // Mock do arquivo CSS para evitar problemas durante o teste
 jest.mock('../../../css/Login.css', () => ({}));

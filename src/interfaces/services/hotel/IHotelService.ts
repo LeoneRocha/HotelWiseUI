@@ -1,7 +1,7 @@
-import { IServiceResponse } from "../GeneralInterfaces"; 
-import { IHotel } from "../model/Hotel/IHotel";
-import { IHotelSemanticResult } from "../model/Hotel/IHotelSemanticResult";
-import { ISearchCriteria } from "../model/IA/ISearchCriteria";
+import { IServiceResponse } from "../../GeneralInterfaces"; 
+import { IHotel } from "../../model/Hotel/IHotel";
+import { IHotelSemanticResult } from "../../model/Hotel/IHotelSemanticResult";
+import { ISearchCriteria } from "../../model/IA/ISearchCriteria";
    export interface IHotelService {
   getAll(): Promise<IHotel[]>;
   getById(id: number): Promise<IHotel>;

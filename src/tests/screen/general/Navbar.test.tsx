@@ -1,8 +1,8 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { MemoryRouter, useNavigate } from 'react-router-dom';
-import Navbar from '../../../components/Navbar'; // Ajuste o caminho conforme necessário
+import { MemoryRouter, useNavigate } from 'react-router-dom'; 
 import LocalStorageService from '../../../services/general/localStorageService';
 import { nameStorageTokenJWT } from '../../../auth-config';
+import Navbar from '../../../components/general/Navbar';
  
 // Mock do arquivo CSS para evitar problemas durante o teste
 jest.mock('../../../css/Navbar.css', () => ({}));

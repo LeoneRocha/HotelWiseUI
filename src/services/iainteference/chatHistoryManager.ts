@@ -1,6 +1,6 @@
 // services/chatHistoryManager.ts
-import { IMessage } from '../../interfaces/model/IA/IAskAssistantResponse';
-import { IChatHistoryManager } from '../../interfaces/services/IChatHistoryManager';
+import { IMessage } from '../../interfaces/model/IA/IAskAssistantResponse'; 
+import { IChatHistoryManager } from '../../interfaces/services/ia/IChatHistoryManager';
 import SessionManagerService from '../general/sessionManagerService';
 
 const SESSION_KEY = 'chatHistory';

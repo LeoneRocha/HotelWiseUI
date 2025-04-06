@@ -1,15 +1,15 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import HotelList from './components/HotelList';
-import HotelForm from './components/HotelForm';
-import HotelSearch from './components/HotelSearch';
-import Login from './components/Login';
-import NotFound from './components/NotFound';
-import AccessDenied from './components/AccessDenied'; // Novo componente
-import AuthGuard from './components/AuthGuard'; 
-import PrivacyPolicy from './components/PrivacyPolicy';
-import Callback from './components/Callback';
-import UserProfile from './components/UserProfile';
+import HotelList from './components/hotel/HotelList';
+import HotelForm from './components/hotel/HotelForm';
+import HotelSearch from './components/hotel/HotelSearch';
+import Login from './components/general/Login';
+import NotFound from './components/general/NotFound';
+import AccessDenied from './components/general/AccessDenied'; // Novo componente
+import AuthGuard from './components/general/AuthGuard'; 
+import PrivacyPolicy from './components/general/PrivacyPolicy';
+import Callback from './components/general/Callback';
+import UserProfile from './components/general/UserProfile';
 
 const AppRoutes: React.FC = () => {
   const handleSave = () => {

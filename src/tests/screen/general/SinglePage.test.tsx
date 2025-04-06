@@ -15,7 +15,7 @@ jest.mock('react-router-dom', () => ({
     useNavigate: jest.fn(),
 }));
 
-jest.mock('../../../components/UserProfile', () => {
+jest.mock('../../../components/general/UserProfile', () => {
     return function DummyUserProfile() {
       return <div>UserProfile</div>;
     };

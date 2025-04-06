@@ -1,5 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react'; 
-import { SimpleButton } from '../../../components/SimpleButton';
+import { render, screen, fireEvent } from '@testing-library/react';  
+import { SimpleButton } from '../../../components/general/SimpleButton';
 
 describe('SimpleButton', () => {
     it('renders the button with the given label', () => {

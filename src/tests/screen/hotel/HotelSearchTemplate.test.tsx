@@ -1,11 +1,11 @@
-import { render, screen } from '@testing-library/react';
-import HotelSearchTemplate from '../../../components/HotelSearchTemplate'; 
+import { render, screen } from '@testing-library/react'; 
 import { IServiceResponse } from '../../../interfaces/GeneralInterfaces'; 
 import { IHotelSemanticResult } from '../../../interfaces/model/Hotel/IHotelSemanticResult';
 import { IHotelSearchTemplateProps } from '../../../interfaces/DTO/Hotel/IHotelSearchTemplateProps';
+import HotelSearchTemplate from '../../../components/hotel/HotelSearchTemplate';
 
 // Mock do arquivo CSS para evitar problemas durante o teste
-jest.mock('../css/HotelSearchTemplate.css', () => ({}));
+jest.mock('../../css/HotelSearchTemplate.css', () => ({}));
 
 const mockServiceResponse: IServiceResponse<IHotelSemanticResult> = {
     data: {

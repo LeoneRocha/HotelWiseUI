@@ -1,9 +1,10 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import NotFound from '../../../components/NotFound'; // Ajuste o caminho conforme necessário
+import NotFound from '../../../components/general/NotFound';
+
 
 // Mock do arquivo CSS para evitar problemas durante o teste
-jest.mock('../css/NotFound.css', () => ({}));
+jest.mock('../../css/NotFound.css', () => ({}));
 
 describe('NotFound component', () => {
     beforeEach(() => {

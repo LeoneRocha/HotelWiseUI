@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
-import LocalStorageService from '../services/general/localStorageService'; 
+import LocalStorageService from '../../services/general/localStorageService'; 
 import NavbarTemplate from './NavbarTemplate';
-import { nameStorageTokenJWT } from '../auth-config';
+import { nameStorageTokenJWT } from '../../auth-config';
 
 const Navbar: React.FC = () => { 
   const [showLogoutModal, setShowLogoutModal] = useState(false);

@@ -1,5 +1,5 @@
  
-import { IHotelService } from '../../interfaces/services/IHotelService'; 
+import { IHotelService } from '../../interfaces/services/hotel/IHotelService'; 
 import { ISearchCriteria } from '../../interfaces/model/IA/ISearchCriteria'; 
 
 import { GenericService } from '../Generic/GenericService';

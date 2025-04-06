@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import AccessDenied from '../../../components/AccessDenied'; // Ajuste o caminho conforme necessário
+import AccessDenied from '../../../components/general/AccessDenied'; // Ajuste o caminho conforme necessário
 
 // Mock do arquivo CSS para evitar problemas durante o teste
 jest.mock('../../css/AccessDenied.css', () => ({}));
