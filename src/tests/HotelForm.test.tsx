@@ -4,12 +4,18 @@ import HotelForm from '../components/HotelForm'; // Ajuste o caminho conforme ne
 import HotelService from '../services/hotelService';
 
 jest.mock('../css/HotelFormTemplate.css', () => ({}));
-// Mock dos serviços
+// Mock dos serviços 
+
 jest.mock('../services/hotelService', () => ({
-    getHotelById: jest.fn(),
-    createHotel: jest.fn(),
-    updateHotel: jest.fn(),
-}));
+    getAll: jest.fn(),
+    delete: jest.fn(),
+    getById: jest.fn(),
+    create: jest.fn(),
+    update: jest.fn(),
+    generateHotelByIA: jest.fn(),
+    addVectorById: jest.fn(),
+  }));
+
 
 describe('HotelForm component', () => {
     beforeEach(() => {
@@ -54,7 +60,7 @@ describe('HotelForm component', () => {
             isHotelInVectorStore: false,
         };
 
-        (HotelService.getHotelById as jest.Mock).mockResolvedValue(mockHotel);
+        (HotelService.getById as jest.Mock).mockResolvedValue(mockHotel);
 
         renderComponent(['/1']);
 
@@ -66,7 +72,7 @@ describe('HotelForm component', () => {
     });
 
     test('creates a new hotel', async () => {
-        (HotelService.createHotel as jest.Mock).mockResolvedValue({});
+        (HotelService.create as jest.Mock).mockResolvedValue({});
 
         renderComponent();
 
@@ -79,7 +85,7 @@ describe('HotelForm component', () => {
 
         // Verifica se o hotel foi criado
         await waitFor(() => {
-            expect(HotelService.createHotel).toHaveBeenCalled();
+            expect(HotelService.create).toHaveBeenCalled();
             expect(screen.getByText('Hotel criado com sucesso!')).toBeInTheDocument();
         });
     });
@@ -100,7 +106,7 @@ describe('HotelForm component', () => {
             isHotelInVectorStore: false,
         };
 
-        (HotelService.getHotelById as jest.Mock).mockResolvedValue(mockHotel);
+        (HotelService.getById as jest.Mock).mockResolvedValue(mockHotel);
 
         renderComponent(['/1']);
 
@@ -114,13 +120,13 @@ describe('HotelForm component', () => {
 
         // Verifica se o hotel foi atualizado
         await waitFor(() => {
-            expect(HotelService.updateHotel).toHaveBeenCalled();
+            expect(HotelService.update).toHaveBeenCalled();
             expect(screen.getByText('Hotel atualizado com sucesso!')).toBeInTheDocument();
         });
     });
 
     test('handles errors during form submission', async () => {
-        (HotelService.createHotel as jest.Mock).mockRejectedValue(new Error('Create Hotel Error'));
+        (HotelService.create as jest.Mock).mockRejectedValue(new Error('Create Hotel Error'));
 
         renderComponent();
 

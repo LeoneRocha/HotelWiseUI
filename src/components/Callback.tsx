@@ -3,6 +3,7 @@ import { useMsal } from '@azure/msal-react';
 import { useNavigate } from 'react-router-dom';
 import LocalStorageService from '../services/localStorageService';
 import { nameStorageTokenAzureAD } from '../auth-config';
+import EnvironmentService from '../services/EnvironmentService';
 
 const Callback: React.FC = () => {
   const { instance } = useMsal();
@@ -12,12 +13,14 @@ const Callback: React.FC = () => {
     instance.handleRedirectPromise().then((response) => {
       if (response && response.accessToken) {
         // Armazenando o token no LocalStorage
-        LocalStorageService.setItem(nameStorageTokenAzureAD, response.accessToken); 
+        LocalStorageService.setItem(nameStorageTokenAzureAD, response.accessToken);
         // Redirecionar para a página de perfil
-        navigate('/login');  
+        navigate('/login');
       }
     }).catch((error) => {
-      console.error(error);
+      if (EnvironmentService.isNotTestEnvironment()) {
+        console.error(error);
+      } 
     });
   }, [instance, navigate]);
 

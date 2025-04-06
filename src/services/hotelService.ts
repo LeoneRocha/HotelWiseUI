@@ -1,99 +1,45 @@
-// services/HotelService.ts
-import axios from 'axios';
-import { IHotel } from '../interfaces/IHotel';
-import { IServiceResponse } from '../interfaces/IAuthTypes';
+ 
+import { IHotelService } from '../interfaces/services/IHotelService';
+import { IHotel } from '../interfaces/IHotel'; 
 import { ISearchCriteria } from '../interfaces/ISearchCriteria';
 import { IHotelSemanticResult } from '../interfaces/IHotelSemanticResult';
-import EnvironmentService from './EnvironmentService'; 
-import { IHotelService } from '../interfaces/services/IHotelService';
-import { nameStorageTokenJWT } from '../auth-config';
+import EnvironmentService from './EnvironmentService';
+import { GenericService } from './Generic/GenericService';
+import { IServiceResponse } from '../interfaces/IAuthTypes';
 
-// Criação da instância Axios
-export const api_hotelservice = axios.create({
-  baseURL: EnvironmentService.getApiBaseUrl() + '/Hotels/v1',
-});
+const BASE_URL = EnvironmentService.getApiBaseUrl();
 
-// Interceptor para adicionar o token de autenticação
-api_hotelservice.interceptors.request.use((config) => {
-  const token = localStorage.getItem(nameStorageTokenJWT);
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
-class HotelService implements IHotelService {
-  async getAllHotels(): Promise<IHotel[]> {
-    const response = await api_hotelservice.get<IServiceResponse<IHotel[]>>('/');
-    if (response.data.success) {
-      return response.data.data;
-    } else {
-      throw new Error(response.data.message || 'Erro ao buscar hotéis');
-    }
-  }
-
-  async getHotelById(id: number): Promise<IHotel> {
-    const response = await api_hotelservice.get<IServiceResponse<IHotel>>(`/${id}`);
-    if (response.data.success) {
-      return response.data.data;
-    } else {
-      throw new Error(response.data.message || 'Erro ao buscar hotel');
-    }
+class HotelService extends GenericService<IHotel> implements IHotelService {
+  constructor() {
+    super(BASE_URL, '/Hotels/v1');
   }
 
   async addVectorById(id: number): Promise<IHotel> {
-    const response = await api_hotelservice.get<IServiceResponse<IHotel>>(`/addvector/${id}`);
+    const response = await this.api.get<IServiceResponse<IHotel>>(`${this.endpoint}/addvector/${id}`);
     if (response.data.success) {
       return response.data.data;
-    } else {
-      throw new Error(response.data.message || 'Erro ao adicionar vetor');
     }
-  }
-
-  async createHotel(hotel: IHotel): Promise<void> {
-    const response = await api_hotelservice.post<IServiceResponse<void>>('/', hotel);
-    if (!response.data.success) {
-      throw new Error(response.data.message || 'Erro ao criar hotel');
-    }
-  }
-
-  async updateHotel(id: number, hotel: IHotel): Promise<void> {
-    const response = await api_hotelservice.put<IServiceResponse<void>>(`/${id}`, hotel);
-    if (!response.data.success) {
-      throw new Error(response.data.message || 'Erro ao atualizar hotel');
-    }
-  }
-
-  async deleteHotel(id: number): Promise<void> {
-    const response = await api_hotelservice.delete<IServiceResponse<void>>(`/${id}`);
-    if (!response.data.success) {
-      throw new Error(response.data.message || 'Erro ao deletar hotel');
-    }
+    throw new Error(response.data.message || 'Erro ao adicionar vetor');
   }
 
   async semanticSearch(criteria: ISearchCriteria): Promise<IServiceResponse<IHotelSemanticResult>> {
-    const response = await api_hotelservice.post<IServiceResponse<IHotelSemanticResult>>('/semanticsearch', criteria);
-    if (EnvironmentService.isNotTestEnvironment()) {
-      console.log(response);
-    }
+    const response = await this.api.post<IServiceResponse<IHotelSemanticResult>>(`${this.endpoint}/semanticsearch`, criteria);
     if (response.data.success) {
       return response.data;
-    } else {
-      throw new Error(response.data.message || 'Erro na busca semântica');
     }
+    throw new Error(response.data.message || 'Erro na busca semântica');
   }
 
   async generateHotelByIA(): Promise<IHotel> {
-    const response = await api_hotelservice.get<IServiceResponse<IHotel>>('/generate');
+    const response = await this.api.get<IServiceResponse<IHotel>>(`${this.endpoint}/generate`);
     if (response.data.success) {
       return response.data.data;
-    } else {
-      throw new Error(response.data.message || 'Erro ao gerar hotel por IA');
     }
+    throw new Error(response.data.message || 'Erro ao gerar hotel por IA');
   }
 
   async getTags(): Promise<string[]> {
-    const response = await api_hotelservice.get<string[]>('/tags');
+    const response = await this.api.get<string[]>(`${this.endpoint}/tags`);
     return response.data;
   }
 }

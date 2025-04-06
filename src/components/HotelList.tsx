@@ -15,7 +15,7 @@ const HotelList: React.FC = () => {
     if (!isFetching.current) {
       isFetching.current = true;
       const fetchHotels = async () => {
-        const hotels = await HotelService.getAllHotels();
+        const hotels = await HotelService.getAll();
         setHotels(hotels);
         setFilteredHotels(hotels); // Inicializa o estado dos hotéis filtrados
         isFetching.current = false; // Marca como executado
@@ -25,7 +25,7 @@ const HotelList: React.FC = () => {
   }, []);
 
   const handleDelete = async (id: number) => {
-    await HotelService.deleteHotel(id);
+    await HotelService.delete(id);
     setHotels(hotels.filter(hotel => hotel.hotelId !== id));
     setFilteredHotels(filteredHotels.filter(hotel => hotel.hotelId !== id)); // Atualiza os hotéis filtrados
   };

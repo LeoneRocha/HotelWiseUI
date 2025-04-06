@@ -10,10 +10,15 @@ jest.mock('../css/HotelList.css', () => ({}));
 
 // Mock dos serviços
 jest.mock('../services/hotelService', () => ({
-  getAllHotels: jest.fn(),
-  deleteHotel: jest.fn(),
+  getAll: jest.fn(),
+  delete: jest.fn(),
+  getById: jest.fn(),
+  create: jest.fn(),
+  update: jest.fn(),
+  generateHotelByIA: jest.fn(),
+  addVectorById: jest.fn(),
 }));
-
+ 
 const mockHotels: IHotel[] = [
   { hotelId: 1, hotelName: 'Hotel One', description: '', tags: [], stars: 5, initialRoomPrice: 100, zipCode: '', location: '', city: '', stateCode: '', score: 8.9, isHotelInVectorStore: false },
   { hotelId: 2, hotelName: 'Hotel Two', description: '', tags: [], stars: 4, initialRoomPrice: 150, zipCode: '', location: '', city: '', stateCode: '', score: 9.2, isHotelInVectorStore: false },
@@ -22,7 +27,7 @@ const mockHotels: IHotel[] = [
 describe('HotelList component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    (HotelService.getAllHotels as jest.Mock).mockResolvedValue(mockHotels);
+    (HotelService.getAll as jest.Mock).mockResolvedValue(mockHotels);
      // Mock do console.warn para suprimir os avisos durante os testes
      jest.spyOn(console, 'warn').mockImplementation(() => { });
   });
@@ -68,7 +73,7 @@ describe('HotelList component', () => {
 
     // Verifica se o serviço de exclusão foi chamado
     await waitFor(() => {
-      expect(HotelService.deleteHotel).toHaveBeenCalledWith(1);
+      expect(HotelService.delete).toHaveBeenCalledWith(1);
     });
 
     // Verifica se o hotel foi removido da lista
