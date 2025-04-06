@@ -1,6 +1,6 @@
-import { render, screen, waitFor, act } from '@testing-library/react';
-import FooterPage from '../../../FooterPage';
+import { render, screen, waitFor, act } from '@testing-library/react'; 
 import AppInformationService from '../../../services/appInformationService';
+import FooterPage from '../../../components/general/FooterPage';
 
 // Mock the EnvironmentService
 

@@ -1,6 +1,6 @@
 import { act, render, screen } from '@testing-library/react';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
-import SinglePage from '../../../SinglePage';  
+import SinglePage from '../../../components/general/SinglePage';  
 
 // Mock do LocalStorageService
 jest.mock('../../../services/general/localStorageService', () => ({

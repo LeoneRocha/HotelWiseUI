@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
-import AppInformationService from './services/appInformationService';
-import EnvironmentService from './services/general/EnvironmentService';
-import reactLogo from './assets/react.svg'; 
-import './css/FooterPage.css';
+import AppInformationService from '../../services/appInformationService';
+import EnvironmentService from '../../services/general/EnvironmentService';
+import reactLogo from '../../assets/react.svg'; 
+import '../../css/FooterPage.css';
 
 const FooterPage: React.FC = () => {
   const [apiVersion, setApiVersion] = useState<string>('');

@@ -1,14 +1,14 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom'; 
-import Navbar from './components/general/Navbar';
-import AppRoutes from './routes';
-import HeaderPage from './components/general/HeaderPage';
+import Navbar from './Navbar';
+import AppRoutes from '../../routes';
+import HeaderPage from './HeaderPage'; 
+import LocalStorageService from '../../services/general/localStorageService';
+import CookieConsent from './CookieConsent';
+import SecurityService from '../../services/general/securityService';
+import Chatbot from '../iaassistent/Chatbot';
+import { nameStorageTokenJWT } from '../../auth-config';
 import FooterPage from './FooterPage';
-import LocalStorageService from './services/general/localStorageService';
-import CookieConsent from './components/general/CookieConsent';
-import SecurityService from './services/general/securityService';
-import Chatbot from './components/iaassistent/Chatbot';
-import { nameStorageTokenJWT } from './auth-config';
 
 const SinglePage: React.FC = () => {
     const location = useLocation();
