@@ -8,7 +8,7 @@ const BASE_URL = EnvironmentService.getApiBaseUrl();
 
 class RoomAvailabilityService extends GenericService<IRoomAvailability> {
   constructor() {
-    super(BASE_URL, "/RoomAvailabilities");
+    super(BASE_URL, "/RoomAvailability");
   }
 
   // Cria uma nova disponibilidade
