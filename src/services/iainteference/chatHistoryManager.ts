@@ -1,5 +1,5 @@
 // services/chatHistoryManager.ts
-import { IMessage } from '../../interfaces/IAskAssistantResponse';
+import { IMessage } from '../../interfaces/model/IA/IAskAssistantResponse';
 import { IChatHistoryManager } from '../../interfaces/services/IChatHistoryManager';
 import SessionManagerService from '../general/sessionManagerService';
 

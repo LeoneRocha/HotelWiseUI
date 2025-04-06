@@ -1,12 +1,12 @@
  
-import { IHotelService } from '../../interfaces/services/IHotelService';
-import { IHotel } from '../../interfaces/IHotel'; 
-import { ISearchCriteria } from '../../interfaces/ISearchCriteria';
-import { IHotelSemanticResult } from '../../interfaces/IHotelSemanticResult';
+import { IHotelService } from '../../interfaces/services/IHotelService'; 
+import { ISearchCriteria } from '../../interfaces/model/IA/ISearchCriteria'; 
 
 import { GenericService } from '../Generic/GenericService';
-import { IServiceResponse } from '../../interfaces/IAuthTypes';
+import { IServiceResponse } from '../../interfaces/GeneralInterfaces';
 import EnvironmentService from '../general/EnvironmentService';
+import { IHotel } from '../../interfaces/model/Hotel/IHotel';
+import { IHotelSemanticResult } from '../../interfaces/model/Hotel/IHotelSemanticResult';
 
 const BASE_URL = EnvironmentService.getApiBaseUrl();
 

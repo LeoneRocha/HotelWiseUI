@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import HotelService from '../services/hotel/hotelService';
 import '../css/HotelSearch.css'; // Adicione um arquivo CSS para customizações adicionais
 import HotelSearchTemplate from './HotelSearchTemplate';
-import { ISearchCriteria } from '../interfaces/ISearchCriteria';
-import { IServiceResponse } from '../interfaces/IAuthTypes';
-import { IHotelSemanticResult } from '../interfaces/IHotelSemanticResult';
-import  EnvironmentService  from '../services/general/EnvironmentService';
+import { ISearchCriteria } from '../interfaces/model/IA/ISearchCriteria';
+import { IServiceResponse } from '../interfaces/GeneralInterfaces';
+import EnvironmentService from '../services/general/EnvironmentService';
+import { IHotelSemanticResult } from '../interfaces/model/Hotel/IHotelSemanticResult';
 
 const HotelSearch: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -59,7 +59,10 @@ const HotelSearch: React.FC = () => {
       setServiceResponse(response);
       setShowAlert(true); // Ativa o alerta se houver erros
     } catch (err) {
-      setError('Ocorreu um erro ao buscar os hotéis. Por favor, tente novamente.');
+      setError('Ocorreu um erro ao buscar os hotéis. Por favor, tente novamente.',);
+      if (EnvironmentService.isNotTestEnvironment()) {
+        console.error('Erro ao buscar hotéis:', err);
+      }
     } finally {
       setLoading(false);
     }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import AzureAuthService from '../services/AzureAuthService';
 import AssistantService from '../services//iainteference/assistantService';
 import { IAccountInfo } from '../interfaces/IAzureAuthService';
-import { IAskAssistantResponse } from '../interfaces/IAskAssistantResponse';
+import { IAskAssistantResponse } from '../interfaces/model/IA/IAskAssistantResponse';
 
 const UserProfile: React.FC = () => {
   const [accountInfo, setAccountInfo] = useState<IAccountInfo | null>(null);

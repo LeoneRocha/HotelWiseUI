@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 import ChatbotModal from './ChatbotModal';
 import '../css/Chatbot.css';
 import DOMPurify from 'dompurify';
-import { IMessage } from '../interfaces/IAskAssistantResponse';
+import { IMessage } from '../interfaces/model/IA/IAskAssistantResponse';
 import LocalStorageService from '../services/general/localStorageService';
 import { nameStorageTokenJWT } from '../auth-config';
 

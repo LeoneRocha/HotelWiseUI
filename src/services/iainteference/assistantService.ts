@@ -1,8 +1,8 @@
 //AssistantService.ts
 import axios from 'axios'; 
 import { nameStorageTokenAzureAD, nameStorageTokenJWT } from '../../auth-config';
-import { IAskAssistantResponse } from '../../interfaces/IAskAssistantResponse';
-import { IAskAssistantRequest } from '../../interfaces/IAskAssistantRequest';
+import { IAskAssistantResponse } from '../../interfaces/model/IA/IAskAssistantResponse';
+import { IAskAssistantRequest } from '../../interfaces/model/IA/IAskAssistantRequest';
 import { IAssistantService } from '../../interfaces/services/IAssistantService';
 import EnvironmentService from '../general/EnvironmentService';
 

@@ -1,6 +1,6 @@
 // interfaces/IChatHistoryManager.ts
 
-import { IMessage } from "../IAskAssistantResponse";
+import { IMessage } from "../model/IA/IAskAssistantResponse";
 
 
 export interface IChatHistoryManager {

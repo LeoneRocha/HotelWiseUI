@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import DOMPurify from 'dompurify';
-import '../css/HotelSearchTemplate.css';
-import { IHotelSearchTemplateProps } from '../interfaces/IHotelSearchTemplateProps';
+import '../css/HotelSearchTemplate.css'; 
 import { v4 as uuidv4 } from 'uuid';
+import { IHotelSearchTemplateProps } from '../interfaces/DTO/Hotel/IHotelSearchTemplateProps';
 
 const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
   searchTerm,

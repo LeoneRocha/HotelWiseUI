@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import HotelService from '../services//hotel/hotelService';
-import { IHotel } from '../interfaces/IHotel';
+import HotelService from '../services//hotel/hotelService'; 
 import HotelFormTemplate from './HotelFormTemplate';
 import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-import { IHotelFormProps } from '../interfaces/IHotelFormProps';
+import Button from 'react-bootstrap/Button'; 
 import EnvironmentService from '../services/general/EnvironmentService';
+import { IHotel } from '../interfaces/model/Hotel/IHotel';
+import { IHotelFormProps } from '../interfaces/DTO/Hotel/IHotelFormProps';
 
 const initialFormData: IHotel = {
   hotelId: 0,

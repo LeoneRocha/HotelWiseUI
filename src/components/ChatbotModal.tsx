@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button, Spinner, Alert } from 'react-bootstrap';
 import ChatMessage from './ChatMessage';
-import { IChatbotModalProps } from '../interfaces/IChatbotModalProps';
+import { IChatbotModalProps } from '../interfaces/DTO/IA/IChatbotModalProps';
 
 const ChatbotModal: React.FC<IChatbotModalProps> = ({
   messages, isTyping, showAlert, input,

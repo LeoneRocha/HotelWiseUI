@@ -1,5 +1,5 @@
 import React from 'react';
-import { ILoginFormTemplateProps } from '../interfaces/ILoginFormTemplateProps';
+import { ILoginFormTemplateProps } from '../interfaces/DTO/ILoginFormTemplateProps';
 
 const LoginFormTemplate: React.FC<ILoginFormTemplateProps> = ({
   username,

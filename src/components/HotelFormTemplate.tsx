@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import '../css/HotelFormTemplate.css';
-import { FaPlusCircle, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
-import { IHotelFormTemplateProps } from '../interfaces/IHotelFormTemplateProps';
+import { FaPlusCircle, FaCheckCircle, FaTimesCircle } from 'react-icons/fa'; 
 import { v4 as uuidv4 } from 'uuid';
+import { IHotelFormTemplateProps } from '../interfaces/DTO/Hotel/IHotelFormTemplateProps';
 
 const HotelFormTemplate: React.FC<IHotelFormTemplateProps> = ({
   formData,

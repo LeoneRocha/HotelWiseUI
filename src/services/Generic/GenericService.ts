@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 import { nameStorageTokenJWT } from '../../auth-config';
 import { IGenericService } from '../../interfaces/services/generic/IGenericService';
-import { IServiceResponse } from '../../interfaces/IAuthTypes';
+import { IServiceResponse } from '../../interfaces/GeneralInterfaces';
 
 export const createApiInstance = (baseURL: string): AxiosInstance => {
   const apiInstance = axios.create({

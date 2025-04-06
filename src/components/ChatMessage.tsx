@@ -1,7 +1,7 @@
 // ChatMessage.tsx
 import React from 'react';
 import { FaRobot, FaUser } from 'react-icons/fa';
-import { IChatMessageProps } from '../interfaces/IChatbotModalProps'; 
+import { IChatMessageProps } from '../interfaces/DTO/IA/IChatbotModalProps'; 
 
 const ChatMessage: React.FC<IChatMessageProps> = ({ message }) => (
   <div className={`chat-message ${message.sender}`} role="alert" aria-live="assertive">
