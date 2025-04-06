@@ -5,8 +5,8 @@ import { IHotelSemanticResult } from '../../../interfaces/model/Hotel/IHotelSema
 import HotelSearch from '../../../components/hotel/HotelSearch';
 
 // Mock do arquivo CSS para evitar problemas durante o teste
-jest.mock('../../css/HotelSearch.css', () => ({}));
-jest.mock('../../css/HotelSearchTemplate.css', () => ({}));
+jest.mock('../../../css/HotelSearch.css', () => ({}));
+jest.mock('../../../css/HotelSearchTemplate.css', () => ({}));
 
 // Mock dos serviços
 jest.mock('../../../services/hotel/hotelService', () => ({
@@ -14,7 +14,13 @@ jest.mock('../../../services/hotel/hotelService', () => ({
   getTags: jest.fn(),
 }));
 
-const mockTags = ['Tag1', 'Tag2', 'Tag3'];
+const mockTags: IServiceResponse<string[]> = {
+  data: ['Tag1', 'Tag2', 'Tag3'],
+  success: true,
+  message: 'Tags loaded successfully',
+  errors: [],
+  unauthorized: false,
+};
 
 const mockServiceResponse: IServiceResponse<IHotelSemanticResult> = {
   data: {
@@ -35,8 +41,7 @@ describe('HotelSearch component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     (HotelService.getTags as jest.Mock).mockResolvedValue(mockTags);
-     // Mock do console.warn para suprimir os avisos durante os testes
-     jest.spyOn(console, 'warn').mockImplementation(() => { });
+    jest.spyOn(console, 'warn').mockImplementation(() => {});
   });
 
   test('fetches and displays tags', async () => {

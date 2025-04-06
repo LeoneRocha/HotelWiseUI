@@ -1,7 +1,7 @@
 import MockAdapter from 'axios-mock-adapter';
 import HotelService from '../../services/hotel/hotelService';
- 
-import { ISearchCriteria } from '../../interfaces/model/IA/ISearchCriteria'; 
+
+import { ISearchCriteria } from '../../interfaces/model/IA/ISearchCriteria';
 import { IServiceResponse } from '../../interfaces/GeneralInterfaces';
 import { IHotel } from '../../interfaces/model/Hotel/IHotel';
 import { IHotelSemanticResult } from '../../interfaces/model/Hotel/IHotelSemanticResult';
@@ -37,24 +37,24 @@ describe('HotelService', () => {
     mock.restore();
   });
 
+  const mockHotel: IHotel = {
+    hotelId: 1,
+    hotelName: 'Hotel One',
+    description: 'A great place to stay',
+    tags: ['luxury'],
+    stars: 5,
+    initialRoomPrice: 200,
+    zipCode: '12345',
+    location: 'Center',
+    city: 'Metropolis',
+    stateCode: 'MP',
+    score: 9.8,
+    isHotelInVectorStore: true,
+  };
+
   test('should fetch all hotels successfully', async () => {
     const mockData: IServiceResponse<IHotel[]> = {
-      data: [
-        {
-          hotelId: 1,
-          hotelName: 'Hotel One',
-          description: 'A great place to stay',
-          tags: ['luxury'],
-          stars: 5,
-          initialRoomPrice: 200,
-          zipCode: '12345',
-          location: 'Center',
-          city: 'Metropolis',
-          stateCode: 'MP',
-          score: 9.8,
-          isHotelInVectorStore: true,
-        },
-      ],
+      data: [mockHotel],
       success: true,
       message: 'Success',
       errors: [],
@@ -65,7 +65,7 @@ describe('HotelService', () => {
 
     const hotels = await HotelService.getAll();
 
-    expect(hotels).toEqual(mockData.data);
+    expect(hotels).toEqual(mockData);
   });
 
   test('should handle error while fetching all hotels', async () => {
@@ -76,20 +76,7 @@ describe('HotelService', () => {
 
   test('should fetch a hotel by ID successfully', async () => {
     const mockData: IServiceResponse<IHotel> = {
-      data: {
-        hotelId: 1,
-        hotelName: 'Hotel One',
-        description: 'A great place to stay',
-        tags: ['luxury'],
-        stars: 5,
-        initialRoomPrice: 200,
-        zipCode: '12345',
-        location: 'Center',
-        city: 'Metropolis',
-        stateCode: 'MP',
-        score: 9.8,
-        isHotelInVectorStore: true,
-      },
+      data: mockHotel,
       success: true,
       message: 'Success',
       errors: [],
@@ -100,7 +87,7 @@ describe('HotelService', () => {
 
     const hotel = await HotelService.getById(1);
 
-    expect(hotel).toEqual(mockData.data);
+    expect(hotel).toEqual(mockData);
   });
 
   test('should handle error while fetching a hotel by ID', async () => {
@@ -111,20 +98,7 @@ describe('HotelService', () => {
 
   test('should add vector by ID successfully', async () => {
     const mockData: IServiceResponse<IHotel> = {
-      data: {
-        hotelId: 1,
-        hotelName: 'Hotel One',
-        description: 'A great place to stay',
-        tags: ['luxury'],
-        stars: 5,
-        initialRoomPrice: 200,
-        zipCode: '12345',
-        location: 'Center',
-        city: 'Metropolis',
-        stateCode: 'MP',
-        score: 9.8,
-        isHotelInVectorStore: true,
-      },
+      data: mockHotel,
       success: true,
       message: 'Success',
       errors: [],
@@ -135,7 +109,7 @@ describe('HotelService', () => {
 
     const hotel = await HotelService.addVectorById(1);
 
-    expect(hotel).toEqual(mockData.data);
+    expect(hotel).toEqual(mockData);
   });
 
   test('should handle error while adding vector by ID', async () => {
@@ -145,58 +119,30 @@ describe('HotelService', () => {
   });
 
   test('should create a hotel successfully', async () => {
-    const mockData: IServiceResponse<void> = {
-      data: undefined,
+    const mockData: IServiceResponse<IHotel> = {
+      data: mockHotel,
       success: true,
       message: 'Hotel created successfully',
       errors: [],
       unauthorized: false,
     };
 
-    const hotel: IHotel = {
-      hotelId: 1,
-      hotelName: 'Hotel One',
-      description: 'A great place to stay',
-      tags: ['luxury'],
-      stars: 5,
-      initialRoomPrice: 200,
-      zipCode: '12345',
-      location: 'Center',
-      city: 'Metropolis',
-      stateCode: 'MP',
-      score: 9.8,
-      isHotelInVectorStore: true,
-    };
-
     mock.onPost(ENDPOINTS.create).reply(200, mockData);
 
-    await expect(HotelService.create(hotel)).resolves.toBeUndefined();
+    const createdHotel = await HotelService.create(mockHotel);
+
+    expect(createdHotel).toEqual(mockData);
   });
 
   test('should handle error while creating a hotel', async () => {
-    const hotel: IHotel = {
-      hotelId: 1,
-      hotelName: 'Hotel One',
-      description: 'A great place to stay',
-      tags: ['luxury'],
-      stars: 5,
-      initialRoomPrice: 200,
-      zipCode: '12345',
-      location: 'Center',
-      city: 'Metropolis',
-      stateCode: 'MP',
-      score: 9.8,
-      isHotelInVectorStore: true,
-    };
-
     mock.onPost(ENDPOINTS.create).reply(500);
 
-    await expect(HotelService.create(hotel)).rejects.toThrow(STATUS_RESULT_ERROR_500);
+    await expect(HotelService.create(mockHotel)).rejects.toThrow(STATUS_RESULT_ERROR_500);
   });
 
   test('should delete a hotel successfully', async () => {
-    const mockData: IServiceResponse<void> = {
-      data: undefined,
+    const mockData: IServiceResponse<string> = {
+      data: 'Hotel deleted successfully',
       success: true,
       message: 'Hotel deleted successfully',
       errors: [],
@@ -205,7 +151,9 @@ describe('HotelService', () => {
 
     mock.onDelete(ENDPOINTS.delete(1)).reply(200, mockData);
 
-    await expect(HotelService.delete(1)).resolves.toBeUndefined();
+    const response = await HotelService.delete(1);
+
+    expect(response).toEqual(mockData);
   });
 
   test('should handle error while deleting a hotel', async () => {
@@ -237,7 +185,7 @@ describe('HotelService', () => {
         promptResultContent: '',
       },
       success: true,
-      message: 'Success',
+      message: 'Search completed successfully',
       errors: [],
       unauthorized: false,
     };
@@ -258,6 +206,7 @@ describe('HotelService', () => {
 
     await expect(HotelService.semanticSearch(criteria)).rejects.toThrow(STATUS_RESULT_ERROR_500);
   });
+
   test('should generate hotel by IA successfully', async () => {
     const mockData: IServiceResponse<IHotel> = {
       data: {
@@ -275,7 +224,7 @@ describe('HotelService', () => {
         isHotelInVectorStore: true,
       },
       success: true,
-      message: 'Success',
+      message: 'Hotel generated successfully',
       errors: [],
       unauthorized: false,
     };
@@ -284,7 +233,7 @@ describe('HotelService', () => {
 
     const hotel = await HotelService.generateHotelByIA();
 
-    expect(hotel).toEqual(mockData.data);
+    expect(hotel).toEqual(mockData);
   });
 
   test('should handle error while generating hotel by IA', async () => {
@@ -294,7 +243,13 @@ describe('HotelService', () => {
   });
 
   test('should fetch tags successfully', async () => {
-    const mockData: string[] = ['Tag1', 'Tag2', 'Tag3'];
+    const mockData: IServiceResponse<string[]> = {
+      data: ['Tag1', 'Tag2', 'Tag3'],
+      success: true,
+      message: 'Tags fetched successfully',
+      errors: [],
+      unauthorized: false,
+    };
 
     mock.onGet(ENDPOINTS.getTags).reply(200, mockData);
 

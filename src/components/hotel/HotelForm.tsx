@@ -42,7 +42,7 @@ const HotelForm: React.FC<IHotelFormProps> = ({ onSave }) => {
       const fetchHotel = async () => {
         try {
           const hotel = await HotelService.getById(Number(id)); // Fetch by ID
-          setFormData(hotel);
+          setFormData(hotel.data);
         } catch (error) {
           if (EnvironmentService.isNotTestEnvironment()) {
             console.error('Fetch Hotel Error:', error);
@@ -106,7 +106,7 @@ const HotelForm: React.FC<IHotelFormProps> = ({ onSave }) => {
   const handleAutoFill = async () => {
     try {
       const generatedHotel = await HotelService.generateHotelByIA(); // Generate hotel by IA
-      setFormData(generatedHotel);
+      setFormData(generatedHotel.data);
     } catch (error) {
       if (EnvironmentService.isNotTestEnvironment()) {
         console.error('Generate Hotel Error:', error);

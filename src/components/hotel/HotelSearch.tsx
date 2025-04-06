@@ -21,7 +21,7 @@ const HotelSearch: React.FC = () => {
     const fetchTags = async () => {
       try {
         const fetchedTags = await HotelService.getTags();
-        setTags(fetchedTags);
+        setTags(fetchedTags.data);
       } catch (err) {
         if (EnvironmentService.isNotTestEnvironment()) {
           console.error('Erro ao buscar tags:', err);
