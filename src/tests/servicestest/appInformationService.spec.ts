@@ -3,7 +3,7 @@ import AppInformationService from '../../services/appInformationService';
 import { IAppInformation } from '../../interfaces/IAppInformation';
 
 // Mock EnvironmentService to return a fixed base URL
-jest.mock('../../services/EnvironmentService', () => ({
+jest.mock('../../services/general/EnvironmentService', () => ({
   __esModule: true,
   default: {
     getApiBaseUrl: jest.fn(() => 'http://mockapi.com')
@@ -46,4 +46,4 @@ describe('appInformationService', () => {
 
     await expect(AppInformationService.getAppInformationVersionProduct()).rejects.toThrow('Request failed with status code 404');
   });
-});
+}); 

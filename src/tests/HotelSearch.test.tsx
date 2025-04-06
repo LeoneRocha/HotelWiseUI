@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import HotelSearch from '../components/HotelSearch'; // Ajuste o caminho conforme necessário
-import HotelService from '../services/hotelService';
+import HotelService from '../services/hotel/hotelService';
 import { IServiceResponse } from '../interfaces/IAuthTypes';
 import { IHotelSemanticResult } from '../interfaces/IHotelSemanticResult';
 
@@ -9,7 +9,7 @@ jest.mock('../css/HotelSearch.css', () => ({}));
 jest.mock('../css/HotelSearchTemplate.css', () => ({}));
 
 // Mock dos serviços
-jest.mock('../services/hotelService', () => ({
+jest.mock('../services/hotel/hotelService', () => ({
   semanticSearch: jest.fn(),
   getTags: jest.fn(),
 }));

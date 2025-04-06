@@ -1,23 +1,23 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import ChatHistoryManager from '../services/chatHistoryManager';
-import AssistantService from '../services/assistantService';
+import ChatHistoryManager from '../services/iainteference/chatHistoryManager';
+import AssistantService from '../services/iainteference/assistantService';
 import Chatbot from '../components/Chatbot';
-import LocalStorageService from '../services/localStorageService';
+import LocalStorageService from '../services/general/localStorageService';
 import { IMessage } from '../interfaces/IAskAssistantResponse';
 
 // Mock the chat history manager and assistant service
-jest.mock('../services/chatHistoryManager', () => ({
+jest.mock('../services/iainteference/chatHistoryManager', () => ({
     saveMessage: jest.fn(),
     getChatHistory: jest.fn(() => []),
     clearChatHistory: jest.fn(),
 }));
 
-jest.mock('../services/assistantService', () => ({
+jest.mock('../services/iainteference/assistantService', () => ({
     getChatCompletion: jest.fn(),
 }));
 
-jest.mock('../services/localStorageService', () => ({
+jest.mock('../services/general/localStorageService', () => ({
     getItem: jest.fn(),
 }));
 

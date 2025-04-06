@@ -4,7 +4,7 @@ import AppInformationService from '../services/appInformationService';
 
 // Mock the EnvironmentService
 
-jest.mock('../services/EnvironmentService', () => ({
+jest.mock('../services/general/EnvironmentService', () => ({
     __esModule: true,
     default: {
         getUIVersion: jest.fn(() => '1.0'),

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import LocalStorageService from '../services/localStorageService';
-import SecurityService from '../services/securityService';
+import LocalStorageService from '../services/general/localStorageService';
+import SecurityService from '../services/general/securityService';
 import { IAuthGuardProps } from '../interfaces/IAuthGuardProps';
 import { nameStorageTokenJWT } from '../auth-config';
 

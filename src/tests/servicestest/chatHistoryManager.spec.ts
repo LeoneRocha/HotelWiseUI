@@ -1,9 +1,9 @@
 import { IMessage } from "../../interfaces/IAskAssistantResponse";
-import ChatHistoryManager from "../../services/chatHistoryManager";
-import SessionManagerService from "../../services/sessionManagerService";
+import ChatHistoryManager from "../../services/iainteference/chatHistoryManager";
+import SessionManagerService from "../../services/general/sessionManagerService";
 
 // chatHistoryManager.test.ts 
-jest.mock('../../services/sessionManagerService', () => ({
+jest.mock('../../services/general/sessionManagerService', () => ({
     saveToSession: jest.fn(),
     getFromSession: jest.fn(),
     removeFromSession: jest.fn(),

@@ -1,4 +1,4 @@
-import LocalStorageService from "../../services/localStorageService";
+import LocalStorageService from "../../services/general/localStorageService";
 
  
 

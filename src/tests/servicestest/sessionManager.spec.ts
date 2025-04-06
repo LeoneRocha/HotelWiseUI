@@ -1,5 +1,5 @@
 // sessionManager.test.ts
-import SessionManagerService from "../../services/sessionManagerService";
+import SessionManagerService from "../../services/general/sessionManagerService";
 
 describe('sessionManagerService', () => {
   beforeEach(() => {

@@ -3,7 +3,7 @@ import { MemoryRouter, useNavigate } from 'react-router-dom';
 import SinglePage from '../SinglePage';  
 
 // Mock do LocalStorageService
-jest.mock('../services/localStorageService', () => ({
+jest.mock('../services/general/localStorageService', () => ({
     hasItem: jest.fn(() => false), // Assume que o usuário não está logado
     getItem: jest.fn(),
     setItem: jest.fn(),

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import AzureAuthService from '../services/AzureAuthService';
-import AssistantService from '../services/assistantService';
+import AssistantService from '../services//iainteference/assistantService';
 import { IAccountInfo } from '../interfaces/IAzureAuthService';
 import { IAskAssistantResponse } from '../interfaces/IAskAssistantResponse';
 

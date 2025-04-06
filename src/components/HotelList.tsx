@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import HotelService from '../services/hotelService';
+import HotelService from '../services/hotel/hotelService';
 import { IHotel } from '../interfaces/IHotel';
 import HotelListTemplate from './HotelListTemplate';
 

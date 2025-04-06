@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useMsal } from '@azure/msal-react';
 import { useNavigate } from 'react-router-dom';
-import LocalStorageService from '../services/localStorageService';
+import LocalStorageService from '../services/general/localStorageService';
 import { nameStorageTokenAzureAD } from '../auth-config';
-import EnvironmentService from '../services/EnvironmentService';
+import EnvironmentService from '../services/general/EnvironmentService';
 
 const Callback: React.FC = () => {
   const { instance } = useMsal();

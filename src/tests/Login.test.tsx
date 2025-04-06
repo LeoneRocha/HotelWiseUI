@@ -3,8 +3,8 @@ import { MemoryRouter } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Login from '../components/Login'; // Ajuste o caminho conforme necessário
 import AuthenticateService from '../services/authService';
-import SecurityService from '../services/securityService';
-import LocalStorageService from '../services/localStorageService';
+import SecurityService from '../services/general/securityService';
+import LocalStorageService from '../services/general/localStorageService';
 
 // Mock do arquivo CSS para evitar problemas durante o teste
 jest.mock('../css/Login.css', () => ({}));
@@ -13,12 +13,12 @@ jest.mock('../css/Login.css', () => ({}));
 jest.mock('../services/authService', () => ({
   authenticate: jest.fn(),
 }));
-jest.mock('../services/securityService', () => ({
+jest.mock('../services/general/securityService', () => ({
   getToken: jest.fn(),
   isTokenValid: jest.fn(),
   setToken: jest.fn(),
 }));
-jest.mock('../services/localStorageService', () => ({
+jest.mock('../services/general/localStorageService', () => ({
   getItem: jest.fn(),
   setItem: jest.fn(),
   removeItem: jest.fn(),

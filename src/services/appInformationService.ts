@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { IAppInformation } from '../interfaces/IAppInformation';
-import EnvironmentService from './EnvironmentService';
+import EnvironmentService from './general/EnvironmentService';
 import { IAppInformationService } from '../interfaces/services/IAppInformationService';
 
 export const api_appInformationService = axios.create({

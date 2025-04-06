@@ -1,6 +1,6 @@
 // services/LocalStorageService.ts 
 
-import { ILocalStorageService } from "../interfaces/services/ILocalStorageService";
+import { ILocalStorageService } from "../../interfaces/services/ILocalStorageService";
 
 class LocalStorageService implements ILocalStorageService {
   setItem(key: string, value: string): void {

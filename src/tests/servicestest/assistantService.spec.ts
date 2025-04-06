@@ -1,7 +1,7 @@
 import MockAdapter from 'axios-mock-adapter';
 import { IAskAssistantResponse } from '../../interfaces/IAskAssistantResponse';
 // Mock EnvironmentService to return a fixed base URL
-jest.mock('../../services/EnvironmentService', () => ({
+jest.mock('../../services/general/EnvironmentService', () => ({
   __esModule: true,
   default: {
     getApiBaseUrl: jest.fn(() => 'http://mockapi.com')
@@ -9,8 +9,8 @@ jest.mock('../../services/EnvironmentService', () => ({
 }));
 
 // Import the axios instance created in assistantService
-import AssistantService from '../../services/assistantService';
-import { api_assistantService } from '../../services/assistantService';
+import AssistantService from '../../services/iainteference/assistantService';
+import { api_assistantService } from '../../services/iainteference/assistantService';
 import { IAskAssistantRequest } from '../../interfaces/IAskAssistantRequest';
 
 describe('assistantService', () => {

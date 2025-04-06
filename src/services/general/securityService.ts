@@ -1,7 +1,7 @@
 // services/SecurityService.ts
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import EnvironmentService from './EnvironmentService';
-import { ISecurityService } from '../interfaces/services/ISecurityService';
+import { ISecurityService } from '../../interfaces/services/ISecurityService';
 import LocalStorageService from './localStorageService';
 
 class SecurityService implements ISecurityService {

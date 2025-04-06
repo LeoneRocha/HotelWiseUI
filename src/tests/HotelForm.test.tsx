@@ -1,12 +1,12 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import HotelForm from '../components/HotelForm'; // Ajuste o caminho conforme necessário
-import HotelService from '../services/hotelService';
+import HotelService from '../services/hotel/hotelService';
 
 jest.mock('../css/HotelFormTemplate.css', () => ({}));
 // Mock dos serviços 
 
-jest.mock('../services/hotelService', () => ({
+jest.mock('../services/hotel/hotelService', () => ({
     getAll: jest.fn(),
     delete: jest.fn(),
     getById: jest.fn(),

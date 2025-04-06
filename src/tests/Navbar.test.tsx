@@ -1,17 +1,17 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar'; // Ajuste o caminho conforme necessário
-import LocalStorageService from '../services/localStorageService';
+import LocalStorageService from '../services/general/localStorageService';
 import { nameStorageTokenJWT } from '../auth-config';
  
 // Mock do arquivo CSS para evitar problemas durante o teste
 jest.mock('../css/Navbar.css', () => ({}));
 
 // Mock dos serviços
-jest.mock('../services/assistantService', () => ({
+jest.mock('../services/iainteference/assistantService', () => ({
   getChatCompletion: jest.fn(),
 }));
-jest.mock('../services/localStorageService', () => ({
+jest.mock('../services/general/localStorageService', () => ({
   removeItem: jest.fn(),
 }));
 

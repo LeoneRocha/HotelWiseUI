@@ -1,6 +1,6 @@
 // services/sessionManager.ts
 
-import { ISessionManagerService } from "../interfaces/services/ISessionManagerService";
+import { ISessionManagerService } from "../../interfaces/services/ISessionManagerService";
 
 class SessionManagerService implements ISessionManagerService {
   saveToSession<T>(key: string, value: T): void {

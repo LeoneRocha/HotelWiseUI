@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import HotelService from '../services/hotelService';
+import HotelService from '../services/hotel/hotelService';
 import '../css/HotelSearch.css'; // Adicione um arquivo CSS para customizações adicionais
 import HotelSearchTemplate from './HotelSearchTemplate';
 import { ISearchCriteria } from '../interfaces/ISearchCriteria';
 import { IServiceResponse } from '../interfaces/IAuthTypes';
 import { IHotelSemanticResult } from '../interfaces/IHotelSemanticResult';
-import  EnvironmentService  from '../services/EnvironmentService';
+import  EnvironmentService  from '../services/general/EnvironmentService';
 
 const HotelSearch: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');

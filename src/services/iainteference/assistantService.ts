@@ -1,10 +1,10 @@
 //AssistantService.ts
-import axios from 'axios';
-import EnvironmentService from './EnvironmentService';
-import { nameStorageTokenAzureAD, nameStorageTokenJWT } from '../auth-config';
-import { IAskAssistantResponse } from '../interfaces/IAskAssistantResponse';
-import { IAskAssistantRequest } from '../interfaces/IAskAssistantRequest';
-import { IAssistantService } from '../interfaces/services/IAssistantService';
+import axios from 'axios'; 
+import { nameStorageTokenAzureAD, nameStorageTokenJWT } from '../../auth-config';
+import { IAskAssistantResponse } from '../../interfaces/IAskAssistantResponse';
+import { IAskAssistantRequest } from '../../interfaces/IAskAssistantRequest';
+import { IAssistantService } from '../../interfaces/services/IAssistantService';
+import EnvironmentService from '../general/EnvironmentService';
 
 // Criação da instância Axios
 export const api_assistantService = axios.create({

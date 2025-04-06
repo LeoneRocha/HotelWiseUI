@@ -3,7 +3,7 @@ import AuthenticateService from '../../services/authService';
 import { IGetUserAuthenticatedDto, IServiceResponse, IUserLoginDto } from '../../interfaces/IAuthTypes';
 
 // Mock EnvironmentService to return a fixed base URL
-jest.mock('../../services/EnvironmentService', () => ({
+jest.mock('../../services/general/EnvironmentService', () => ({
   __esModule: true,
   default: {
     getApiBaseUrl: jest.fn(() => 'http://mockapi.com')

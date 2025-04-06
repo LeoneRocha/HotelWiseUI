@@ -5,9 +5,9 @@ import Navbar from './components/Navbar';
 import AppRoutes from './routes';
 import HeaderPage from './components/HeaderPage';
 import FooterPage from './FooterPage';
-import LocalStorageService from './services/localStorageService';
+import LocalStorageService from './services/general/localStorageService';
 import CookieConsent from './components/CookieConsent';
-import SecurityService from './services/securityService';
+import SecurityService from './services/general/securityService';
 import Chatbot from './components/Chatbot';
 import { nameStorageTokenJWT } from './auth-config';
 

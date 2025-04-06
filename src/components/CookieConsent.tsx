@@ -1,6 +1,6 @@
 // src/components/CookieConsent.tsx
 import React, { useState, useEffect } from 'react';
-import LocalStorageService from '../services/localStorageService';
+import LocalStorageService from '../services/general/localStorageService';
 import '../css/CookieConsent.css';
 
 const CookieConsent: React.FC = () => {

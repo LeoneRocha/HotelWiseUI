@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
-import LocalStorageService from '../services/localStorageService'; 
+import LocalStorageService from '../services/general/localStorageService'; 
 import NavbarTemplate from './NavbarTemplate';
 import { nameStorageTokenJWT } from '../auth-config';
 

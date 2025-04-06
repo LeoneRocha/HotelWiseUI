@@ -1,7 +1,7 @@
 // services/AuthenticateService.ts
 import axios from 'axios';
 import { IGetUserAuthenticatedDto, IServiceResponse, IUserLoginDto } from '../interfaces/IAuthTypes';
-import EnvironmentService from './EnvironmentService';
+import EnvironmentService from './general/EnvironmentService';
 import { IAuthenticateService } from '../interfaces/services/IAuthenticateService';
 import { nameStorageTokenJWT } from '../auth-config';
 

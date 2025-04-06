@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import HotelList from '../components/HotelList'; // Ajuste o caminho conforme necessário
-import HotelService from '../services/hotelService';
+import HotelService from '../services/hotel/hotelService';
 import { IHotel } from '../interfaces/IHotel';
 
 
@@ -9,7 +9,7 @@ import { IHotel } from '../interfaces/IHotel';
 jest.mock('../css/HotelList.css', () => ({}));
 
 // Mock dos serviços
-jest.mock('../services/hotelService', () => ({
+jest.mock('../services/hotel/hotelService', () => ({
   getAll: jest.fn(),
   delete: jest.fn(),
   getById: jest.fn(),

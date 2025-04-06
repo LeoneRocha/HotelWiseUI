@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthenticateService from '../services/authService';
-import SecurityService from '../services/securityService';
-import LocalStorageService from '../services/localStorageService';
+import SecurityService from '../services/general/securityService';
+import LocalStorageService from '../services/general/localStorageService';
 import LoginFormTemplate from './LoginFormTemplate';
 import { useMsal } from '@azure/msal-react';
 import '../css/Login.css';

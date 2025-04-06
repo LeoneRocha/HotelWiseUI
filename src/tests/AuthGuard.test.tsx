@@ -1,14 +1,14 @@
 import { render } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import AuthGuard from '../components/AuthGuard'; // Ajuste o caminho conforme necessário
-import LocalStorageService from '../services/localStorageService';
-import SecurityService from '../services/securityService';
+import LocalStorageService from '../services/general/localStorageService';
+import SecurityService from '../services/general/securityService';
 
 // Mock dos serviços de LocalStorage e Segurança
-jest.mock('../services/localStorageService', () => ({
+jest.mock('../services/general/localStorageService', () => ({
     getItem: jest.fn(),
 }));
-jest.mock('../services/securityService', () => ({
+jest.mock('../services/general/securityService', () => ({
     isTokenExpired: jest.fn(),
 }));
 

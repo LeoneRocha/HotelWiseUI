@@ -1,6 +1,6 @@
 // services/EnvironmentService.ts
 
-import { IEnvironmentService } from "../interfaces/services/IEnvironmentService";
+import { IEnvironmentService } from "../../interfaces/services/IEnvironmentService";
 class EnvironmentService implements IEnvironmentService {
   public getUIVersion(): string {
     return process.env.VITE_UI_VERSION ?? '1.0';

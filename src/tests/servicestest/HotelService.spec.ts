@@ -1,5 +1,5 @@
 import MockAdapter from 'axios-mock-adapter';
-import HotelService from '../../services/hotelService';
+import HotelService from '../../services/hotel/hotelService';
 
 import { IHotel } from '../../interfaces/IHotel';
 import { ISearchCriteria } from '../../interfaces/ISearchCriteria';

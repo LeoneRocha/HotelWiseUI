@@ -1,6 +1,6 @@
 // AzureAuthService.ts 
 import { PublicClientApplication, AuthenticationResult, AccountInfo } from '@azure/msal-browser';
-import LocalStorageService from './localStorageService';
+import LocalStorageService from './general/localStorageService';
 import { loginApiRequest, msalConfig, nameStorageTokenAzureAD } from '../auth-config';
 
 class AzureAuthService {

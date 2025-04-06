@@ -5,17 +5,17 @@ import { IMessage } from '../interfaces/IAskAssistantResponse';
 
 
 // Mock the chat history manager and assistant service
-jest.mock('../services/chatHistoryManager', () => ({
+jest.mock('../services/iainteference/chatHistoryManager', () => ({
     saveMessage: jest.fn(),
     getChatHistory: jest.fn(() => []),
     clearChatHistory: jest.fn(),
 }));
 
-jest.mock('../services/assistantService', () => ({
+jest.mock('../services/iainteference/assistantService', () => ({
     getChatCompletion: jest.fn(),
 }));
 
-jest.mock('../services/LocalStorageService', () => ({
+jest.mock('../services/general/LocalStorageService', () => ({
     getItem: jest.fn(),
 }));
 
