@@ -57,7 +57,7 @@ const HotelListTemplate: React.FC<IHotelListTemplateProps> = ({
                     <i className="fa-solid fa-city" style={{ marginLeft: '10px' }}></i> {hotel.city}
                   </p>
                   <div className="d-flex justify-content-between">
-                    <Link to={`/edit/${hotel.hotelId}`} className="btn btn-primary">
+                    <Link to={`/tabs/${hotel.hotelId}`} className="btn btn-primary">
                       <i className="fas fa-edit"></i> Editar
                     </Link>
                     <button

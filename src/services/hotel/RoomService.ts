@@ -13,7 +13,7 @@ class RoomService extends GenericService<IRoom> implements IRoomService {
   }
 
   async getRoomsByHotelId(hotelId: number): Promise<IServiceResponse<IRoom[]>> {
-    const response = await this.api.get<IServiceResponse<IRoom[]>>(`${this.endpoint}/byHotel/${hotelId}`);
+    const response = await this.api.get<IServiceResponse<IRoom[]>>(`${this.endpoint}/hotel/${hotelId}`);
     if (response.data.success) {
       return response.data;
     }
