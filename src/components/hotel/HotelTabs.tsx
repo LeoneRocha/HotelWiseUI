@@ -13,7 +13,7 @@ const HotelTabs: React.FC<HotelTabsProps> = ({ hotelId }) => {
   const [key, setKey] = useState<string>('details')
 
   return (
-    <div className="mt-4">
+    <div className="container-fluid mt-5">
       <Tabs
         id="hotel-tabs"
         activeKey={key}
