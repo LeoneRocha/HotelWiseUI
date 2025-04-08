@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import HotelService from '../../services//hotel/hotelService'; 
+import HotelService from '../../services//hotel/hotelService';
 import HotelFormTemplate from './HotelFormTemplate';
 import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button'; 
+import Button from 'react-bootstrap/Button';
 import EnvironmentService from '../../services/general/EnvironmentService';
 import { IHotel } from '../../interfaces/model/Hotel/IHotel';
 import { IHotelFormProps } from '../../interfaces/DTO/Hotel/IHotelFormProps';
@@ -23,7 +23,7 @@ const initialFormData: IHotel = {
   isHotelInVectorStore: false,
 };
 
-const HotelForm: React.FC<IHotelFormProps> = ({ onSave }) => {
+const HotelForm: React.FC<IHotelFormProps> = ({ hotelId, onSave }) => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [formData, setFormData] = useState<IHotel>(initialFormData);
@@ -35,13 +35,15 @@ const HotelForm: React.FC<IHotelFormProps> = ({ onSave }) => {
   const [countdown, setCountdown] = useState(10); // Countdown state for redirect
 
   useEffect(() => {
+    hotelId = 0;
     if (id === 'new') {
       setFormData(initialFormData); // Clears the form
     } else if (id && !isNaN(Number(id)) && !isFetching.current) {
+      hotelId = Number(id);
       isFetching.current = true;
       const fetchHotel = async () => {
         try {
-          const hotel = await HotelService.getById(Number(id)); // Fetch by ID
+          const hotel = await HotelService.getById(Number(hotelId)); // Fetch by ID
           setFormData(hotel.data);
         } catch (error) {
           if (EnvironmentService.isNotTestEnvironment()) {
@@ -123,7 +125,7 @@ const HotelForm: React.FC<IHotelFormProps> = ({ onSave }) => {
         await HotelService.addVectorById(formData.hotelId); // Add hotel to vector store
         navigate('/list');
       }
-    } catch (error) {      
+    } catch (error) {
       if (EnvironmentService.isNotTestEnvironment()) {
         console.error('Add to Vector Store Error:', error);
       }

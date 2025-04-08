@@ -9,6 +9,6 @@ export interface IRoom {
   description: string;
   status: RoomStatus;
   minimumNights: number;
-  createdDate: string;
-  modifyDate: string;
+  createdDate?: Date;
+  modifyDate?: Date;
 }
