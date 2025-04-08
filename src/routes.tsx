@@ -10,6 +10,7 @@ import AuthGuard from './components/general/AuthGuard';
 import PrivacyPolicy from './components/general/PrivacyPolicy';
 import Callback from './components/general/Callback';
 import UserProfile from './components/general/UserProfile';
+import HotelEditPage from './components/hotel/HotelEditPage';
 
 const AppRoutes: React.FC = () => {
   const handleSave = () => {
@@ -36,6 +37,11 @@ const AppRoutes: React.FC = () => {
       <Route path="/edit/:id" element={
         <AuthGuard>
           <HotelForm onSave={handleSave} />
+        </AuthGuard>
+      } />
+         <Route path="/tabs/:id" element={
+        <AuthGuard>
+          <HotelEditPage />
         </AuthGuard>
       } />
       <Route path="/access-denied" element={<AccessDenied />} /> {/* Rota para acesso negado */}

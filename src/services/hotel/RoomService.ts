@@ -9,7 +9,7 @@ const BASE_URL = EnvironmentService.getApiBaseUrl();
 
 class RoomService extends GenericService<IRoom> implements IRoomService {
   constructor() {
-    super(BASE_URL, '/Rooms');
+    super(BASE_URL, '/Rooms/v1');
   }
 
   async getRoomsByHotelId(hotelId: number): Promise<IServiceResponse<IRoom[]>> {

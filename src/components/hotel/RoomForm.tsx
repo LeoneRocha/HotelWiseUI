@@ -57,6 +57,8 @@ const RoomForm: React.FC<RoomFormProps> = ({ hotelId, room, onClose }) => {
 
     try {
       let response;
+
+      console.log('Form Data:', formData);  
       if (formData.id === 0) {
         response = await RoomService.create(formData);
       } else {
