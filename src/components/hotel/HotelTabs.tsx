@@ -3,13 +3,13 @@ import { Tabs, Tab } from 'react-bootstrap'
 import HotelForm from './HotelForm'
 import RoomList from './RoomList'
 import { HotelTabsProps } from '../../interfaces/DTO/Hotel/IHotelProps'
- 
-const handleSave = () => {
-    // Lógica para lidar com a ação de salvar, se necessário
-  };
-const HotelTabs: React.FC<HotelTabsProps> = ({ hotelId }) => {
 
-    
+const handleSave = () => {
+  // Lógica para lidar com a ação de salvar, se necessário
+};
+const HotelTabs: React.FC<HotelTabsProps> = ({ hotelId, hotel }) => {
+
+
   const [key, setKey] = useState<string>('details')
 
   return (
@@ -21,11 +21,11 @@ const HotelTabs: React.FC<HotelTabsProps> = ({ hotelId }) => {
         className="mb-3"
       >
         <Tab eventKey="details" title="Detalhes do Hotel">
-          <HotelForm hotelId={hotelId ?? 0} onSave={handleSave}  />
+          <HotelForm hotelId={hotelId ?? 0} onSave={handleSave} />
         </Tab>
         {hotelId && (
           <Tab eventKey="rooms" title="Quartos">
-            <RoomList hotelId={hotelId} />
+            <RoomList hotelId={hotelId} hotel={hotel} />
           </Tab>
         )}
       </Tabs>

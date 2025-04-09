@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Table } from 'react-bootstrap'; 
+import { Button, Table } from 'react-bootstrap';
 import RoomForm from './RoomForm';
 import { RoomListTemplateProps } from '../../interfaces/DTO/Hotel/IHotelProps';
 
@@ -9,6 +9,7 @@ const RoomListTemplate: React.FC<RoomListTemplateProps> = ({
     showForm,
     selectedRoom,
     hotelId,
+    hotel,
     onAddRoom,
     onEditRoom,
     onDeleteRoom,
@@ -19,7 +20,7 @@ const RoomListTemplate: React.FC<RoomListTemplateProps> = ({
     return (
         <div className="mt-3">
             <div className="d-flex justify-content-between mb-3">
-                <h3>Quartos do Hotel</h3>
+                <h3>Quartos do Hotel - {hotel?.hotelName}</h3>
                 <Button variant="primary" onClick={onAddRoom}>
                     Adicionar Quarto
                 </Button>

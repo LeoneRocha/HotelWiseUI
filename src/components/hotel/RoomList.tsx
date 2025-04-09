@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Badge } from 'react-bootstrap';
 import { IRoom } from '../../interfaces/model/Hotel/IRoom';
-import RoomService from '../../services/hotel/RoomService';  
+import RoomService from '../../services/hotel/RoomService';
 import { RoomStatus } from '../../enums/hotel/RoomStatus';
 import { RoomType } from '../../enums/hotel/RoomType';
 import { RoomListProps } from '../../interfaces/DTO/Hotel/IHotelProps';
 import RoomListTemplate from './RoomListTemplate';
 
-const RoomList: React.FC<RoomListProps> = ({ hotelId }) => {
+const RoomList: React.FC<RoomListProps> = ({ hotelId, hotel }) => {
   const [rooms, setRooms] = useState<IRoom[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [showForm, setShowForm] = useState<boolean>(false);
@@ -63,7 +63,7 @@ const RoomList: React.FC<RoomListProps> = ({ hotelId }) => {
     switch (type) {
       case RoomType.Single: return 'Individual';
       case RoomType.Double: return 'Duplo';
-      case RoomType.Suite: return 'Suíte'; 
+      case RoomType.Suite: return 'Suíte';
       default: return 'Desconhecido';
     }
   };
@@ -85,6 +85,7 @@ const RoomList: React.FC<RoomListProps> = ({ hotelId }) => {
 
   return (
     <RoomListTemplate
+      hotel={hotel}
       rooms={rooms}
       loading={loading}
       showForm={showForm}
