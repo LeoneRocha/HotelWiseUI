@@ -13,23 +13,23 @@ const HotelEditPage: React.FC = () => {
   const [hotel, setHotel] = useState<IHotel | null>(null);
 
   useEffect(() => {
-    if (id) {
+    if (id) { 
+      const fetchHotel = async () => {
+        try {
+          const _hotel = await HotelService.getById(Number(hotelId)); // Fetch by ID
+          setHotel(_hotel.data);
+        } catch (error) { 
+          if (EnvironmentService.isNotTestEnvironment()) {
+            console.error('Fetch Hotel Error:', error);
+          }
+        }
+      };
+      fetchHotel();
       setHotelId(parseInt(id, 10));
     } else {
       setHotelId(null);
-    }
-    const fetchHotel = async () => {
-      try {
-        const _hotel = await HotelService.getById(Number(hotelId)); // Fetch by ID
-        setHotel(_hotel.data);
-      } catch (error) {
-        if (EnvironmentService.isNotTestEnvironment()) {
-          console.error('Fetch Hotel Error:', error);
-        }
-      }
-    };
-    fetchHotel();
-  }, [id]);
+    } 
+  },  [id, hotelId]);
 
   return (
     <Container fluid className="hotel-edit-container p-0">

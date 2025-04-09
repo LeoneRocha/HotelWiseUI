@@ -8,7 +8,7 @@ import RoomFormTemplate from './RoomFormTemplate';
 
 const RoomForm: React.FC<RoomFormProps> = ({ hotelId, room, onClose }) => {
   const [validated, setValidated] = useState(false);
-  const [formData, setFormData] = useState<IRoom>({
+  const initData: IRoom = {
     id: 0,
     hotelId: hotelId,
     roomType: RoomType.Single,
@@ -16,8 +16,9 @@ const RoomForm: React.FC<RoomFormProps> = ({ hotelId, room, onClose }) => {
     description: '',
     status: RoomStatus.Available,
     minimumNights: 1
-  });
-
+  }
+  const [formData, setFormData] = useState<IRoom>(initData);
+ 
   useEffect(() => {
     if (room) {
       setFormData(room);
@@ -57,8 +58,7 @@ const RoomForm: React.FC<RoomFormProps> = ({ hotelId, room, onClose }) => {
 
     try {
       let response;
-
-      console.log('Form Data:', formData);
+  
       if (formData.id === 0) {
         response = await RoomService.create(formData);
       } else {

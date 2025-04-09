@@ -6,6 +6,7 @@ import { RoomStatus } from '../../enums/hotel/RoomStatus';
 import { RoomType } from '../../enums/hotel/RoomType';
 import { RoomListProps } from '../../interfaces/DTO/Hotel/IHotelProps';
 import RoomListTemplate from './RoomListTemplate';
+import { getEnumLabel } from '../../enums/extensions/enumHelper';
 
 const RoomList: React.FC<RoomListProps> = ({ hotelId, hotel }) => {
   const [rooms, setRooms] = useState<IRoom[]>([]);
@@ -29,7 +30,7 @@ const RoomList: React.FC<RoomListProps> = ({ hotelId, hotel }) => {
 
   useEffect(() => {
     loadRooms();
-  }, [hotelId]);
+  },  [hotelId, hotel]);
 
   const handleAddRoom = () => {
     setSelectedRoom(null);
@@ -59,14 +60,9 @@ const RoomList: React.FC<RoomListProps> = ({ hotelId, hotel }) => {
     loadRooms();
   };
 
-  const getRoomTypeName = (type: RoomType): string => {
-    switch (type) {
-      case RoomType.Single: return 'Individual';
-      case RoomType.Double: return 'Duplo';
-      case RoomType.Suite: return 'Suíte';
-      default: return 'Desconhecido';
-    }
-  };
+  function getRoomTypeName(roomType: number): string {
+    return getEnumLabel(RoomType, roomType);
+  }
 
   const getRoomStatusBadge = (status: RoomStatus) => {
     switch (status) {

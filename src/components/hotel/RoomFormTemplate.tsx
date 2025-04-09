@@ -1,8 +1,9 @@
 import React from 'react';
 import { Form, Button, Modal, Row, Col } from 'react-bootstrap';
-import { RoomStatus } from '../../enums/hotel/RoomStatus';
-import { RoomType } from '../../enums/hotel/RoomType';
-import { RoomFormTemplateProps } from '../../interfaces/DTO/Hotel/IHotelProps';
+import { RoomStatus, RoomStatusDescriptions } from '../../enums/hotel/RoomStatus';
+import { RoomType, RoomTypeDescriptions } from '../../enums/hotel/RoomType';
+import { RoomFormTemplateProps } from '../../interfaces/DTO/Hotel/IHotelProps'; 
+import EnumSelect from '../general/EnumSelect';
 
 const RoomFormTemplate: React.FC<RoomFormTemplateProps> = ({
   formData,
@@ -19,40 +20,31 @@ const RoomFormTemplate: React.FC<RoomFormTemplateProps> = ({
       <Modal.Body>
         <Form noValidate validated={validated} onSubmit={onSubmit}>
           <Row className="mb-3">
-            <Form.Group as={Col} md="6">
-              <Form.Label>Tipo de Quarto</Form.Label>
-              <Form.Select
+            <Col md="6">
+              <EnumSelect
+                enumObject={RoomType}
                 name="roomType"
                 value={formData.roomType}
                 onChange={onChange}
+                descriptionsMap={RoomTypeDescriptions}
+                label="Tipo de Quarto"
                 required
-              >
-                <option value={RoomType.Single}>Individual</option>
-                <option value={RoomType.Double}>Duplo</option>
-                <option value={RoomType.Suite}>Suíte</option>
-              </Form.Select>
-              <Form.Control.Feedback type="invalid">
-                Selecione o tipo de quarto.
-              </Form.Control.Feedback>
-            </Form.Group>
+                invalidFeedback="Selecione o tipo de quarto."
+              />
+            </Col>
 
-            <Form.Group as={Col} md="6">
-              <Form.Label>Status</Form.Label>
-              <Form.Select
+            <Col md="6">
+              <EnumSelect
+                enumObject={RoomStatus}
                 name="status"
                 value={formData.status}
                 onChange={onChange}
+                descriptionsMap={RoomStatusDescriptions}
+                label="Status"
                 required
-              >
-                <option value={RoomStatus.Available}>Disponível</option>
-                <option value={RoomStatus.Occupied}>Ocupado</option>
-                <option value={RoomStatus.Maintenance}>Manutenção</option>
-                <option value={RoomStatus.Cleaning}>Limpeza</option>
-              </Form.Select>
-              <Form.Control.Feedback type="invalid">
-                Selecione o status do quarto.
-              </Form.Control.Feedback>
-            </Form.Group>
+                invalidFeedback="Selecione o status do quarto."
+              />
+            </Col>
           </Row>
 
           <Row className="mb-3">

@@ -4,3 +4,9 @@ export enum RoomType {
     Suite = 3,
 }
  
+ export const RoomTypeDescriptions: Record<number, string> = {
+    [RoomType.Single]: "Single",
+    [RoomType.Double]: "Double",
+    [RoomType.Suite]: "Suite", 
+  };
+  
