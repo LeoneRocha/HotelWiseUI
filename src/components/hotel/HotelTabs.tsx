@@ -15,7 +15,7 @@ const HotelTabs: React.FC<HotelTabsProps> = ({ hotelId, hotel }) => {
       <Tabs
         id="hotel-tabs"
         activeKey={key}
-        onSelect={(k) => setKey(k || 'details')}
+        onSelect={(k) => setKey(k ?? 'details')}
         className="mb-3"
       >
         <Tab eventKey="details" title="Detalhes do Hotel">

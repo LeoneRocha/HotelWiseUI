@@ -48,4 +48,4 @@ export interface RoomFormTemplateProps {
   onClose: () => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-}
+} 

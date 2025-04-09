@@ -1,18 +1,7 @@
 import { Form } from 'react-bootstrap';
 import { enumToSelectOptions } from '../../enums/extensions/enumHelper';
-
-interface EnumSelectProps<T extends Record<string, string | number>> {
-  enumObject: T;
-  name: string;
-  value?: string | number | null; // Tornar value opcional
-  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-  descriptionsMap: Record<number | string, string>;
-  label?: string;
-  required?: boolean;
-  invalidFeedback?: string;
-  className?: string;
-}
-
+import { EnumSelectProps } from '../../interfaces/DTO/general/ISharedProps';
+ 
 function EnumSelect<T extends Record<string, string | number>>({
   enumObject,
   name,

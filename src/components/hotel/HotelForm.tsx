@@ -23,7 +23,7 @@ const initialFormData: IHotel = {
   isHotelInVectorStore: false,
 };
 
-const HotelForm: React.FC<IHotelFormProps> = ({ hotelId, onSave }) => {
+const HotelForm: React.FC<IHotelFormProps> = ({ onSave }) => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [formData, setFormData] = useState<IHotel>(initialFormData);
@@ -35,15 +35,14 @@ const HotelForm: React.FC<IHotelFormProps> = ({ hotelId, onSave }) => {
   const [countdown, setCountdown] = useState(10); // Countdown state for redirect
 
   useEffect(() => {
-    hotelId = 0;
     if (id === 'new') {
       setFormData(initialFormData); // Clears the form
     } else if (id && !isNaN(Number(id)) && !isFetching.current) {
-      hotelId = Number(id);
+      const currentHotelId = Number(id);
       isFetching.current = true;
       const fetchHotel = async () => {
         try {
-          const hotel = await HotelService.getById(Number(hotelId)); // Fetch by ID
+          const hotel = await HotelService.getById(currentHotelId); // Fetch by ID
           setFormData(hotel.data);
         } catch (error) {
           if (EnvironmentService.isNotTestEnvironment()) {
