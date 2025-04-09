@@ -16,8 +16,7 @@ const RoomListTemplate: React.FC<RoomListTemplateProps> = ({
     onFormClose,
     getRoomTypeName,
     getRoomStatusBadge
-}) => {
-    console.log('RoomListTemplate - hotel:', hotel);
+}) => { 
     return (
         <div className="mt-3">
             <div className="d-flex justify-content-between mb-3">

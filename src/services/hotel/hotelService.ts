@@ -38,8 +38,7 @@ class HotelService extends GenericService<IHotel> implements IHotelService {
   }
 
   async getTags(): Promise<string[]> {
-    const response = await this.api.get<string[]>(`${this.endpoint}/tags`);
-    console.log('Resposta da API XXX:', response.data); // Verificar o retorno completo da API    
+    const response = await this.api.get<string[]>(`${this.endpoint}/tags`);   
     if (response.data) {
       return response.data ?? [];
     }    

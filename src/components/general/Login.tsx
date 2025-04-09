@@ -42,8 +42,7 @@ const Login: React.FC = () => {
       if (response.success) {
         SecurityService.setToken(nameStorageTokenJWT, response.data.tokenAuth.accessToken);
 
-        if (rememberMe) {
-          console.log('Remember me is checked. Setting item in localStorage.');
+        if (rememberMe) { 
           LocalStorageService.setItem('rememberMeUsername', sanitizedUsername);
         } else {
           LocalStorageService.removeItem('rememberMeUsername');

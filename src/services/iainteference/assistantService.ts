@@ -40,8 +40,7 @@ api_assistantService.interceptors.request.use((config) => {
 
 class AssistantService implements IAssistantService {
   async getChatCompletion(criteria: IAskAssistantRequest): Promise<IAskAssistantResponse[]> {
-    const response = await api_assistantService.post<IAskAssistantResponse[]>('/', criteria);
-    console.log('Resposta da API:', response.data);
+    const response = await api_assistantService.post<IAskAssistantResponse[]>('/', criteria);    
     return response.data;
   }
 }

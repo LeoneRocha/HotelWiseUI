@@ -20,8 +20,7 @@ const HotelSearch: React.FC = () => {
   const fetchTags = async () => {
     try {
       const fetchedTags = await HotelService.getTags();
-      setTags(fetchedTags); // Atualizar estado com os dados retornados
-      console.log('Resposta da API:', fetchedTags); // Verificar o retorno completo da API
+      setTags(fetchedTags); // Atualizar estado com os dados retornados 
     } catch (err) {
       if (EnvironmentService.isNotTestEnvironment()) {
         console.error('Erro ao buscar tags:', err);
@@ -33,8 +32,7 @@ const HotelSearch: React.FC = () => {
     fetchTags();
   }, []);
 
-  useEffect(() => {
-    console.log("Tags carregadas no componente pai:", tags);
+  useEffect(() => { 
   }, [tags]);
 
 

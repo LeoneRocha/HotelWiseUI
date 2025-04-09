@@ -21,8 +21,7 @@ const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
   const [filterTerm, setFilterTerm] = useState('');
 
 
-  useEffect(() => {
-    console.log("Tags recebidas:", tags);
+  useEffect(() => { 
   }, [tags]);
 
   // Filtra as tags com base no termo digitado
@@ -173,7 +172,7 @@ const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#tagsCollapse"
-              aria-expanded="true"
+              aria-expanded="false"
               aria-controls="tagsCollapse"
             >
               Adicionar filtro por tags:
@@ -181,7 +180,7 @@ const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
           </h2>
           <div
             id="tagsCollapse"
-            className="accordion-collapse collapse show"
+            className="accordion-collapse collapse"
             aria-labelledby="tagsHeading"
             data-bs-parent="#tagsAccordion"
           >
