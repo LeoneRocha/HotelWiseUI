@@ -73,9 +73,12 @@ const FooterPage: React.FC = () => {
             <a href="https://azure.microsoft.com/" target="_blank" rel="noopener noreferrer">
               <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original-wordmark.svg" alt="Azure Cloud" title="Azure Cloud" />
             </a>
+            <a href="https://painelbd.host.uol.com.br/main.html?servicetype=mysql" target="_blank" rel="noopener noreferrer">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" alt="MySQL" title="MySQL" />
+            </a>
             <a href="https://lionscorp.visualstudio.com/VariousStudies/_build" target="_blank" rel="noopener noreferrer">
               <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azuredevops/azuredevops-original.svg" alt="Azure DevOps" title="Azure DevOps" />
-            </a>
+            </a>            
             <a href="https://qdrant.tech/" target="_blank" rel="noopener noreferrer">
               <img src="https://qdrant.tech/img/brand-resources-logos/logo.svg" alt="qdrant" title="qdrant" />
             </a>
