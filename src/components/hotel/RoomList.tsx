@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Table, Badge } from 'react-bootstrap';
+import { Badge } from 'react-bootstrap';
 import { IRoom } from '../../interfaces/model/Hotel/IRoom';
 import RoomService from '../../services/hotel/RoomService';  
 import { RoomStatus } from '../../enums/hotel/RoomStatus';
 import { RoomType } from '../../enums/hotel/RoomType';
-import RoomForm from './RoomForm';
-
-interface RoomListProps {
-  hotelId: number;
-}
+import { RoomListProps } from '../../interfaces/DTO/Hotel/IHotelProps';
+import RoomListTemplate from './RoomListTemplate';
 
 const RoomList: React.FC<RoomListProps> = ({ hotelId }) => {
   const [rooms, setRooms] = useState<IRoom[]>([]);
@@ -87,75 +84,19 @@ const RoomList: React.FC<RoomListProps> = ({ hotelId }) => {
   };
 
   return (
-    <div className="mt-3">
-      <div className="d-flex justify-content-between mb-3">
-        <h3>Quartos do Hotel</h3>
-        <Button variant="primary" onClick={handleAddRoom}>
-          Adicionar Quarto
-        </Button>
-      </div>
-
-      {loading ? (
-        <p>Carregando quartos...</p>
-      ) : (
-        <>
-          {rooms.length === 0 ? (
-            <p>Nenhum quarto cadastrado para este hotel.</p>
-          ) : (
-            <Table striped bordered hover responsive>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Tipo</th>
-                  <th>Capacidade</th>
-                  <th>Descrição</th>
-                  <th>Status</th>
-                  <th>Mín. Noites</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rooms.map((room) => (
-                  <tr key={room.id}>
-                    <td>{room.id}</td>
-                    <td>{getRoomTypeName(room.roomType)}</td>
-                    <td>{room.capacity}</td>
-                    <td>{room.description}</td>
-                    <td>{getRoomStatusBadge(room.status)}</td>
-                    <td>{room.minimumNights}</td>
-                    <td>
-                      <Button
-                        variant="outline-primary"
-                        size="sm"
-                        className="me-2"
-                        onClick={() => handleEditRoom(room)}
-                      >
-                        Editar
-                      </Button>
-                      <Button
-                        variant="outline-danger"
-                        size="sm"
-                        onClick={() => handleDeleteRoom(room.id)}
-                      >
-                        Excluir
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          )}
-        </>
-      )}
-
-      {showForm && (
-        <RoomForm
-          hotelId={hotelId}
-          room={selectedRoom}
-          onClose={handleFormClose}
-        />
-      )}
-    </div>
+    <RoomListTemplate
+      rooms={rooms}
+      loading={loading}
+      showForm={showForm}
+      selectedRoom={selectedRoom}
+      hotelId={hotelId}
+      onAddRoom={handleAddRoom}
+      onEditRoom={handleEditRoom}
+      onDeleteRoom={handleDeleteRoom}
+      onFormClose={handleFormClose}
+      getRoomTypeName={getRoomTypeName}
+      getRoomStatusBadge={getRoomStatusBadge}
+    />
   );
 };
 
