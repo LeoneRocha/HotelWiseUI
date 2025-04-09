@@ -1,9 +1,9 @@
 import React from 'react';
-import { Form, Button, Modal, Row, Col } from 'react-bootstrap'; 
+import { Form, Button, Modal, Row, Col } from 'react-bootstrap';
 import { RoomStatus } from '../../enums/hotel/RoomStatus';
 import { RoomType } from '../../enums/hotel/RoomType';
 import { RoomFormTemplateProps } from '../../interfaces/DTO/Hotel/IHotelProps';
- 
+
 const RoomFormTemplate: React.FC<RoomFormTemplateProps> = ({
   formData,
   validated,
@@ -29,7 +29,7 @@ const RoomFormTemplate: React.FC<RoomFormTemplateProps> = ({
               >
                 <option value={RoomType.Single}>Individual</option>
                 <option value={RoomType.Double}>Duplo</option>
-                <option value={RoomType.Suite}>Suíte</option> 
+                <option value={RoomType.Suite}>Suíte</option>
               </Form.Select>
               <Form.Control.Feedback type="invalid">
                 Selecione o tipo de quarto.

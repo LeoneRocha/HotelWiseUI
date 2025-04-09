@@ -9,10 +9,10 @@ const HotelListTemplate: React.FC<IHotelListTemplateProps> = ({
   totalHotels = 0, // Valor padrão para evitar erros de cálculo
   currentPage = 1, // Define página inicial como padrão
   hotelsPerPage = 6,
-  handleDelete = () => {}, // Função vazia por padrão
-  paginate = () => {}, // Função vazia por padrão
+  handleDelete = () => { }, // Função vazia por padrão
+  paginate = () => { }, // Função vazia por padrão
   filter = '', // Fallback para string vazia
-  handleFilterChange = () => {}, // Função vazia por padrão
+  handleFilterChange = () => { }, // Função vazia por padrão
 }) => {
   return (
     <div className="container-fluid mt-5">

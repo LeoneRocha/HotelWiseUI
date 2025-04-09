@@ -36,18 +36,18 @@ const RoomForm: React.FC<RoomFormProps> = ({ hotelId, room, onClose }) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    
+
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'roomType' || name === 'status' || name === 'capacity' || name === 'minimumNights' 
-        ? parseInt(value, 10) 
+      [name]: name === 'roomType' || name === 'status' || name === 'capacity' || name === 'minimumNights'
+        ? parseInt(value, 10)
         : value
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
       e.stopPropagation();
@@ -58,7 +58,7 @@ const RoomForm: React.FC<RoomFormProps> = ({ hotelId, room, onClose }) => {
     try {
       let response;
 
-      console.log('Form Data:', formData);  
+      console.log('Form Data:', formData);
       if (formData.id === 0) {
         response = await RoomService.create(formData);
       } else {

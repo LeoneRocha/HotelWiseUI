@@ -27,16 +27,16 @@ const HotelSearch: React.FC = () => {
         console.error('Erro ao buscar tags:', err);
       }
     }
-  }; 
+  };
   useEffect(() => {
-    
+
     fetchTags();
   }, []);
 
   useEffect(() => {
     console.log("Tags carregadas no componente pai:", tags);
   }, [tags]);
-  
+
 
   const handleTagChange = (tag: string) => {
     setSelectedTags(prevTags =>

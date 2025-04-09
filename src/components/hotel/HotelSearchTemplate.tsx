@@ -199,8 +199,8 @@ const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
                     key={tag}
                     type="button"
                     className={`btn ${selectedTags.includes(tag)
-                        ? 'btn-primary'
-                        : 'btn-outline-primary'
+                      ? 'btn-primary'
+                      : 'btn-outline-primary'
                       } m-1`}
                     onClick={() => handleTagChange(tag)}
                   >

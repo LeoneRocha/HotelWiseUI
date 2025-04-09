@@ -8,9 +8,7 @@ const handleSave = () => {
   // Lógica para lidar com a ação de salvar, se necessário
 };
 const HotelTabs: React.FC<HotelTabsProps> = ({ hotelId, hotel }) => {
-
-
-  const [key, setKey] = useState<string>('details')
+  const [key, setKey] = useState<string>('details');
 
   return (
     <div className="container-fluid mt-5">
