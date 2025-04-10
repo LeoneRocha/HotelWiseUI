@@ -1,44 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import RoomAvailabilityManagementTemplate from './RoomAvailabilityManagementTemplate';
 import RoomAvailabilityService from '../../services/hotel/RoomAvailabilityService';
 import RoomService from '../../services/hotel/RoomService';
 import { IRoomAvailability, RoomPriceAndAvailabilityItem } from '../../interfaces/model/Hotel/IRoomAvailability';
+import { RoomAvailabilityPrice, RoomListProps } from '../../interfaces/DTO/Hotel/IHotelProps';
 
-interface RoomAvailabilityPrice {
-  id: number;
-  name: string;
-  quantity: number;
-  currency: string;
-  prices: {
-    [key: string]: number;
-  };
-}
-
-const RoomAvailabilityManagement: React.FC = () => {
-  const { hotelId } = useParams<{ hotelId: string }>();
+const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel }) => {
   const navigate = useNavigate();
-  
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
   const [rooms, setRooms] = useState<RoomAvailabilityPrice[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  
+
   const weekDays = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
   const currencies = ['BRL', 'USD', 'EUR', 'GBP'];
 
   useEffect(() => {
     if (hotelId) {
-      loadRooms(parseInt(hotelId));
+      loadRooms(hotelId);
     }
-  }, [hotelId]);
+  }, [hotelId, hotel]);
 
   const loadRooms = async (hotelId: number) => {
     try {
       setIsLoading(true);
       const response = await RoomService.getRoomsByHotelId(hotelId);
-      
+
       if (response.success && response.data) {
         const formattedRooms = response.data.map(room => ({
           id: room.id,
@@ -50,7 +39,7 @@ const RoomAvailabilityManagement: React.FC = () => {
             return acc;
           }, {} as { [key: string]: number })
         }));
-        
+
         setRooms(formattedRooms);
       } else {
         toast.error('Erro ao carregar quartos do hotel');
@@ -72,17 +61,17 @@ const RoomAvailabilityManagement: React.FC = () => {
     try {
       setIsLoading(true);
       const searchCriteria = {
-        hotelId: parseInt(hotelId),
+        hotelId: hotelId,
         startDate,
         endDate
       };
 
       const response = await RoomAvailabilityService.getAvailabilitiesBySearchCriteria(searchCriteria);
-      
+
       if (response.success && response.data) {
         // Map existing availabilities to rooms
         const updatedRooms = [...rooms];
-        
+
         response.data.forEach(availability => {
           const roomIndex = updatedRooms.findIndex(r => r.id === availability.roomId);
           if (roomIndex !== -1) {
@@ -91,14 +80,14 @@ const RoomAvailabilityManagement: React.FC = () => {
               updatedRooms[roomIndex].currency = availability.availabilityWithPrice[0].currency;
               updatedRooms[roomIndex].quantity = availability.availabilityWithPrice[0].quantityAvailable;
             }
-            
+
             // Map prices by day of week
             availability.availabilityWithPrice.forEach(item => {
               updatedRooms[roomIndex].prices[item.dayOfWeek] = item.price;
             });
           }
         });
-        
+
         setRooms(updatedRooms);
       }
     } catch (error) {
@@ -124,26 +113,26 @@ const RoomAvailabilityManagement: React.FC = () => {
   };
 
   const handleQuantityChange = (roomId: number, quantity: number) => {
-    setRooms(prevRooms => 
-      prevRooms.map(room => 
+    setRooms(prevRooms =>
+      prevRooms.map(room =>
         room.id === roomId ? { ...room, quantity } : room
       )
     );
   };
 
   const handleCurrencyChange = (roomId: number, currency: string) => {
-    setRooms(prevRooms => 
-      prevRooms.map(room => 
+    setRooms(prevRooms =>
+      prevRooms.map(room =>
         room.id === roomId ? { ...room, currency } : room
       )
     );
   };
 
   const handlePriceChange = (roomId: number, day: string, price: number) => {
-    setRooms(prevRooms => 
-      prevRooms.map(room => 
-        room.id === roomId 
-          ? { ...room, prices: { ...room.prices, [day]: price } } 
+    setRooms(prevRooms =>
+      prevRooms.map(room =>
+        room.id === roomId
+          ? { ...room, prices: { ...room.prices, [day]: price } }
           : room
       )
     );
@@ -172,7 +161,7 @@ const RoomAvailabilityManagement: React.FC = () => {
 
     try {
       setIsLoading(true);
-      
+
       // Prepare data for batch creation
       const availabilities: IRoomAvailability[] = rooms.map(room => {
         const availabilityWithPrice: RoomPriceAndAvailabilityItem[] = weekDays.map(day => ({
@@ -193,7 +182,7 @@ const RoomAvailabilityManagement: React.FC = () => {
       });
 
       const response = await RoomAvailabilityService.createBatch(availabilities);
-      
+
       if (response.success) {
         toast.success('Disponibilidades salvas com sucesso!');
         // Navigate back or refresh data
@@ -216,6 +205,7 @@ const RoomAvailabilityManagement: React.FC = () => {
 
   return (
     <RoomAvailabilityManagementTemplate
+      hotel={hotel} 
       startDate={startDate}
       endDate={endDate}
       rooms={rooms}

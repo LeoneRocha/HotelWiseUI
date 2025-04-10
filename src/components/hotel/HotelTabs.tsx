@@ -30,7 +30,7 @@ const HotelTabs: React.FC<HotelTabsProps> = ({ hotelId, hotel }) => {
 
         {hotelId && (
           <Tab eventKey="availability" title="Disponibilidade">
-            <RoomAvailabilityManagement />
+            <RoomAvailabilityManagement hotelId={hotelId} hotel={hotel} />
           </Tab>
         )}
       </Tabs>

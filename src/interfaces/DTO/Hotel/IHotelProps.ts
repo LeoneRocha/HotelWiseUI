@@ -49,3 +49,37 @@ export interface RoomFormTemplateProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 } 
+
+export interface RoomAvailabilityManagementTemplateProps {
+  hotel: IHotel | null; 
+  startDate: string;
+  endDate: string;
+  rooms: Array<{
+    id: number;
+    name: string;
+    quantity: number;
+    currency: string;
+    prices: {
+      [key: string]: number;
+    };
+  }>;
+  currencies: string[];
+  weekDays: string[];
+  isLoading: boolean;
+  onStartDateChange: (date: string) => void;
+  onEndDateChange: (date: string) => void;
+  onQuantityChange: (roomId: number, quantity: number) => void;
+  onCurrencyChange: (roomId: number, currency: string) => void;
+  onPriceChange: (roomId: number, day: string, price: number) => void;
+  onSave: () => void;
+  onCancel: () => void;
+}
+export  interface RoomAvailabilityPrice {
+  id: number;
+  name: string;
+  quantity: number;
+  currency: string;
+  prices: {
+    [key: string]: number;
+  };
+}

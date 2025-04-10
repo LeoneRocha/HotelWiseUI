@@ -1,29 +1,13 @@
-import React from 'react'; 
-import { Button, Form, Col, Card, Row, Table } from 'react-bootstrap';
+import React, { useEffect } from 'react';
+import { Button, Form, Col, Row, Table } from 'react-bootstrap';
+import { RoomAvailabilityManagementTemplateProps } from '../../interfaces/DTO/Hotel/IHotelProps';
+import DatePicker  from 'react-date-picker'; 
+import { Value } from 'react-calendar/dist/esm/shared/types.js';
+import "react-datepicker/dist/react-datepicker.css";
+import 'react-date-picker/dist/DatePicker.css';
+import '../../css/datepicker.css'; // Add this line 
 
-interface RoomAvailabilityManagementTemplateProps {
-  startDate: string;
-  endDate: string;
-  rooms: Array<{
-    id: number;
-    name: string;
-    quantity: number;
-    currency: string;
-    prices: {
-      [key: string]: number;
-    };
-  }>;
-  currencies: string[];
-  weekDays: string[];
-  isLoading: boolean;
-  onStartDateChange: (date: string) => void;
-  onEndDateChange: (date: string) => void;
-  onQuantityChange: (roomId: number, quantity: number) => void;
-  onCurrencyChange: (roomId: number, currency: string) => void;
-  onPriceChange: (roomId: number, day: string, price: number) => void;
-  onSave: () => void;
-  onCancel: () => void;
-}
+
 
 const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTemplateProps> = ({
   startDate,
@@ -32,6 +16,7 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
   currencies,
   weekDays,
   isLoading,
+  hotel,
   onStartDateChange,
   onEndDateChange,
   onQuantityChange,
@@ -40,108 +25,143 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
   onSave,
   onCancel
 }) => {
-  return (
-    <Card className="shadow-sm mb-4">
-      <Card.Header className="bg-primary text-white">
-        <h5 className="mb-0">Cadastro de Disponibilidade de Quartos</h5>
-      </Card.Header>
-      <Card.Body>
-        <Row className="mb-4">
-          <Col md={6}>
-            <Form.Group>
-              <Form.Label>Data Inicial</Form.Label>
-              <Form.Control
-                type="date"
-                value={startDate}
-                onChange={(e) => onStartDateChange(e.target.value)}
-                required
-              />
-            </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group>
-              <Form.Label>Data Final</Form.Label>
-              <Form.Control
-                type="date"
-                value={endDate}
-                onChange={(e) => onEndDateChange(e.target.value)}
-                required
-              />
-            </Form.Group>
-          </Col>
-        </Row>
 
-        <div className="table-responsive">
-          <Table striped bordered hover>
-            <thead className="bg-light">
-              <tr>
-                <th>Quarto</th>
-                <th>Quantidade Por Dia</th>
-                <th>Moeda</th>
+
+  useEffect(() => {
+    console.log('hotel', hotel);  
+  }, [hotel]);
+  
+  // Parse dates
+  const parseDate = (dateString: string) => {
+    if (!dateString) return null;
+    const date = new Date(dateString);
+    return isNaN(date.getTime()) ? null : date;
+  };
+
+  const parseDateNull = (dateString: string | undefined) => {
+    if (!dateString) return undefined; // Alterado de "null" para "undefined"
+    const date = new Date(dateString);
+    return isNaN(date.getTime()) ? undefined : date; // Alterado de "null" para "undefined"
+  };
+  
+
+  // Handle date changes with the correct type
+  const handleStartDateChange = (value: Value) => {
+    // Check if value is a Date object
+    const date = value instanceof Date ? value : null;
+    const formattedDate = date ? date.toISOString().split('T')[0] : '';
+    onStartDateChange(formattedDate);
+  };
+
+  const handleEndDateChange = (value: Value) => {
+    // Check if value is a Date object
+    const date = value instanceof Date ? value : null;
+    const formattedDate = date ? date.toISOString().split('T')[0] : '';
+    onEndDateChange(formattedDate);
+  };
+
+  return (
+    <div>
+      <h3 className="mb-0">Cadastro de Disponibilidade de Quartos - {hotel?.hotelName}</h3>
+      <Row className="mb-4">
+        <Col md={6}>
+          <Form.Group>
+            <Form.Label>Data Inicial</Form.Label>
+            <div>
+              <DatePicker
+                value={parseDate(startDate)}
+                onChange={handleStartDateChange}
+                format="dd/MM/yyyy" 
+              />
+            </div>
+          </Form.Group>
+        </Col>
+        <Col md={6}>
+          <Form.Group>
+            <Form.Label>Data Final</Form.Label>
+            <div>
+              <DatePicker
+                value={parseDate(endDate)}
+                onChange={handleEndDateChange}
+                format="dd/MM/yyyy" 
+                minDate={parseDateNull(startDate)} // Agora retorna "Date | undefined"                
+              
+              />
+            </div>
+          </Form.Group>
+        </Col>
+      </Row>
+
+      <div className="table-responsive">
+        <Table striped bordered hover>
+          <thead className="bg-light">
+            <tr>
+              <th>Quarto</th>
+              <th>Quantidade Por Dia</th>
+              <th>Moeda</th>
+              {weekDays.map((day) => (
+                <th key={day}>{day}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rooms.map((room) => (
+              <tr key={room.id}>
+                <td>{room.name}</td>
+                <td>
+                  <Form.Control
+                    type="number"
+                    min="0"
+                    value={room.quantity}
+                    onChange={(e) => onQuantityChange(room.id, parseInt(e.target.value))}
+                  />
+                </td>
+                <td>
+                  <Form.Select
+                    value={room.currency}
+                    onChange={(e) => onCurrencyChange(room.id, e.target.value)}
+                  >
+                    {currencies.map((currency) => (
+                      <option key={currency} value={currency}>
+                        {currency}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </td>
                 {weekDays.map((day) => (
-                  <th key={day}>{day}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {rooms.map((room) => (
-                <tr key={room.id}>
-                  <td>{room.name}</td>
-                  <td>
+                  <td key={`${room.id}-${day}`}>
                     <Form.Control
                       type="number"
                       min="0"
-                      value={room.quantity}
-                      onChange={(e) => onQuantityChange(room.id, parseInt(e.target.value))}
+                      step="0.01"
+                      value={room.prices[day] || 0}
+                      onChange={(e) => onPriceChange(room.id, day, parseFloat(e.target.value))}
                     />
                   </td>
-                  <td>
-                    <Form.Select
-                      value={room.currency}
-                      onChange={(e) => onCurrencyChange(room.id, e.target.value)}
-                    >
-                      {currencies.map((currency) => (
-                        <option key={currency} value={currency}>
-                          {currency}
-                        </option>
-                      ))}
-                    </Form.Select>
-                  </td>
-                  {weekDays.map((day) => (
-                    <td key={`${room.id}-${day}`}>
-                      <Form.Control
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        value={room.prices[day] || 0}
-                        onChange={(e) => onPriceChange(room.id, day, parseFloat(e.target.value))}
-                      />
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </div>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
 
-        <div className="d-flex justify-content-end mt-3">
-          <Button 
-            variant="secondary" 
-            className="me-2" 
-            onClick={onCancel}
-          >
-            Cancelar
-          </Button>
-          <Button 
-            variant="primary" 
-            onClick={onSave} 
-            disabled={isLoading}
-          >
-            {isLoading ? 'Salvando...' : 'Salvar'}
-          </Button>
-        </div>
-      </Card.Body>
-    </Card>
+      <div className="d-flex justify-content-end mt-3">
+        <Button
+          variant="secondary"
+          className="me-2"
+          onClick={onCancel}
+        >
+          Cancelar
+        </Button>
+        <Button
+          variant="primary"
+          onClick={onSave}
+          disabled={isLoading}
+        >
+          {isLoading ? 'Salvando...' : 'Salvar'}
+        </Button>
+      </div>
+    </div>
   );
 };
 
