@@ -7,8 +7,7 @@ export interface IRoomAvailability {
   roomDetails?: object; // Detalhes adicionais do quarto
 }
 
-export interface RoomPriceAndAvailabilityItem {
-  date: string;             // Data específica
+export interface RoomPriceAndAvailabilityItem { 
   dayOfWeek: string;        // Dia da semana
   price: number;            // Preço
   quantityAvailable: number;// Quantidade disponível
