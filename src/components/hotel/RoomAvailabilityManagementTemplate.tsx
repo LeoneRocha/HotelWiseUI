@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import { Button, Form, Col, Row, Table } from 'react-bootstrap';
 import { RoomAvailabilityManagementTemplateProps } from '../../interfaces/DTO/Hotel/IHotelProps';
-import DatePicker  from 'react-date-picker'; 
+import DatePicker from 'react-date-picker';
 import { Value } from 'react-calendar/dist/esm/shared/types.js';
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-date-picker/dist/DatePicker.css';
 import '../../css/datepicker.css'; // Add this line 
- 
+import { parseDate, parseDateNull } from '../../helpers/dateHelper';
+
 const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTemplateProps> = ({
   startDate,
   endDate,
@@ -26,22 +27,8 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
 
 
   useEffect(() => {
-    console.log('hotel', hotel);  
+    console.log('hotel', hotel);
   }, [hotel]);
-  
-  // Parse dates
-  const parseDate = (dateString: string) => {
-    if (!dateString) return null;
-    const date = new Date(dateString);
-    return isNaN(date.getTime()) ? null : date;
-  };
-
-  const parseDateNull = (dateString: string | undefined) => {
-    if (!dateString) return undefined; // Alterado de "null" para "undefined"
-    const date = new Date(dateString);
-    return isNaN(date.getTime()) ? undefined : date; // Alterado de "null" para "undefined"
-  };
-  
 
   // Handle date changes with the correct type
   const handleStartDateChange = (value: Value) => {
@@ -69,7 +56,7 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
               <DatePicker
                 value={parseDate(startDate)}
                 onChange={handleStartDateChange}
-                format="dd/MM/yyyy" 
+                format="dd/MM/yyyy"
               />
             </div>
           </Form.Group>
@@ -81,9 +68,9 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
               <DatePicker
                 value={parseDate(endDate)}
                 onChange={handleEndDateChange}
-                format="dd/MM/yyyy" 
+                format="dd/MM/yyyy"
                 minDate={parseDateNull(startDate)} // Agora retorna "Date | undefined"                
-              
+
               />
             </div>
           </Form.Group>
