@@ -67,6 +67,8 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       };
 
       const response = await RoomAvailabilityService.getAvailabilitiesBySearchCriteria(searchCriteria);
+      toast.success('Disponibilidades carregadas com sucesso!');
+
 
       if (response.success && response.data) {
         // Map existing availabilities to rooms

@@ -6,9 +6,7 @@ import { Value } from 'react-calendar/dist/esm/shared/types.js';
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-date-picker/dist/DatePicker.css';
 import '../../css/datepicker.css'; // Add this line 
-
-
-
+ 
 const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTemplateProps> = ({
   startDate,
   endDate,
