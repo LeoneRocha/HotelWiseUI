@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import moment from 'moment'; 
 import RoomAvailabilityManagementTemplate from './RoomAvailabilityManagementTemplate';
 import RoomAvailabilityService from '../../services/hotel/RoomAvailabilityService';
 import RoomService from '../../services/hotel/RoomService';
+import CurrencyService from '../../services/CurrencyService';
+import DateService from '../../services/DateService';
 import { IRoomAvailability, RoomPriceAndAvailabilityItem } from '../../interfaces/model/Hotel/IRoomAvailability';
 import { RoomAvailabilityPrice, RoomListProps } from '../../interfaces/DTO/Hotel/IHotelProps';
 
@@ -16,10 +19,16 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
   const [formErrors, setFormErrors] = useState<{[key: string]: string}>({});
   const [isSaveEnabled, setIsSaveEnabled] = useState<boolean>(false);
 
-  const weekDays = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
-  const currencies = ['BRL', 'USD', 'EUR', 'GBP'];
+  // Obter dias da semana localizados usando o serviço
+  const weekDays = DateService.getLocalizedWeekdays();
+  
+  // Obter moedas disponíveis usando o serviço
+  const currencies = CurrencyService.getAvailableCurrencies();
 
   useEffect(() => {
+    // Configurar o locale do moment
+    moment.locale(navigator.language || 'pt-br');
+    
     if (hotelId) {
       loadRooms(hotelId);
     }
@@ -42,14 +51,14 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       errors.endDate = 'Data final é obrigatória';
     }
     
-    if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+    if (!DateService.isValidDateRange(startDate, endDate)) {
       errors.dateRange = 'A data inicial não pode ser posterior à data final';
     }
     
     // Check if at least one room is fully configured
     let hasConfiguredRoom = false;
     
-    rooms.forEach((room, index) => {
+    rooms.forEach((room) => {
       const roomKey = `room_${room.id}`;
       const isRoomConfigured = room.quantity > 0 && 
         weekDays.every(day => room.prices[day] > 0) && 
@@ -89,11 +98,13 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       const response = await RoomService.getRoomsByHotelId(hotelId);
 
       if (response.success && response.data) {
+        const defaultCurrency = CurrencyService.getDefaultCurrency().code;
+        
         const formattedRooms = response.data.map(room => ({
           id: room.id,
           name: room.description, //TODO: CREATE NAME ROOM 
           quantity: 0,
-          currency: 'BRL',
+          currency: defaultCurrency,
           prices: weekDays.reduce((acc, day) => {
             acc[day] = 0;
             return acc;
@@ -164,10 +175,6 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       setIsLoading(false);
     }
   };
-  
-  useEffect(() => {
-    
-  }, [startDate, endDate]);
 
   const handleStartDateChange = (date: string) => {
     setStartDate(date);
@@ -261,7 +268,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       return;
     }
     
-    if (new Date(startDate) > new Date(endDate)) {
+    if (!DateService.isValidDateRange(startDate, endDate)) {
       toast.error('A data inicial não pode ser posterior à data final');
       return;
     }

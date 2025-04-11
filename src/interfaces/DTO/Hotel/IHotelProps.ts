@@ -53,18 +53,12 @@ export interface RoomFormTemplateProps {
 export interface RoomAvailabilityManagementTemplateProps {
   startDate: string;
   endDate: string;
-  rooms: Array<{
-    id: number;
-    name: string;
-    quantity: number;
-    currency: string;
-    prices: { [key: string]: number };
-  }>;
-  currencies: string[];
+  rooms: RoomAvailabilityPrice[];
+  currencies: { code: string; symbol: string; name: string }[];
   weekDays: string[];
   isLoading: boolean;
-  hotel?: { hotelName: string } | null;
-  formErrors: {[key: string]: string};
+  hotel: IHotel | null;
+  formErrors: { [key: string]: string };
   isSaveEnabled: boolean;
   onStartDateChange: (date: string) => void;
   onEndDateChange: (date: string) => void;
