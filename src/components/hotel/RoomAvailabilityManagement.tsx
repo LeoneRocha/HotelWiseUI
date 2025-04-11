@@ -10,8 +10,7 @@ import DateService from '../../services/DateService';
 import { IRoomAvailability, RoomPriceAndAvailabilityItem } from '../../interfaces/model/Hotel/IRoomAvailability';
 import { RoomAvailabilityPrice, RoomListProps } from '../../interfaces/DTO/Hotel/IHotelProps';
 import { RoomAvailabilityStatus } from '../../enums/hotel/RoomStatus';
-import { DayOfWeekHelper } from '../../helpers/DayOfWeekHelper';
-import { DotNetDayOfWeek } from '../../enums/DotNetDayOfWeek';
+import { DayOfWeekHelper } from '../../helpers/DayOfWeekHelper'; 
 
 const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel }) => {
   const navigate = useNavigate();

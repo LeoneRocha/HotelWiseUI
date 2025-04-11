@@ -21,5 +21,6 @@ export interface RoomPriceAndAvailabilityItem {
 export interface RoomAvailabilitySearchDto {
   hotelId: number;       // ID do hotel
   startDate: string;     // Data inicial obrigatória
+  currency: string;
   endDate?: string;      // Data final opcional
 }
