@@ -68,6 +68,8 @@ export interface RoomAvailabilityManagementTemplateProps {
   onSave: () => void;
   onCancel: () => void;
   onSearch: () => void;
+   searchCurrency: string;
+   onSearchCurrencyChange: (currency: string) => void;
 }
 
 export  interface RoomAvailabilityPrice {

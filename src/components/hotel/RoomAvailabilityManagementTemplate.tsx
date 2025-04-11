@@ -25,7 +25,9 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
   onPriceChange,
   onSave,
   onCancel,
-  onSearch
+  onSearch,
+  searchCurrency,
+  onSearchCurrencyChange
 }) => {
   // Estado para rastrear se as datas foram alteradas
   const [datesModified, setDatesModified] = useState<boolean>(false);
@@ -56,7 +58,7 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
     <div>
       <h3 className="mb-0">Cadastro de Disponibilidade de Quartos - {hotel?.hotelName}</h3>
       <Row className="mb-4">
-        <Col md={5}>
+       <Col md={5}>
           <Form.Group>
             <Form.Label>Data Inicial <span className="text-danger">*</span></Form.Label>
             <div>
@@ -86,6 +88,26 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
                 <div className="invalid-feedback d-block">{formErrors.endDate}</div>
               )}
             </div>
+          </Form.Group>
+        </Col>
+        <Col md={2}>
+          <Form.Group>
+            <Form.Label>Moeda <span className="text-danger">*</span></Form.Label>
+            <Form.Select
+              value={searchCurrency}
+              onChange={(e) => onSearchCurrencyChange(e.target.value)}
+              className={formErrors.searchCurrency ? 'is-invalid' : ''}
+            >
+              <option value="">Selecione</option>
+              {currencies.map((currency) => (
+                <option key={currency.code} value={currency.code}>
+                  {currency.code} - {currency.symbol}
+                </option>
+              ))}
+            </Form.Select>
+            {formErrors.searchCurrency && (
+              <div className="invalid-feedback">{formErrors.searchCurrency}</div>
+            )}
           </Form.Group>
         </Col>
         <Col md={2} className="d-flex align-items-end">

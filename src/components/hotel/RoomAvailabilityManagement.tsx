@@ -16,6 +16,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
   const navigate = useNavigate();
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
+  const [searchCurrency, setSearchCurrency] = useState<string>('');
   const [rooms, setRooms] = useState<RoomAvailabilityPrice[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
@@ -34,6 +35,9 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
     // Configurar o locale do moment
     moment.locale(navigator.language || 'pt-br');
 
+    // Set default currency
+    setSearchCurrency(CurrencyService.getDefaultCurrency().code);
+
     if (hotelId) {
       loadRooms(hotelId);
     }
@@ -42,7 +46,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
   // Validate form and update save button state
   useEffect(() => {
     validateForm();
-  }, [startDate, endDate, rooms]);
+  }, [startDate, endDate, searchCurrency, rooms]);
 
   const validateForm = () => {
     const errors: { [key: string]: string } = {};
@@ -54,6 +58,10 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
 
     if (!endDate) {
       errors.endDate = 'Data final é obrigatória';
+    }
+
+    if (!searchCurrency) {
+      errors.searchCurrency = 'Moeda é obrigatória';
     }
 
     if (!DateService.isValidDateRange(startDate, endDate)) {
@@ -93,6 +101,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       Object.keys(errors).length === 0 &&
       startDate !== '' &&
       endDate !== '' &&
+      searchCurrency !== '' &&
       hasConfiguredRoom
     );
   };
@@ -103,7 +112,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       const response = await RoomService.getRoomsByHotelId(hotelId);
 
       if (response.success && response.data) {
-        const defaultCurrency = CurrencyService.getDefaultCurrency().code;
+        const defaultCurrency = searchCurrency || CurrencyService.getDefaultCurrency().code;
 
         const formattedRooms = response.data.map(room => ({
           id: room.id,
@@ -129,8 +138,8 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
   };
 
   const loadAvailabilities = async () => {
-    if (!hotelId || !startDate || !endDate) {
-      toast.warning('Por favor, selecione as datas inicial e final');
+    if (!hotelId || !startDate || !endDate || !searchCurrency) {
+      toast.warning('Por favor, preencha todos os campos de busca');
       return;
     }
     try {
@@ -138,7 +147,8 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       const searchCriteria = {
         hotelId: hotelId,
         startDate,
-        endDate
+        endDate,
+        currency: searchCurrency
       };
 
       const response = await RoomAvailabilityService.getAvailabilitiesBySearchCriteria(searchCriteria);
@@ -155,9 +165,9 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
         response.data.forEach(availability => {
           const roomIndex = updatedRooms.findIndex(r => r.id === availability.roomId);
           if (roomIndex !== -1) {
-            // Set currency from first availability item
+            // Set currency from first availability item or from search currency
             if (availability.availabilityWithPrice.length > 0) {
-              updatedRooms[roomIndex].currency = availability.availabilityWithPrice[0].currency;
+              updatedRooms[roomIndex].currency = searchCurrency;
               updatedRooms[roomIndex].quantity = availability.availabilityWithPrice[0].quantityAvailable;
             }
 
@@ -194,6 +204,18 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
 
   const handleEndDateChange = (date: string) => {
     setEndDate(date);
+  };
+
+  const handleSearchCurrencyChange = (currency: string) => {
+    setSearchCurrency(currency);
+    
+    // Atualiza a moeda de todos os quartos quando a moeda de busca muda
+    setRooms(prevRooms =>
+      prevRooms.map(room => ({
+        ...room,
+        currency
+      }))
+    );
   };
 
   const handleQuantityChange = (roomId: number, quantity: number) => {
@@ -275,8 +297,8 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
   };
 
   const handleSearch = () => {
-    if (!startDate || !endDate) {
-      toast.warning('Por favor, selecione as datas inicial e final para a pesquisa');
+    if (!startDate || !endDate || !searchCurrency) {
+      toast.warning('Por favor, preencha todos os campos de busca');
       return;
     }
 
@@ -294,6 +316,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       hotel={hotel}
       startDate={startDate}
       endDate={endDate}
+      searchCurrency={searchCurrency}
       rooms={rooms}
       currencies={currencies}
       weekDays={weekDays}
@@ -302,6 +325,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       isSaveEnabled={isSaveEnabled}
       onStartDateChange={handleStartDateChange}
       onEndDateChange={handleEndDateChange}
+      onSearchCurrencyChange={handleSearchCurrencyChange}
       onQuantityChange={handleQuantityChange}
       onCurrencyChange={handleCurrencyChange}
       onPriceChange={handlePriceChange}
