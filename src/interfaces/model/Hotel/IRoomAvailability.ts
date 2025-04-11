@@ -1,3 +1,5 @@
+import { RoomAvailabilityStatus } from "../../../enums/hotel/RoomStatus";
+
 export interface IRoomAvailability {
   id: number;
   roomId: number;
@@ -12,7 +14,7 @@ export interface RoomPriceAndAvailabilityItem {
   price: number;            // Preço
   quantityAvailable: number;// Quantidade disponível
   currency: string;         // Moeda (ex.: USD, BRL)
-  status: string;           // Status (ex.: Disponível, Reservado, Bloqueado)
+  status: RoomAvailabilityStatus;           // Status (ex.: Disponível, Reservado, Bloqueado)
 }
 
 export interface RoomAvailabilitySearchDto {

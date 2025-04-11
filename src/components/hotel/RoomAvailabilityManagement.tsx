@@ -9,6 +9,7 @@ import CurrencyService from '../../services/CurrencyService';
 import DateService from '../../services/DateService';
 import { IRoomAvailability, RoomPriceAndAvailabilityItem } from '../../interfaces/model/Hotel/IRoomAvailability';
 import { RoomAvailabilityPrice, RoomListProps } from '../../interfaces/DTO/Hotel/IHotelProps';
+import { RoomAvailabilityStatus } from '../../enums/hotel/RoomStatus';
 
 const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel }) => {
   const navigate = useNavigate();
@@ -228,7 +229,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
             price: room.prices[day],
             quantityAvailable: room.quantity,
             currency: room.currency,
-            status: 'Available'
+            status:  RoomAvailabilityStatus.Available
           }));
 
           return {

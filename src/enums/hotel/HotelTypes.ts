@@ -9,3 +9,5 @@ export const CurrencyLabels = {
     [Currency.BRL]: "Real",
     [Currency.EUR]: "Euro"
 };
+ 
+
