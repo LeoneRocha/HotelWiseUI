@@ -12,7 +12,9 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
   const [rooms, setRooms] = useState<RoomAvailabilityPrice[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false); 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [formErrors, setFormErrors] = useState<{[key: string]: string}>({});
+  const [isSaveEnabled, setIsSaveEnabled] = useState<boolean>(false);
 
   const weekDays = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
   const currencies = ['BRL', 'USD', 'EUR', 'GBP'];
@@ -22,6 +24,64 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       loadRooms(hotelId);
     }
   }, [hotelId, hotel]);
+
+  // Validate form and update save button state
+  useEffect(() => {
+    validateForm();
+  }, [startDate, endDate, rooms]);
+
+  const validateForm = () => {
+    const errors: {[key: string]: string} = {};
+    
+    // Validate dates
+    if (!startDate) {
+      errors.startDate = 'Data inicial é obrigatória';
+    }
+    
+    if (!endDate) {
+      errors.endDate = 'Data final é obrigatória';
+    }
+    
+    if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+      errors.dateRange = 'A data inicial não pode ser posterior à data final';
+    }
+    
+    // Check if at least one room is fully configured
+    let hasConfiguredRoom = false;
+    
+    rooms.forEach((room, index) => {
+      const roomKey = `room_${room.id}`;
+      const isRoomConfigured = room.quantity > 0 && 
+        weekDays.every(day => room.prices[day] > 0) && 
+        room.currency;
+      
+      if (isRoomConfigured) {
+        hasConfiguredRoom = true;
+      } else if (room.quantity > 0 || weekDays.some(day => room.prices[day] > 0)) {
+        // If room is partially configured, mark errors
+        if (room.quantity <= 0) {
+          errors[`${roomKey}_quantity`] = 'Quantidade inválida';
+        }
+        
+        weekDays.forEach(day => {
+          if (room.prices[day] <= 0) {
+            errors[`${roomKey}_price_${day}`] = 'Preço inválido';
+          }
+        });
+      }
+    });
+    
+    // Update form errors
+    setFormErrors(errors);
+    
+    // Enable save button if no errors and at least one room is configured
+    setIsSaveEnabled(
+      Object.keys(errors).length === 0 && 
+      startDate !== '' && 
+      endDate !== '' && 
+      hasConfiguredRoom
+    );
+  };
 
   const loadRooms = async (hotelId: number) => {
     try {
@@ -105,11 +165,8 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
     }
   };
   
-
   useEffect(() => {
-    if (startDate && endDate) {
-      loadAvailabilities();
-    }
+    
   }, [startDate, endDate]);
 
   const handleStartDateChange = (date: string) => {
@@ -147,47 +204,34 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
   };
 
   const handleSave = async () => {
-    if (!startDate || !endDate) {
-      toast.warning('Por favor, selecione as datas inicial e final');
+    if (!isSaveEnabled) {
+      toast.warning('Por favor, preencha todos os campos obrigatórios');
       return;
-    }
-
-    // Validate inputs
-    for (const room of rooms) {
-      if (room.quantity <= 0) {
-        toast.warning(`Por favor, defina uma quantidade válida para o quarto ${room.name}`);
-        return;
-      }
-
-      for (const day of weekDays) {
-        if (room.prices[day] <= 0) {
-          toast.warning(`Por favor, defina um preço válido para ${day} no quarto ${room.name}`);
-          return;
-        }
-      }
     }
 
     try {
       setIsLoading(true);
 
       // Prepare data for batch creation
-      const availabilities: IRoomAvailability[] = rooms.map(room => {
-        const availabilityWithPrice: RoomPriceAndAvailabilityItem[] = weekDays.map(day => ({
-          dayOfWeek: day,
-          price: room.prices[day],
-          quantityAvailable: room.quantity,
-          currency: room.currency,
-          status: 'Available'
-        }));
+      const availabilities: IRoomAvailability[] = rooms
+        .filter(room => room.quantity > 0 && weekDays.every(day => room.prices[day] > 0))
+        .map(room => {
+          const availabilityWithPrice: RoomPriceAndAvailabilityItem[] = weekDays.map(day => ({
+            dayOfWeek: day,
+            price: room.prices[day],
+            quantityAvailable: room.quantity,
+            currency: room.currency,
+            status: 'Available'
+          }));
 
-        return {
-          id: 0, // New availability
-          roomId: room.id,
-          startDate,
-          endDate,
-          availabilityWithPrice
-        };
-      });
+          return {
+            id: 0, // New availability
+            roomId: room.id,
+            startDate,
+            endDate,
+            availabilityWithPrice
+          };
+        });
 
       const response = await RoomAvailabilityService.createBatch(availabilities);
 
@@ -226,7 +270,6 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
     loadAvailabilities();
   };
   
-
   return (
     <RoomAvailabilityManagementTemplate
       hotel={hotel} 
@@ -235,7 +278,9 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       rooms={rooms}
       currencies={currencies}
       weekDays={weekDays}
-      isLoading={isLoading} 
+      isLoading={isLoading}
+      formErrors={formErrors}
+      isSaveEnabled={isSaveEnabled}
       onStartDateChange={handleStartDateChange}
       onEndDateChange={handleEndDateChange}
       onQuantityChange={handleQuantityChange}

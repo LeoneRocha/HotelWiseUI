@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Button, Form, Col, Row, Table } from 'react-bootstrap';
+import React  from 'react';
+import { Button, Form, Col, Row, Table, Spinner } from 'react-bootstrap';
 import { RoomAvailabilityManagementTemplateProps } from '../../interfaces/DTO/Hotel/IHotelProps';
 import DatePicker from 'react-date-picker';
 import { Value } from 'react-calendar/dist/esm/shared/types.js';
@@ -7,7 +7,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import 'react-date-picker/dist/DatePicker.css';
 import '../../css/datepicker.css'; // Add this line 
 import { parseDate, parseDateNull } from '../../helpers/dateHelper';
-
 const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTemplateProps> = ({
   startDate,
   endDate,
@@ -16,6 +15,8 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
   weekDays,
   isLoading,
   hotel,
+  formErrors,
+  isSaveEnabled,
   onStartDateChange,
   onEndDateChange,
   onQuantityChange,
@@ -25,12 +26,6 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
   onCancel,
   onSearch
 }) => {
-
-
-  useEffect(() => {
-    console.log('hotel', hotel);
-  }, [hotel]);
-
   // Handle date changes with the correct type
   const handleStartDateChange = (value: Value) => {
     // Check if value is a Date object
@@ -52,120 +47,142 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
       <Row className="mb-4">
         <Col md={5}>
           <Form.Group>
-            <Form.Label>Data Inicial</Form.Label>
+            <Form.Label>Data Inicial <span className="text-danger">*</span></Form.Label>
             <div>
               <DatePicker
                 value={parseDate(startDate)}
                 onChange={handleStartDateChange}
                 format="dd/MM/yyyy"
+                className={formErrors.startDate ? 'is-invalid' : ''}
               />
+              {formErrors.startDate && (
+                <div className="invalid-feedback d-block">{formErrors.startDate}</div>
+              )}
             </div>
           </Form.Group>
         </Col>
         <Col md={5}>
           <Form.Group>
-            <Form.Label>Data Final</Form.Label>
+            <Form.Label>Data Final <span className="text-danger">*</span></Form.Label>
             <div>
               <DatePicker
                 value={parseDate(endDate)}
                 onChange={handleEndDateChange}
                 format="dd/MM/yyyy"
-                minDate={parseDateNull(startDate)} // Agora retorna "Date | undefined"                
+                minDate={parseDateNull(startDate)}
+                className={formErrors.endDate ? 'is-invalid' : ''}
               />
+              {formErrors.endDate && (
+                <div className="invalid-feedback d-block">{formErrors.endDate}</div>
+              )}
             </div>
           </Form.Group>
         </Col>
         <Col md={2} className="d-flex align-items-end">
-          <Button
-            variant="primary"
-            onClick={onSearch}
+          <Button 
+            variant="primary" 
+            onClick={onSearch} 
             disabled={isLoading || !startDate || !endDate}
-            className="mb-2 w-100"
+            className="w-100"
           >
             {isLoading ? (
-              <>
-                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                Buscando...
-              </>
-            ) : 'Buscar'}
+              <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+            ) : (
+              'Buscar'
+            )}
           </Button>
         </Col>
-
       </Row>
 
+      {formErrors.dateRange && (
+        <div className="alert alert-danger mb-3">{formErrors.dateRange}</div>
+      )}
 
-      <>
-        <div className="table-responsive">
-          <Table striped bordered hover>
-            <thead className="bg-light">
-              <tr>
-                <th>Quarto</th>
-                <th>Quantidade Por Dia</th>
-                <th>Moeda</th>
-                {weekDays.map((day) => (
-                  <th key={day}>{day}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {rooms.map((room) => (
-                <tr key={room.id}>
-                  <td>{room.name}</td>
-                  <td>
-                    <Form.Control
-                      type="number"
-                      min="0"
-                      value={room.quantity}
-                      onChange={(e) => onQuantityChange(room.id, parseInt(e.target.value))}
-                    />
-                  </td>
-                  <td>
-                    <Form.Select
-                      value={room.currency}
-                      onChange={(e) => onCurrencyChange(room.id, e.target.value)}
-                    >
-                      {currencies.map((currency) => (
-                        <option key={currency} value={currency}>
-                          {currency}
-                        </option>
-                      ))}
-                    </Form.Select>
-                  </td>
-                  {weekDays.map((day) => (
-                    <td key={`${room.id}-${day}`}>
-                      <Form.Control
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        value={room.prices[day] || 0}
-                        onChange={(e) => onPriceChange(room.id, day, parseFloat(e.target.value))}
-                      />
-                    </td>
+      <Table striped bordered hover responsive>
+        <thead>
+          <tr>
+            <th>Quarto</th>
+            <th>Quantidade <span className="text-danger">*</span></th>
+            <th>Moeda <span className="text-danger">*</span></th>
+            {weekDays.map(day => (
+              <th key={day}>{day} <span className="text-danger">*</span></th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rooms.map(room => (
+            <tr key={room.id}>
+              <td>{room.name}</td>
+              <td>
+                <Form.Control
+                  type="number"
+                  min="0"
+                  value={room.quantity}
+                  onChange={e => onQuantityChange(room.id, parseInt(e.target.value) || 0)}
+                  className={formErrors[`room_${room.id}_quantity`] ? 'is-invalid' : ''}
+                />
+                {formErrors[`room_${room.id}_quantity`] && (
+                  <div className="invalid-feedback">{formErrors[`room_${room.id}_quantity`]}</div>
+                )}
+              </td>
+              <td>
+                <Form.Control
+                  as="select"
+                  value={room.currency}
+                  onChange={e => onCurrencyChange(room.id, e.target.value)}
+                >
+                  {currencies.map(currency => (
+                    <option key={currency} value={currency}>
+                      {currency}
+                    </option>
                   ))}
-                </tr>
+                </Form.Control>
+              </td>
+              {weekDays.map(day => (
+                <td key={day}>
+                  <Form.Control
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={room.prices[day]}
+                    onChange={e => onPriceChange(room.id, day, parseFloat(e.target.value) || 0)}
+                    className={formErrors[`room_${room.id}_price_${day}`] ? 'is-invalid' : ''}
+                  />
+                  {formErrors[`room_${room.id}_price_${day}`] && (
+                    <div className="invalid-feedback">{formErrors[`room_${room.id}_price_${day}`]}</div>
+                  )}
+                </td>
               ))}
-            </tbody>
-          </Table>
-        </div>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
 
-        <div className="d-flex justify-content-end mt-3">
-          <Button
-            variant="secondary"
-            className="me-2"
-            onClick={onCancel}
-          >
-            Cancelar
-          </Button>
-          <Button
-            variant="primary"
-            onClick={onSave}
-            disabled={isLoading}
-          >
-            {isLoading ? 'Salvando...' : 'Salvar'}
-          </Button>
+      <div className="d-flex justify-content-end mt-3">
+        <Button variant="secondary" onClick={onCancel} className="me-2">
+          Cancelar
+        </Button>
+        <Button 
+          variant="primary" 
+          onClick={onSave} 
+          disabled={isLoading || !isSaveEnabled}
+        >
+          {isLoading ? (
+            <>
+              <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+              <span className="ms-2">Salvando...</span>
+            </>
+          ) : (
+            'Salvar'
+          )}
+        </Button>
+      </div>
+      
+      {!isSaveEnabled && startDate && endDate && rooms.length > 0 && (
+        <div className="alert alert-warning mt-3">
+          Para salvar, preencha a quantidade e os preços para pelo menos um quarto.
         </div>
-      </>
-
+      )}
     </div>
   );
 };

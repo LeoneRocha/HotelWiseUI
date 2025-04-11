@@ -51,7 +51,6 @@ export interface RoomFormTemplateProps {
 } 
 
 export interface RoomAvailabilityManagementTemplateProps {
-  hotel: IHotel | null; 
   startDate: string;
   endDate: string;
   rooms: Array<{
@@ -59,13 +58,14 @@ export interface RoomAvailabilityManagementTemplateProps {
     name: string;
     quantity: number;
     currency: string;
-    prices: {
-      [key: string]: number;
-    };
+    prices: { [key: string]: number };
   }>;
   currencies: string[];
   weekDays: string[];
-  isLoading: boolean; 
+  isLoading: boolean;
+  hotel?: { hotelName: string } | null;
+  formErrors: {[key: string]: string};
+  isSaveEnabled: boolean;
   onStartDateChange: (date: string) => void;
   onEndDateChange: (date: string) => void;
   onQuantityChange: (roomId: number, quantity: number) => void;
@@ -73,8 +73,9 @@ export interface RoomAvailabilityManagementTemplateProps {
   onPriceChange: (roomId: number, day: string, price: number) => void;
   onSave: () => void;
   onCancel: () => void;
-  onSearch: () => void; // New prop for search button
+  onSearch: () => void;
 }
+
 export  interface RoomAvailabilityPrice {
   id: number;
   name: string;
