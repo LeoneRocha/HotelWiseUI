@@ -15,14 +15,15 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
   currencies,
   weekDays,
   isLoading,
-  hotel,
+  hotel, 
   onStartDateChange,
   onEndDateChange,
   onQuantityChange,
   onCurrencyChange,
   onPriceChange,
   onSave,
-  onCancel
+  onCancel,
+  onSearch
 }) => {
 
 
@@ -49,7 +50,7 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
     <div>
       <h3 className="mb-0">Cadastro de Disponibilidade de Quartos - {hotel?.hotelName}</h3>
       <Row className="mb-4">
-        <Col md={6}>
+        <Col md={5}>
           <Form.Group>
             <Form.Label>Data Inicial</Form.Label>
             <div>
@@ -61,7 +62,7 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
             </div>
           </Form.Group>
         </Col>
-        <Col md={6}>
+        <Col md={5}>
           <Form.Group>
             <Form.Label>Data Final</Form.Label>
             <div>
@@ -70,82 +71,95 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
                 onChange={handleEndDateChange}
                 format="dd/MM/yyyy"
                 minDate={parseDateNull(startDate)} // Agora retorna "Date | undefined"                
-
               />
             </div>
           </Form.Group>
         </Col>
+        <Col md={2} className="d-flex align-items-end">
+          <Button 
+            variant="primary" 
+            onClick={onSearch} 
+            disabled={isLoading || !startDate || !endDate}
+            className="mb-2"
+          >
+            {isLoading ? 'Buscando...' : 'Buscar'}
+          </Button>
+        </Col>
       </Row>
 
-      <div className="table-responsive">
-        <Table striped bordered hover>
-          <thead className="bg-light">
-            <tr>
-              <th>Quarto</th>
-              <th>Quantidade Por Dia</th>
-              <th>Moeda</th>
-              {weekDays.map((day) => (
-                <th key={day}>{day}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {rooms.map((room) => (
-              <tr key={room.id}>
-                <td>{room.name}</td>
-                <td>
-                  <Form.Control
-                    type="number"
-                    min="0"
-                    value={room.quantity}
-                    onChange={(e) => onQuantityChange(room.id, parseInt(e.target.value))}
-                  />
-                </td>
-                <td>
-                  <Form.Select
-                    value={room.currency}
-                    onChange={(e) => onCurrencyChange(room.id, e.target.value)}
-                  >
-                    {currencies.map((currency) => (
-                      <option key={currency} value={currency}>
-                        {currency}
-                      </option>
+  
+        <>
+          <div className="table-responsive">
+            <Table striped bordered hover>
+              <thead className="bg-light">
+                <tr>
+                  <th>Quarto</th>
+                  <th>Quantidade Por Dia</th>
+                  <th>Moeda</th>
+                  {weekDays.map((day) => (
+                    <th key={day}>{day}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {rooms.map((room) => (
+                  <tr key={room.id}>
+                    <td>{room.name}</td>
+                    <td>
+                      <Form.Control
+                        type="number"
+                        min="0"
+                        value={room.quantity}
+                        onChange={(e) => onQuantityChange(room.id, parseInt(e.target.value))}
+                      />
+                    </td>
+                    <td>
+                      <Form.Select
+                        value={room.currency}
+                        onChange={(e) => onCurrencyChange(room.id, e.target.value)}
+                      >
+                        {currencies.map((currency) => (
+                          <option key={currency} value={currency}>
+                            {currency}
+                          </option>
+                        ))}
+                      </Form.Select>
+                    </td>
+                    {weekDays.map((day) => (
+                      <td key={`${room.id}-${day}`}>
+                        <Form.Control
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          value={room.prices[day] || 0}
+                          onChange={(e) => onPriceChange(room.id, day, parseFloat(e.target.value))}
+                        />
+                      </td>
                     ))}
-                  </Form.Select>
-                </td>
-                {weekDays.map((day) => (
-                  <td key={`${room.id}-${day}`}>
-                    <Form.Control
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      value={room.prices[day] || 0}
-                      onChange={(e) => onPriceChange(room.id, day, parseFloat(e.target.value))}
-                    />
-                  </td>
+                  </tr>
                 ))}
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </div>
+              </tbody>
+            </Table>
+          </div>
 
-      <div className="d-flex justify-content-end mt-3">
-        <Button
-          variant="secondary"
-          className="me-2"
-          onClick={onCancel}
-        >
-          Cancelar
-        </Button>
-        <Button
-          variant="primary"
-          onClick={onSave}
-          disabled={isLoading}
-        >
-          {isLoading ? 'Salvando...' : 'Salvar'}
-        </Button>
-      </div>
+          <div className="d-flex justify-content-end mt-3">
+            <Button
+              variant="secondary"
+              className="me-2"
+              onClick={onCancel}
+            >
+              Cancelar
+            </Button>
+            <Button
+              variant="primary"
+              onClick={onSave}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Salvando...' : 'Salvar'}
+            </Button>
+          </div>
+        </>
+      
     </div>
   );
 };

@@ -65,7 +65,7 @@ export interface RoomAvailabilityManagementTemplateProps {
   }>;
   currencies: string[];
   weekDays: string[];
-  isLoading: boolean;
+  isLoading: boolean; 
   onStartDateChange: (date: string) => void;
   onEndDateChange: (date: string) => void;
   onQuantityChange: (roomId: number, quantity: number) => void;
@@ -73,6 +73,7 @@ export interface RoomAvailabilityManagementTemplateProps {
   onPriceChange: (roomId: number, day: string, price: number) => void;
   onSave: () => void;
   onCancel: () => void;
+  onSearch: () => void; // New prop for search button
 }
 export  interface RoomAvailabilityPrice {
   id: number;

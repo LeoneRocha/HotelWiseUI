@@ -12,7 +12,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
   const [rooms, setRooms] = useState<RoomAvailabilityPrice[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false); 
 
   const weekDays = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
   const currencies = ['BRL', 'USD', 'EUR', 'GBP'];
@@ -67,9 +67,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       };
 
       const response = await RoomAvailabilityService.getAvailabilitiesBySearchCriteria(searchCriteria);
-      toast.success('Disponibilidades carregadas com sucesso!');
-
-
+      
       if (response.success && response.data) {
         // Map existing availabilities to rooms
         const updatedRooms = [...rooms];
@@ -90,7 +88,8 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
           }
         });
 
-        setRooms(updatedRooms);
+        setRooms(updatedRooms); 
+        toast.success('Disponibilidades carregadas com sucesso!');
       }
     } catch (error) {
       console.error('Erro ao carregar disponibilidades:', error);
@@ -187,7 +186,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
 
       if (response.success) {
         toast.success('Disponibilidades salvas com sucesso!');
-        // Navigate back or refresh data
+        // Load availabilities after saving
         loadAvailabilities();
       } else {
         toast.error(response.message || 'Erro ao salvar disponibilidades');
@@ -205,6 +204,10 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
     navigate(-1);
   };
 
+  const handleSearch = () => {
+    loadAvailabilities();
+  };
+
   return (
     <RoomAvailabilityManagementTemplate
       hotel={hotel} 
@@ -213,7 +216,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       rooms={rooms}
       currencies={currencies}
       weekDays={weekDays}
-      isLoading={isLoading}
+      isLoading={isLoading} 
       onStartDateChange={handleStartDateChange}
       onEndDateChange={handleEndDateChange}
       onQuantityChange={handleQuantityChange}
@@ -221,6 +224,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       onPriceChange={handlePriceChange}
       onSave={handleSave}
       onCancel={handleCancel}
+      onSearch={handleSearch}
     />
   );
 };
