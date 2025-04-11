@@ -56,8 +56,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
     if (!hotelId || !startDate || !endDate) {
       toast.warning('Por favor, selecione as datas inicial e final');
       return;
-    }
-
+    } 
     try {
       setIsLoading(true);
       const searchCriteria = {
@@ -65,13 +64,18 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
         startDate,
         endDate
       };
-
+  
       const response = await RoomAvailabilityService.getAvailabilitiesBySearchCriteria(searchCriteria);
       
       if (response.success && response.data) {
         // Map existing availabilities to rooms
         const updatedRooms = [...rooms];
-
+  
+        if (response.data.length === 0) {
+          toast.info('Nenhuma disponibilidade encontrada para o período selecionado. Configure novas disponibilidades.');
+          return;
+        }
+  
         response.data.forEach(availability => {
           const roomIndex = updatedRooms.findIndex(r => r.id === availability.roomId);
           if (roomIndex !== -1) {
@@ -80,24 +84,27 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
               updatedRooms[roomIndex].currency = availability.availabilityWithPrice[0].currency;
               updatedRooms[roomIndex].quantity = availability.availabilityWithPrice[0].quantityAvailable;
             }
-
+  
             // Map prices by day of week
             availability.availabilityWithPrice.forEach(item => {
               updatedRooms[roomIndex].prices[item.dayOfWeek] = item.price;
             });
           }
         });
-
+  
         setRooms(updatedRooms); 
         toast.success('Disponibilidades carregadas com sucesso!');
+      } else {
+        toast.error(response.message || 'Falha ao carregar disponibilidades. Verifique os parâmetros de busca.');
       }
     } catch (error) {
       console.error('Erro ao carregar disponibilidades:', error);
-      toast.error('Erro ao carregar disponibilidades dos quartos');
+      toast.error('Erro ao carregar disponibilidades dos quartos. Verifique sua conexão ou tente novamente mais tarde.');
     } finally {
       setIsLoading(false);
     }
   };
+  
 
   useEffect(() => {
     if (startDate && endDate) {
@@ -205,8 +212,20 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
   };
 
   const handleSearch = () => {
+    if (!startDate || !endDate) {
+      toast.warning('Por favor, selecione as datas inicial e final para a pesquisa');
+      return;
+    }
+    
+    if (new Date(startDate) > new Date(endDate)) {
+      toast.error('A data inicial não pode ser posterior à data final');
+      return;
+    }
+    
+    toast.info('Buscando disponibilidades...');
     loadAvailabilities();
   };
+  
 
   return (
     <RoomAvailabilityManagementTemplate

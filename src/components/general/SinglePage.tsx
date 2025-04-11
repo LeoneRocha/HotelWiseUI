@@ -1,14 +1,16 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom'; 
+import { useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 import AppRoutes from '../../routes';
-import HeaderPage from './HeaderPage'; 
+import HeaderPage from './HeaderPage';
 import LocalStorageService from '../../services/general/localStorageService';
 import CookieConsent from './CookieConsent';
 import SecurityService from '../../services/general/securityService';
 import Chatbot from '../iaassistent/Chatbot';
 import { nameStorageTokenJWT } from '../../auth-config';
 import FooterPage from './FooterPage';
+import { ToastContainer, Bounce } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SinglePage: React.FC = () => {
     const location = useLocation();
@@ -25,6 +27,19 @@ const SinglePage: React.FC = () => {
             {window.location.pathname === '/' || window.location.pathname === '/login' ? <CookieConsent /> : null}
             <Chatbot />
             <FooterPage />
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+                transition={Bounce}
+            />
         </div>
     );
 };

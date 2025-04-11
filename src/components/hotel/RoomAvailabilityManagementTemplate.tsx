@@ -15,7 +15,7 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
   currencies,
   weekDays,
   isLoading,
-  hotel, 
+  hotel,
   onStartDateChange,
   onEndDateChange,
   onQuantityChange,
@@ -76,90 +76,96 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
           </Form.Group>
         </Col>
         <Col md={2} className="d-flex align-items-end">
-          <Button 
-            variant="primary" 
-            onClick={onSearch} 
+          <Button
+            variant="primary"
+            onClick={onSearch}
             disabled={isLoading || !startDate || !endDate}
-            className="mb-2"
+            className="mb-2 w-100"
           >
-            {isLoading ? 'Buscando...' : 'Buscar'}
+            {isLoading ? (
+              <>
+                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                Buscando...
+              </>
+            ) : 'Buscar'}
           </Button>
         </Col>
+
       </Row>
 
-  
-        <>
-          <div className="table-responsive">
-            <Table striped bordered hover>
-              <thead className="bg-light">
-                <tr>
-                  <th>Quarto</th>
-                  <th>Quantidade Por Dia</th>
-                  <th>Moeda</th>
+
+      <>
+        <div className="table-responsive">
+          <Table striped bordered hover>
+            <thead className="bg-light">
+              <tr>
+                <th>Quarto</th>
+                <th>Quantidade Por Dia</th>
+                <th>Moeda</th>
+                {weekDays.map((day) => (
+                  <th key={day}>{day}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rooms.map((room) => (
+                <tr key={room.id}>
+                  <td>{room.name}</td>
+                  <td>
+                    <Form.Control
+                      type="number"
+                      min="0"
+                      value={room.quantity}
+                      onChange={(e) => onQuantityChange(room.id, parseInt(e.target.value))}
+                    />
+                  </td>
+                  <td>
+                    <Form.Select
+                      value={room.currency}
+                      onChange={(e) => onCurrencyChange(room.id, e.target.value)}
+                    >
+                      {currencies.map((currency) => (
+                        <option key={currency} value={currency}>
+                          {currency}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </td>
                   {weekDays.map((day) => (
-                    <th key={day}>{day}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {rooms.map((room) => (
-                  <tr key={room.id}>
-                    <td>{room.name}</td>
-                    <td>
+                    <td key={`${room.id}-${day}`}>
                       <Form.Control
                         type="number"
                         min="0"
-                        value={room.quantity}
-                        onChange={(e) => onQuantityChange(room.id, parseInt(e.target.value))}
+                        step="0.01"
+                        value={room.prices[day] || 0}
+                        onChange={(e) => onPriceChange(room.id, day, parseFloat(e.target.value))}
                       />
                     </td>
-                    <td>
-                      <Form.Select
-                        value={room.currency}
-                        onChange={(e) => onCurrencyChange(room.id, e.target.value)}
-                      >
-                        {currencies.map((currency) => (
-                          <option key={currency} value={currency}>
-                            {currency}
-                          </option>
-                        ))}
-                      </Form.Select>
-                    </td>
-                    {weekDays.map((day) => (
-                      <td key={`${room.id}-${day}`}>
-                        <Form.Control
-                          type="number"
-                          min="0"
-                          step="0.01"
-                          value={room.prices[day] || 0}
-                          onChange={(e) => onPriceChange(room.id, day, parseFloat(e.target.value))}
-                        />
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </div>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
 
-          <div className="d-flex justify-content-end mt-3">
-            <Button
-              variant="secondary"
-              className="me-2"
-              onClick={onCancel}
-            >
-              Cancelar
-            </Button>
-            <Button
-              variant="primary"
-              onClick={onSave}
-              disabled={isLoading}
-            >
-              {isLoading ? 'Salvando...' : 'Salvar'}
-            </Button>
-          </div>
-        </>
-      
+        <div className="d-flex justify-content-end mt-3">
+          <Button
+            variant="secondary"
+            className="me-2"
+            onClick={onCancel}
+          >
+            Cancelar
+          </Button>
+          <Button
+            variant="primary"
+            onClick={onSave}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Salvando...' : 'Salvar'}
+          </Button>
+        </div>
+      </>
+
     </div>
   );
 };
