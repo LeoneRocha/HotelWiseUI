@@ -1,3 +1,4 @@
+import { DotNetDayOfWeek } from "../../../enums/DotNetDayOfWeek";
 import { RoomAvailabilityStatus } from "../../../enums/hotel/RoomStatus";
 
 export interface IRoomAvailability {
@@ -9,8 +10,8 @@ export interface IRoomAvailability {
   roomDetails?: object; // Detalhes adicionais do quarto
 }
 
-export interface RoomPriceAndAvailabilityItem { 
-  dayOfWeek: string;        // Dia da semana
+export interface RoomPriceAndAvailabilityItem {
+  dayOfWeek: DotNetDayOfWeek;        // Dia da semana
   price: number;            // Preço
   quantityAvailable: number;// Quantidade disponível
   currency: string;         // Moeda (ex.: USD, BRL)

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import moment from 'moment'; 
+import moment from 'moment';
 import RoomAvailabilityManagementTemplate from './RoomAvailabilityManagementTemplate';
 import RoomAvailabilityService from '../../services/hotel/RoomAvailabilityService';
 import RoomService from '../../services/hotel/RoomService';
@@ -10,6 +10,8 @@ import DateService from '../../services/DateService';
 import { IRoomAvailability, RoomPriceAndAvailabilityItem } from '../../interfaces/model/Hotel/IRoomAvailability';
 import { RoomAvailabilityPrice, RoomListProps } from '../../interfaces/DTO/Hotel/IHotelProps';
 import { RoomAvailabilityStatus } from '../../enums/hotel/RoomStatus';
+import { DayOfWeekHelper } from '../../helpers/DayOfWeekHelper';
+import { DotNetDayOfWeek } from '../../enums/DotNetDayOfWeek';
 
 const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel }) => {
   const navigate = useNavigate();
@@ -17,19 +19,22 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
   const [endDate, setEndDate] = useState<string>('');
   const [rooms, setRooms] = useState<RoomAvailabilityPrice[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formErrors, setFormErrors] = useState<{[key: string]: string}>({});
+  const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
   const [isSaveEnabled, setIsSaveEnabled] = useState<boolean>(false);
 
   // Obter dias da semana localizados usando o serviço
   const weekDays = DateService.getLocalizedWeekdays();
-  
+
+  // Create mapping between localized weekday names and .NET DayOfWeek enum values
+  const dayOfWeekMap = DayOfWeekHelper.createWeekDayToDotNetMap(weekDays);
+
   // Obter moedas disponíveis usando o serviço
   const currencies = CurrencyService.getAvailableCurrencies();
 
   useEffect(() => {
     // Configurar o locale do moment
     moment.locale(navigator.language || 'pt-br');
-    
+
     if (hotelId) {
       loadRooms(hotelId);
     }
@@ -41,30 +46,30 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
   }, [startDate, endDate, rooms]);
 
   const validateForm = () => {
-    const errors: {[key: string]: string} = {};
-    
+    const errors: { [key: string]: string } = {};
+
     // Validate dates
     if (!startDate) {
       errors.startDate = 'Data inicial é obrigatória';
     }
-    
+
     if (!endDate) {
       errors.endDate = 'Data final é obrigatória';
     }
-    
+
     if (!DateService.isValidDateRange(startDate, endDate)) {
       errors.dateRange = 'A data inicial não pode ser posterior à data final';
     }
-    
+
     // Check if at least one room is fully configured
     let hasConfiguredRoom = false;
-    
+
     rooms.forEach((room) => {
       const roomKey = `room_${room.id}`;
-      const isRoomConfigured = room.quantity > 0 && 
-        weekDays.every(day => room.prices[day] > 0) && 
+      const isRoomConfigured = room.quantity > 0 &&
+        weekDays.every(day => room.prices[day] > 0) &&
         room.currency;
-      
+
       if (isRoomConfigured) {
         hasConfiguredRoom = true;
       } else if (room.quantity > 0 || weekDays.some(day => room.prices[day] > 0)) {
@@ -72,7 +77,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
         if (room.quantity <= 0) {
           errors[`${roomKey}_quantity`] = 'Quantidade inválida';
         }
-        
+
         weekDays.forEach(day => {
           if (room.prices[day] <= 0) {
             errors[`${roomKey}_price_${day}`] = 'Preço inválido';
@@ -80,15 +85,15 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
         });
       }
     });
-    
+
     // Update form errors
     setFormErrors(errors);
-    
+
     // Enable save button if no errors and at least one room is configured
     setIsSaveEnabled(
-      Object.keys(errors).length === 0 && 
-      startDate !== '' && 
-      endDate !== '' && 
+      Object.keys(errors).length === 0 &&
+      startDate !== '' &&
+      endDate !== '' &&
       hasConfiguredRoom
     );
   };
@@ -100,7 +105,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
 
       if (response.success && response.data) {
         const defaultCurrency = CurrencyService.getDefaultCurrency().code;
-        
+
         const formattedRooms = response.data.map(room => ({
           id: room.id,
           name: room.description, //TODO: CREATE NAME ROOM 
@@ -128,7 +133,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
     if (!hotelId || !startDate || !endDate) {
       toast.warning('Por favor, selecione as datas inicial e final');
       return;
-    } 
+    }
     try {
       setIsLoading(true);
       const searchCriteria = {
@@ -136,18 +141,18 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
         startDate,
         endDate
       };
-  
+
       const response = await RoomAvailabilityService.getAvailabilitiesBySearchCriteria(searchCriteria);
-      
+
       if (response.success && response.data) {
         // Map existing availabilities to rooms
         const updatedRooms = [...rooms];
-  
+
         if (response.data.length === 0) {
           toast.info('Nenhuma disponibilidade encontrada para o período selecionado. Configure novas disponibilidades.');
           return;
         }
-  
+
         response.data.forEach(availability => {
           const roomIndex = updatedRooms.findIndex(r => r.id === availability.roomId);
           if (roomIndex !== -1) {
@@ -156,15 +161,22 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
               updatedRooms[roomIndex].currency = availability.availabilityWithPrice[0].currency;
               updatedRooms[roomIndex].quantity = availability.availabilityWithPrice[0].quantityAvailable;
             }
-  
+
             // Map prices by day of week
             availability.availabilityWithPrice.forEach(item => {
-              updatedRooms[roomIndex].prices[item.dayOfWeek] = item.price;
+              // Convert .NET DayOfWeek enum value to localized day name
+              const localizedDay = DayOfWeekHelper.toLocalizedDay(
+                item.dayOfWeek,
+                weekDays,
+                dayOfWeekMap
+              );
+
+              updatedRooms[roomIndex].prices[localizedDay] = item.price;
             });
           }
         });
-  
-        setRooms(updatedRooms); 
+
+        setRooms(updatedRooms);
         toast.success('Disponibilidades carregadas com sucesso!');
       } else {
         toast.error(response.message || 'Falha ao carregar disponibilidades. Verifique os parâmetros de busca.');
@@ -225,11 +237,11 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
         .filter(room => room.quantity > 0 && weekDays.every(day => room.prices[day] > 0))
         .map(room => {
           const availabilityWithPrice: RoomPriceAndAvailabilityItem[] = weekDays.map(day => ({
-            dayOfWeek: day,
+            dayOfWeek: DayOfWeekHelper.toDotNetDayOfWeek(day, dayOfWeekMap), // Convert to .NET DayOfWeek enum
             price: room.prices[day],
             quantityAvailable: room.quantity,
             currency: room.currency,
-            status:  RoomAvailabilityStatus.Available
+            status: RoomAvailabilityStatus.Available
           }));
 
           return {
@@ -268,19 +280,19 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       toast.warning('Por favor, selecione as datas inicial e final para a pesquisa');
       return;
     }
-    
+
     if (!DateService.isValidDateRange(startDate, endDate)) {
       toast.error('A data inicial não pode ser posterior à data final');
       return;
     }
-    
+
     toast.info('Buscando disponibilidades...');
     loadAvailabilities();
   };
-  
+
   return (
     <RoomAvailabilityManagementTemplate
-      hotel={hotel} 
+      hotel={hotel}
       startDate={startDate}
       endDate={endDate}
       rooms={rooms}
