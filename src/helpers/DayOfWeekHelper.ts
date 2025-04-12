@@ -35,7 +35,7 @@ export class DayOfWeekHelper {
    * @returns The corresponding .NET DayOfWeek enum value
    */
   public static toDotNetDayOfWeek(localizedDay: string, weekDayMap: { [key: string]: DotNetDayOfWeek }): DotNetDayOfWeek {
-    return weekDayMap[localizedDay] || DotNetDayOfWeek.Sunday; // Default to Sunday if not found
+    return weekDayMap[localizedDay] ?? DotNetDayOfWeek.Sunday; // Default to Sunday if not found
   }
 
   /**

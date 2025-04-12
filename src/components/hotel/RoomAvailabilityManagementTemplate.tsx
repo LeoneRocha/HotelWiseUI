@@ -57,7 +57,7 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
   };
 
   // Get the current currency symbol
-  const currentCurrencySymbol = currencies.find(c => c.code === searchCurrency)?.symbol || '';
+  const currentCurrencySymbol = currencies.find(c => c.code === searchCurrency)?.symbol ?? '';
 
   // Format dates for display
   const formatDisplayDate = (date: Date | null) => {
@@ -141,7 +141,7 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
       {hasSearchResults && (
         <div className="alert alert-info mb-3">
           <strong>Período pesquisado:</strong> {formatDisplayDate(returnedStartDate ?? startDate)} a {formatDisplayDate(returnedEndDate ?? endDate)} |
-          <strong> Moeda:</strong> {currencies.find(c => c.code === searchCurrency)?.name || searchCurrency} ({currentCurrencySymbol})
+          <strong> Moeda:</strong> {currencies.find(c => c.code === searchCurrency)?.name ?? searchCurrency} ({currentCurrencySymbol})
         </div>
       )}
 

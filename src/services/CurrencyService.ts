@@ -5,7 +5,7 @@ interface Currency {
 }
 
 class CurrencyService {
-  private static currencies: Currency[] = [
+  private static readonly currencies: Currency[] = [
     { code: 'BRL', symbol: 'R$', name: 'Real Brasileiro' },
     { code: 'USD', symbol: '$', name: 'Dólar Americano' },
     { code: 'EUR', symbol: '€', name: 'Euro' }, 
