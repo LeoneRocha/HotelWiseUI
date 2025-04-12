@@ -39,7 +39,7 @@ const RoomListTemplate: React.FC<RoomListTemplateProps> = ({
                                     <th>ID</th>
                                     <th>Tipo</th>
                                     <th>Capacidade</th>
-                                    <th>Descrição</th>
+                                    <th>Nome</th>
                                     <th>Status</th>
                                     <th>Mín. Noites</th>
                                     <th>Ações</th>
@@ -51,7 +51,7 @@ const RoomListTemplate: React.FC<RoomListTemplateProps> = ({
                                         <td>{room.id}</td>
                                         <td>{getRoomTypeName(room.roomType)}</td>
                                         <td>{room.capacity}</td>
-                                        <td>{room.description}</td>
+                                        <td>{room.name}</td>
                                         <td>{getRoomStatusBadge(room.status)}</td>
                                         <td>{room.minimumNights}</td>
                                         <td>

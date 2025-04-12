@@ -116,7 +116,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
 
         const formattedRooms = response.data.map(room => ({
           id: room.id,
-          name: room.description, //TODO: CREATE NAME ROOM 
+          name: room.name, 
           quantity: 0,
           currency: defaultCurrency,
           prices: weekDays.reduce((acc, day) => {
