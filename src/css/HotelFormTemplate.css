@@ -25,3 +25,36 @@
   align-items: center;
   padding: 0.5rem 0.75rem;
 }
+.hotel-form-container {
+  padding: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px; /* Espaço grande para evitar sobreposição com o rodapé */
+}
+
+.tag-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .hotel-form-container {
+    margin-bottom: 50px; /* Espaço ainda maior em dispositivos móveis */
+    padding-bottom: 30px;
+  }
+  
+  textarea.form-control {
+    min-height: 80px;
+  }
+  
+  .btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* Para telas muito pequenas */
+@media (max-width: 576px) {
+  .hotel-form-container {
+    margin-bottom: 10px; /* Espaço extremamente grande para telas muito pequenas */
+  }
+}

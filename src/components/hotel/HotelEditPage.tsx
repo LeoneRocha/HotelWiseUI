@@ -32,7 +32,7 @@ const HotelEditPage: React.FC = () => {
   },  [id, hotelId]);
 
   return (
-    <Container fluid className="hotel-edit-container p-0">
+    <Container fluid className="p-0">
       <div className="full-height-tabs">
         <HotelTabs hotelId={hotelId} hotel={hotel} />
       </div>
