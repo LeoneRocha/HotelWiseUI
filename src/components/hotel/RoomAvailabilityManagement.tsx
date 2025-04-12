@@ -26,8 +26,8 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
   const [isSaveEnabled, setIsSaveEnabled] = useState<boolean>(false);
   const [returnedStartDate, setReturnedStartDate] = useState<Date>(new Date());
-  const [returnedEndDate, setReturnedEndDate] = useState<Date>(new Date()); 
-   const [hasSearchResults, setHasSearchResults] = useState<boolean>(false);
+  const [returnedEndDate, setReturnedEndDate] = useState<Date>(new Date());
+  const [hasSearchResults, setHasSearchResults] = useState<boolean>(false);
   // Obter dias da semana localizados usando o serviço
   const weekDays = DateService.getLocalizedWeekdays();
 
@@ -119,8 +119,10 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       if (response.success && response.data) {
         const defaultCurrency = searchCurrency || CurrencyService.getDefaultCurrency().code;
 
-        const formattedRooms = response.data.map(room => ({
+        const formattedRooms: RoomAvailabilityPrice[] = response.data.map(room => ({
+          roomId: room.id,
           id: room.id,
+          roomAvailabilityId: 0, 
           name: room.name,
           quantity: 0,
           currency: defaultCurrency,
@@ -166,7 +168,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
           toast.info('Nenhuma disponibilidade encontrada para o período selecionado. Configure novas disponibilidades.');
           return;
         }
-        setHasSearchResults(true);  
+        setHasSearchResults(true);
         // Convert string dates to Date objects using moment
         setReturnedStartDate(moment(response.data[0].startDate).toDate());
         setReturnedEndDate(moment(response.data[0].endDate).toDate());
@@ -177,7 +179,9 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
             // Set currency from first availability item or from search currency
             if (availability.availabilityWithPrice.length > 0) {
               updatedRooms[roomIndex].currency = searchCurrency;
-              updatedRooms[roomIndex].id = availability.id;
+              updatedRooms[roomIndex].roomId = availability.roomId;
+              updatedRooms[roomIndex].roomAvailabilityId = availability.id
+              updatedRooms[roomIndex].id = availability.id
               updatedRooms[roomIndex].quantity = availability.availabilityWithPrice[0].quantityAvailable;
             }
 
@@ -194,7 +198,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
             });
           }
         });
-
+        console.log(updatedRooms);
         setRooms(updatedRooms);
         toast.success('Disponibilidades carregadas com sucesso!');
       } else {
@@ -284,8 +288,8 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
           }));
 
           return {
-            id: 0, // New availability
-            roomId: room.id,
+            id: room.roomAvailabilityId,   
+            roomId: room.roomId,
             startDate: startDateToUse,
             endDate: endDateToUse,
             currency: searchCurrency, // Use searchCurrency instead of room.currency
@@ -355,7 +359,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       onSearch={handleSearch}
       returnedStartDate={returnedStartDate}
       returnedEndDate={returnedEndDate}
-      hasSearchResults={hasSearchResults} 
+      hasSearchResults={hasSearchResults}
     />
   );
 };

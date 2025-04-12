@@ -78,6 +78,8 @@ export interface RoomAvailabilityManagementTemplateProps {
 
 export interface RoomAvailabilityPrice {
   id: number;
+  roomId: number;
+  roomAvailabilityId: number;
   name: string;
   quantity: number;
   currency: string;

@@ -63,11 +63,7 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
   const formatDisplayDate = (date: Date | null) => {
     if (!date) return '';
     return date.toLocaleDateString();
-  };
-
-   // Get localized weekday names
-   const localizedWeekdays = DateService.getLocalizedWeekdays('pt-br');
-   console.log(localizedWeekdays);  
+  }; 
 
   return (
     <div>
