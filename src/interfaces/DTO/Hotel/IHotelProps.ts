@@ -51,8 +51,8 @@ export interface RoomFormTemplateProps {
 }
 
 export interface RoomAvailabilityManagementTemplateProps {
-  startDate: string;
-  endDate: string;
+  startDate: Date | null;
+  endDate: Date | null;
   rooms: RoomAvailabilityPrice[];
   currencies: { code: string; symbol: string; name: string }[];
   weekDays: string[];
@@ -73,6 +73,7 @@ export interface RoomAvailabilityManagementTemplateProps {
   // existing props
   returnedStartDate?: Date;
   returnedEndDate?: Date;
+  hasSearchResults: boolean;
 }
 
 export interface RoomAvailabilityPrice {

@@ -26,7 +26,8 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
   const [isSaveEnabled, setIsSaveEnabled] = useState<boolean>(false);
   const [returnedStartDate, setReturnedStartDate] = useState<Date>(new Date());
-  const [returnedEndDate, setReturnedEndDate] = useState<Date>(new Date());
+  const [returnedEndDate, setReturnedEndDate] = useState<Date>(new Date()); 
+   const [hasSearchResults, setHasSearchResults] = useState<boolean>(false);
   // Obter dias da semana localizados usando o serviço
   const weekDays = DateService.getLocalizedWeekdays();
 
@@ -148,7 +149,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
     }
     try {
       setIsLoading(true);
-      const searchCriteria : RoomAvailabilitySearchDto= {
+      const searchCriteria: RoomAvailabilitySearchDto = {
         hotelId: hotelId,
         startDate: moment(startDate).toDate(),
         endDate: moment(endDate).toDate(),
@@ -165,7 +166,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
           toast.info('Nenhuma disponibilidade encontrada para o período selecionado. Configure novas disponibilidades.');
           return;
         }
-
+        setHasSearchResults(true);  
         // Convert string dates to Date objects using moment
         setReturnedStartDate(moment(response.data[0].startDate).toDate());
         setReturnedEndDate(moment(response.data[0].endDate).toDate());
@@ -329,15 +330,13 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
     loadAvailabilities();
   };
 
-  // Convert Date objects to strings for the template component
-  const startDateStr = startDate ? moment(startDate).format('YYYY-MM-DD') : '';
-  const endDateStr = endDate ? moment(endDate).format('YYYY-MM-DD') : '';
+  // Convert Date objects to strings for the template component 
 
   return (
     <RoomAvailabilityManagementTemplate
       hotel={hotel}
-      startDate={startDateStr}
-      endDate={endDateStr}
+      startDate={startDate}
+      endDate={endDate}
       searchCurrency={searchCurrency}
       rooms={rooms}
       currencies={currencies}
@@ -356,6 +355,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       onSearch={handleSearch}
       returnedStartDate={returnedStartDate}
       returnedEndDate={returnedEndDate}
+      hasSearchResults={hasSearchResults} 
     />
   );
 };

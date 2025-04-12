@@ -5,9 +5,8 @@ import DatePicker from 'react-date-picker';
 import { Value } from 'react-calendar/dist/esm/shared/types.js';
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-date-picker/dist/DatePicker.css';
-import '../../css/datepicker.css'; // Add this line 
-import { parseDate } from '../../helpers/dateHelper';
- 
+import '../../css/datepicker.css'; // Add this line  
+
 const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTemplateProps> = ({
   startDate,
   endDate,
@@ -28,17 +27,18 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
   searchCurrency,
   onSearchCurrencyChange,
   returnedStartDate,
-  returnedEndDate
+  returnedEndDate,
+  hasSearchResults
 }) => {
   // Estado para rastrear se as datas foram alteradas
   const [datesModified, setDatesModified] = useState<boolean>(false);
-  
+
   // Atualiza o estado quando as datas mudam
   useEffect(() => {
     if (startDate || endDate) {
       setDatesModified(true);
     }
-  }, [startDate, endDate]);
+  }, [startDate, endDate, rooms]);
 
   // Handle date changes with the correct type
   const handleStartDateChange = (value: Value) => {
@@ -57,26 +57,24 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
 
   // Get the current currency symbol
   const currentCurrencySymbol = currencies.find(c => c.code === searchCurrency)?.symbol || '';
-  
+
   // Format dates for display
   const formatDisplayDate = (date: Date | null) => {
     if (!date) return '';
     return date.toLocaleDateString();
   };
-
-  // Check if search results are available
-  const hasSearchResults = rooms.length > 0 && returnedStartDate && returnedEndDate;
+ 
 
   return (
     <div>
       <h3 className="mb-0">Cadastro de Disponibilidade de Quartos - {hotel?.hotelName}</h3>
       <Row className="mb-4">
-       <Col md={3}>
+        <Col md={3}>
           <Form.Group>
             <Form.Label>Data Inicial <span className="text-danger">*</span></Form.Label>
             <div>
               <DatePicker
-                value={parseDate(startDate)}
+                value={startDate}
                 onChange={handleStartDateChange}
                 format="dd/MM/yyyy"
                 className={formErrors.startDate ? 'is-invalid' : ''}
@@ -92,7 +90,7 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
             <Form.Label>Data Final <span className="text-danger">*</span></Form.Label>
             <div>
               <DatePicker
-                value={parseDate(endDate)}
+                value={endDate}
                 onChange={handleEndDateChange}
                 format="dd/MM/yyyy"
                 className={formErrors.endDate ? 'is-invalid' : ''}
@@ -124,8 +122,8 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
           </Form.Group>
         </Col>
         <Col md={3} className="d-flex align-items-end">
-          <Button 
-            variant="primary" 
+          <Button
+            variant="primary"
             onClick={onSearch}
             disabled={isLoading}
             className="w-100"
@@ -140,9 +138,9 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
       </Row>
 
       {/* Display search period and currency when search results are available */}
-      {hasSearchResults && (
+      { hasSearchResults && (
         <div className="alert alert-info mb-3">
-          <strong>Período pesquisado:</strong> {formatDisplayDate(returnedStartDate)} a {formatDisplayDate(returnedEndDate)} | 
+          <strong>Período pesquisado:</strong> {formatDisplayDate(returnedStartDate ?? startDate)} a {formatDisplayDate(returnedEndDate ?? endDate)} |
           <strong> Moeda:</strong> {currencies.find(c => c.code === searchCurrency)?.name || searchCurrency} ({currentCurrencySymbol})
         </div>
       )}
@@ -209,9 +207,9 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
         <Button variant="secondary" onClick={onCancel} className="me-2">
           Cancelar
         </Button>
-        <Button 
-          variant="primary" 
-          onClick={onSave} 
+        <Button
+          variant="primary"
+          onClick={onSave}
           disabled={!isSaveEnabled || isLoading}
         >
           {isLoading ? (
