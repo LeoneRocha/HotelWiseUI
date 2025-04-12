@@ -21,7 +21,6 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
   onStartDateChange,
   onEndDateChange,
   onQuantityChange,
-  onCurrencyChange,
   onPriceChange,
   onSave,
   onCancel,
@@ -54,11 +53,14 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
     onEndDateChange(formattedDate);
   };
 
+  // Get the current currency symbol
+  const currentCurrencySymbol = currencies.find(c => c.code === searchCurrency)?.symbol || '';
+
   return (
     <div>
       <h3 className="mb-0">Cadastro de Disponibilidade de Quartos - {hotel?.hotelName}</h3>
       <Row className="mb-4">
-       <Col md={5}>
+       <Col md={3}>
           <Form.Group>
             <Form.Label>Data Inicial <span className="text-danger">*</span></Form.Label>
             <div>
@@ -74,7 +76,7 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
             </div>
           </Form.Group>
         </Col>
-        <Col md={5}>
+        <Col md={3}>
           <Form.Group>
             <Form.Label>Data Final <span className="text-danger">*</span></Form.Label>
             <div>
@@ -90,7 +92,7 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
             </div>
           </Form.Group>
         </Col>
-        <Col md={2}>
+        <Col md={3}>
           <Form.Group>
             <Form.Label>Moeda <span className="text-danger">*</span></Form.Label>
             <Form.Select
@@ -101,7 +103,7 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
               <option value="">Selecione</option>
               {currencies.map((currency) => (
                 <option key={currency.code} value={currency.code}>
-                  {currency.code} - {currency.symbol}
+                  {currency.code} - {currency.symbol} - {currency.name}
                 </option>
               ))}
             </Form.Select>
@@ -110,7 +112,7 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
             )}
           </Form.Group>
         </Col>
-        <Col md={2} className="d-flex align-items-end">
+        <Col md={3} className="d-flex align-items-end">
           <Button 
             variant="primary" 
             onClick={onSearch}
@@ -137,7 +139,6 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
             <tr>
               <th>Quarto</th>
               <th>Quantidade</th>
-              <th>Moeda</th>
               {weekDays.map((day) => (
                 <th key={day}>{day}</th>
               ))}
@@ -159,28 +160,11 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
                     <div className="invalid-feedback">{formErrors[`room_${room.id}_quantity`]}</div>
                   )}
                 </td>
-                <td>
-                  <Form.Select
-                    value={room.currency}
-                    onChange={(e) => onCurrencyChange(room.id, e.target.value)}
-                    className={formErrors[`room_${room.id}_currency`] ? 'is-invalid' : ''}
-                  >
-                    <option value="">Selecione</option>
-                    {currencies.map((currency) => (
-                      <option key={currency.code} value={currency.code}>
-                        {currency.code} - {currency.symbol} - {currency.name}
-                      </option>
-                    ))}
-                  </Form.Select>
-                  {formErrors[`room_${room.id}_currency`] && (
-                    <div className="invalid-feedback">{formErrors[`room_${room.id}_currency`]}</div>
-                  )}
-                </td>
                 {weekDays.map((day) => (
                   <td key={`${room.id}_${day}`}>
                     <div className="input-group">
                       <span className="input-group-text">
-                        {currencies.find(c => c.code === room.currency)?.symbol || ''}
+                        {currentCurrencySymbol}
                       </span>
                       <Form.Control
                         type="number"

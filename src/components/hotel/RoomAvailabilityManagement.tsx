@@ -10,7 +10,7 @@ import DateService from '../../services/DateService';
 import { IRoomAvailability, RoomPriceAndAvailabilityItem } from '../../interfaces/model/Hotel/IRoomAvailability';
 import { RoomAvailabilityPrice, RoomListProps } from '../../interfaces/DTO/Hotel/IHotelProps';
 import { RoomAvailabilityStatus } from '../../enums/hotel/RoomStatus';
-import { DayOfWeekHelper } from '../../helpers/DayOfWeekHelper'; 
+import { DayOfWeekHelper } from '../../helpers/DayOfWeekHelper';
 
 const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel }) => {
   const navigate = useNavigate();
@@ -50,33 +50,32 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
 
   const validateForm = () => {
     const errors: { [key: string]: string } = {};
-
+  
     // Validate dates
     if (!startDate) {
       errors.startDate = 'Data inicial é obrigatória';
     }
-
+  
     if (!endDate) {
       errors.endDate = 'Data final é obrigatória';
     }
-
+  
     if (!searchCurrency) {
       errors.searchCurrency = 'Moeda é obrigatória';
     }
-
+  
     if (!DateService.isValidDateRange(startDate, endDate)) {
       errors.dateRange = 'A data inicial não pode ser posterior à data final';
     }
-
+  
     // Check if at least one room is fully configured
     let hasConfiguredRoom = false;
-
+  
     rooms.forEach((room) => {
       const roomKey = `room_${room.id}`;
       const isRoomConfigured = room.quantity > 0 &&
-        weekDays.every(day => room.prices[day] > 0) &&
-        room.currency;
-
+        weekDays.every(day => room.prices[day] > 0);
+  
       if (isRoomConfigured) {
         hasConfiguredRoom = true;
       } else if (room.quantity > 0 || weekDays.some(day => room.prices[day] > 0)) {
@@ -84,7 +83,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
         if (room.quantity <= 0) {
           errors[`${roomKey}_quantity`] = 'Quantidade inválida';
         }
-
+  
         weekDays.forEach(day => {
           if (room.prices[day] <= 0) {
             errors[`${roomKey}_price_${day}`] = 'Preço inválido';
@@ -92,10 +91,10 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
         });
       }
     });
-
+  
     // Update form errors
     setFormErrors(errors);
-
+  
     // Enable save button if no errors and at least one room is configured
     setIsSaveEnabled(
       Object.keys(errors).length === 0 &&
@@ -105,6 +104,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       hasConfiguredRoom
     );
   };
+  
 
   const loadRooms = async (hotelId: number) => {
     try {
@@ -208,7 +208,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
 
   const handleSearchCurrencyChange = (currency: string) => {
     setSearchCurrency(currency);
-    
+
     // Atualiza a moeda de todos os quartos quando a moeda de busca muda
     setRooms(prevRooms =>
       prevRooms.map(room => ({
@@ -244,6 +244,8 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
     );
   };
 
+  // In the handleSave function, modify the availabilities creation to use searchCurrency instead of room.currency
+
   const handleSave = async () => {
     if (!isSaveEnabled) {
       toast.warning('Por favor, preencha todos os campos obrigatórios');
@@ -261,7 +263,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
             dayOfWeek: DayOfWeekHelper.toDotNetDayOfWeek(day, dayOfWeekMap), // Convert to .NET DayOfWeek enum
             price: room.prices[day],
             quantityAvailable: room.quantity,
-            currency: room.currency,
+            currency: searchCurrency, // Use searchCurrency instead of room.currency
             status: RoomAvailabilityStatus.Available
           }));
 
@@ -290,6 +292,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       setIsLoading(false);
     }
   };
+
 
   const handleCancel = () => {
     // Navigate back or reset form
