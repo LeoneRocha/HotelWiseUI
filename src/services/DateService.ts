@@ -1,8 +1,11 @@
-import moment from 'moment';   
-
+import 'moment';  // Importe o locale desejado
+import moment from 'moment/min/moment-with-locales';
 
 
 class DateService {
+
+   
+
   public static getLocalizedWeekdays(locale: string = 'pt-br'): string[] {
     // Configura o locale do moment
     moment.locale(locale);

@@ -6,6 +6,7 @@ import { Value } from 'react-calendar/dist/esm/shared/types.js';
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-date-picker/dist/DatePicker.css';
 import '../../css/datepicker.css'; // Add this line  
+import DateService from '../../services/DateService';
 
 const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTemplateProps> = ({
   startDate,
@@ -63,7 +64,10 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
     if (!date) return '';
     return date.toLocaleDateString();
   };
- 
+
+   // Get localized weekday names
+   const localizedWeekdays = DateService.getLocalizedWeekdays('pt-br');
+   console.log(localizedWeekdays);  
 
   return (
     <div>
@@ -138,7 +142,7 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
       </Row>
 
       {/* Display search period and currency when search results are available */}
-      { hasSearchResults && (
+      {hasSearchResults && (
         <div className="alert alert-info mb-3">
           <strong>Período pesquisado:</strong> {formatDisplayDate(returnedStartDate ?? startDate)} a {formatDisplayDate(returnedEndDate ?? endDate)} |
           <strong> Moeda:</strong> {currencies.find(c => c.code === searchCurrency)?.name || searchCurrency} ({currentCurrencySymbol})
@@ -156,8 +160,9 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
             <tr>
               <th>Quarto</th>
               <th>Quantidade</th>
-              {weekDays.map((day) => (
-                <th key={day}>{day}</th>
+              {/* With this to get Portuguese weekday names */}
+              {weekDays.map((day, index) => (
+                <th key={day}>{DateService.getLocalizedWeekdays('pt-br')[index]}</th>
               ))}
             </tr>
           </thead>
