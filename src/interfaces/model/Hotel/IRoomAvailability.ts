@@ -4,6 +4,7 @@ import { RoomAvailabilityStatus } from "../../../enums/hotel/RoomStatus";
 export interface IRoomAvailability {
   id: number;
   roomId: number;
+  currency: string;
   startDate: string; // Data inicial do período
   endDate: string;   // Data final do período
   availabilityWithPrice: RoomPriceAndAvailabilityItem[];

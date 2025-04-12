@@ -6,6 +6,7 @@ export interface IRoom {
   hotelId: number;
   roomType: RoomType;
   capacity: number;
+  name: string;
   description: string;
   status: RoomStatus;
   minimumNights: number;

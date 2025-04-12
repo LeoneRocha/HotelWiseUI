@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Button, Modal, Row, Col } from 'react-bootstrap';
 import { RoomStatus, RoomStatusDescriptions } from '../../enums/hotel/RoomStatus';
 import { RoomType, RoomTypeDescriptions } from '../../enums/hotel/RoomType';
-import { RoomFormTemplateProps } from '../../interfaces/DTO/Hotel/IHotelProps'; 
+import { RoomFormTemplateProps } from '../../interfaces/DTO/Hotel/IHotelProps';
 import EnumSelect from '../general/EnumSelect';
 
 const RoomFormTemplate: React.FC<RoomFormTemplateProps> = ({
@@ -78,6 +78,23 @@ const RoomFormTemplate: React.FC<RoomFormTemplateProps> = ({
               </Form.Control.Feedback>
             </Form.Group>
           </Row>
+
+          <Form.Group controlId="formRoomName" className="mb-3">
+            <Form.Label>Nome</Form.Label>
+            <Form.Control
+              type="text" 
+              name="name"
+              value={formData.name}
+              onChange={onChange}
+              placeholder="Digite o nome do quarto" // Adicionado um placeholder para auxiliar o usuário.
+              isInvalid={!formData.name} // Adiciona validação visual.
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Informe o nome do quarto.
+            </Form.Control.Feedback>
+          </Form.Group>
+
 
           <Form.Group className="mb-3">
             <Form.Label>Descrição</Form.Label>

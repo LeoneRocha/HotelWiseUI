@@ -168,6 +168,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
             // Set currency from first availability item or from search currency
             if (availability.availabilityWithPrice.length > 0) {
               updatedRooms[roomIndex].currency = searchCurrency;
+              updatedRooms[roomIndex].id = availability.id; 
               updatedRooms[roomIndex].quantity = availability.availabilityWithPrice[0].quantityAvailable;
             }
 
@@ -272,6 +273,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
             roomId: room.id,
             startDate,
             endDate,
+            currency: searchCurrency, // Use searchCurrency instead of room.currency
             availabilityWithPrice
           };
         });
