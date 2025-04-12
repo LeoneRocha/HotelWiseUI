@@ -1,8 +1,8 @@
 //AssistantService.ts
-import axios from 'axios'; 
+import axios from 'axios';
 import { nameStorageTokenAzureAD, nameStorageTokenJWT } from '../../auth-config';
 import { IAskAssistantResponse } from '../../interfaces/model/IA/IAskAssistantResponse';
-import { IAskAssistantRequest } from '../../interfaces/model/IA/IAskAssistantRequest'; 
+import { IAskAssistantRequest } from '../../interfaces/model/IA/IAskAssistantRequest';
 import EnvironmentService from '../general/EnvironmentService';
 import { IAssistantService } from '../../interfaces/services/ia/IAssistantService';
 
@@ -27,12 +27,7 @@ api_assistantService.interceptors.request.use((config) => {
   }
 
   // Logando as informações da requisição no console
-  console.log('Requisição Axios:', {
-    url: config.url,
-    method: config.method,
-    headers: config.headers,
-    data: config.data,
-  });
+  console.log('Requisição Axios:', { url: config.url, method: config.method, headers: config.headers, data: config.data, });
 
   //ver o exemplo que fiz anterior mente e compara parece que falta o scope  
   return config;
@@ -40,7 +35,7 @@ api_assistantService.interceptors.request.use((config) => {
 
 class AssistantService implements IAssistantService {
   async getChatCompletion(criteria: IAskAssistantRequest): Promise<IAskAssistantResponse[]> {
-    const response = await api_assistantService.post<IAskAssistantResponse[]>('/', criteria);    
+    const response = await api_assistantService.post<IAskAssistantResponse[]>('/', criteria);
     return response.data;
   }
 }
