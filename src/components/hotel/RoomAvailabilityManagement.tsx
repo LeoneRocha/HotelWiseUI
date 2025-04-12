@@ -7,21 +7,26 @@ import RoomAvailabilityService from '../../services/hotel/RoomAvailabilityServic
 import RoomService from '../../services/hotel/RoomService';
 import CurrencyService from '../../services/CurrencyService';
 import DateService from '../../services/DateService';
-import { IRoomAvailability, RoomPriceAndAvailabilityItem } from '../../interfaces/model/Hotel/IRoomAvailability';
+import { IRoomAvailability, RoomAvailabilitySearchDto, RoomPriceAndAvailabilityItem } from '../../interfaces/model/Hotel/IRoomAvailability';
 import { RoomAvailabilityPrice, RoomListProps } from '../../interfaces/DTO/Hotel/IHotelProps';
 import { RoomAvailabilityStatus } from '../../enums/hotel/RoomStatus';
 import { DayOfWeekHelper } from '../../helpers/DayOfWeekHelper';
 
 const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel }) => {
+  // Configura o locale do moment
+  moment.locale('pt-br');
+
   const navigate = useNavigate();
-  const [startDate, setStartDate] = useState<string>('');
-  const [endDate, setEndDate] = useState<string>('');
+  // Changed from string to Date
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
   const [searchCurrency, setSearchCurrency] = useState<string>('');
   const [rooms, setRooms] = useState<RoomAvailabilityPrice[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
   const [isSaveEnabled, setIsSaveEnabled] = useState<boolean>(false);
-
+  const [returnedStartDate, setReturnedStartDate] = useState<Date>(new Date());
+  const [returnedEndDate, setReturnedEndDate] = useState<Date>(new Date());
   // Obter dias da semana localizados usando o serviço
   const weekDays = DateService.getLocalizedWeekdays();
 
@@ -50,32 +55,32 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
 
   const validateForm = () => {
     const errors: { [key: string]: string } = {};
-  
+
     // Validate dates
     if (!startDate) {
       errors.startDate = 'Data inicial é obrigatória';
     }
-  
+
     if (!endDate) {
       errors.endDate = 'Data final é obrigatória';
     }
-  
+
     if (!searchCurrency) {
       errors.searchCurrency = 'Moeda é obrigatória';
     }
-  
-    if (!DateService.isValidDateRange(startDate, endDate)) {
+
+    if (startDate && endDate && moment(startDate).isAfter(moment(endDate))) {
       errors.dateRange = 'A data inicial não pode ser posterior à data final';
     }
-  
+
     // Check if at least one room is fully configured
     let hasConfiguredRoom = false;
-  
+
     rooms.forEach((room) => {
       const roomKey = `room_${room.id}`;
       const isRoomConfigured = room.quantity > 0 &&
         weekDays.every(day => room.prices[day] > 0);
-  
+
       if (isRoomConfigured) {
         hasConfiguredRoom = true;
       } else if (room.quantity > 0 || weekDays.some(day => room.prices[day] > 0)) {
@@ -83,7 +88,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
         if (room.quantity <= 0) {
           errors[`${roomKey}_quantity`] = 'Quantidade inválida';
         }
-  
+
         weekDays.forEach(day => {
           if (room.prices[day] <= 0) {
             errors[`${roomKey}_price_${day}`] = 'Preço inválido';
@@ -91,20 +96,19 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
         });
       }
     });
-  
+
     // Update form errors
     setFormErrors(errors);
-  
+
     // Enable save button if no errors and at least one room is configured
     setIsSaveEnabled(
       Object.keys(errors).length === 0 &&
-      startDate !== '' &&
-      endDate !== '' &&
+      startDate !== null &&
+      endDate !== null &&
       searchCurrency !== '' &&
       hasConfiguredRoom
     );
   };
-  
 
   const loadRooms = async (hotelId: number) => {
     try {
@@ -116,7 +120,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
 
         const formattedRooms = response.data.map(room => ({
           id: room.id,
-          name: room.name, 
+          name: room.name,
           quantity: 0,
           currency: defaultCurrency,
           prices: weekDays.reduce((acc, day) => {
@@ -144,10 +148,10 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
     }
     try {
       setIsLoading(true);
-      const searchCriteria = {
+      const searchCriteria : RoomAvailabilitySearchDto= {
         hotelId: hotelId,
-        startDate,
-        endDate,
+        startDate: moment(startDate).toDate(),
+        endDate: moment(endDate).toDate(),
         currency: searchCurrency
       };
 
@@ -162,13 +166,17 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
           return;
         }
 
+        // Convert string dates to Date objects using moment
+        setReturnedStartDate(moment(response.data[0].startDate).toDate());
+        setReturnedEndDate(moment(response.data[0].endDate).toDate());
+
         response.data.forEach(availability => {
           const roomIndex = updatedRooms.findIndex(r => r.id === availability.roomId);
           if (roomIndex !== -1) {
             // Set currency from first availability item or from search currency
             if (availability.availabilityWithPrice.length > 0) {
               updatedRooms[roomIndex].currency = searchCurrency;
-              updatedRooms[roomIndex].id = availability.id; 
+              updatedRooms[roomIndex].id = availability.id;
               updatedRooms[roomIndex].quantity = availability.availabilityWithPrice[0].quantityAvailable;
             }
 
@@ -199,11 +207,15 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
     }
   };
 
-  const handleStartDateChange = (date: string) => {
+  const handleStartDateChange = (dateStr: string) => {
+    // Convert string to Date using moment
+    const date = dateStr ? moment(dateStr).toDate() : null;
     setStartDate(date);
   };
 
-  const handleEndDateChange = (date: string) => {
+  const handleEndDateChange = (dateStr: string) => {
+    // Convert string to Date using moment
+    const date = dateStr ? moment(dateStr).toDate() : null;
     setEndDate(date);
   };
 
@@ -245,8 +257,6 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
     );
   };
 
-  // In the handleSave function, modify the availabilities creation to use searchCurrency instead of room.currency
-
   const handleSave = async () => {
     if (!isSaveEnabled) {
       toast.warning('Por favor, preencha todos os campos obrigatórios');
@@ -255,6 +265,10 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
 
     try {
       setIsLoading(true);
+
+      // Use returnedStartDate and returnedEndDate if available, otherwise use the form dates
+      const startDateToUse = returnedStartDate || startDate;
+      const endDateToUse = returnedEndDate || endDate;
 
       // Prepare data for batch creation
       const availabilities: IRoomAvailability[] = rooms
@@ -271,8 +285,8 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
           return {
             id: 0, // New availability
             roomId: room.id,
-            startDate,
-            endDate,
+            startDate: startDateToUse,
+            endDate: endDateToUse,
             currency: searchCurrency, // Use searchCurrency instead of room.currency
             availabilityWithPrice
           };
@@ -295,7 +309,6 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
     }
   };
 
-
   const handleCancel = () => {
     // Navigate back or reset form
     navigate(-1);
@@ -307,7 +320,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       return;
     }
 
-    if (!DateService.isValidDateRange(startDate, endDate)) {
+    if (moment(startDate).isAfter(moment(endDate))) {
       toast.error('A data inicial não pode ser posterior à data final');
       return;
     }
@@ -316,11 +329,15 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
     loadAvailabilities();
   };
 
+  // Convert Date objects to strings for the template component
+  const startDateStr = startDate ? moment(startDate).format('YYYY-MM-DD') : '';
+  const endDateStr = endDate ? moment(endDate).format('YYYY-MM-DD') : '';
+
   return (
     <RoomAvailabilityManagementTemplate
       hotel={hotel}
-      startDate={startDate}
-      endDate={endDate}
+      startDate={startDateStr}
+      endDate={endDateStr}
       searchCurrency={searchCurrency}
       rooms={rooms}
       currencies={currencies}
@@ -337,6 +354,8 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       onSave={handleSave}
       onCancel={handleCancel}
       onSearch={handleSearch}
+      returnedStartDate={returnedStartDate}
+      returnedEndDate={returnedEndDate}
     />
   );
 };

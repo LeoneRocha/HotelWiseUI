@@ -26,7 +26,9 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
   onCancel,
   onSearch,
   searchCurrency,
-  onSearchCurrencyChange
+  onSearchCurrencyChange,
+  returnedStartDate,
+  returnedEndDate
 }) => {
   // Estado para rastrear se as datas foram alteradas
   const [datesModified, setDatesModified] = useState<boolean>(false);
@@ -55,6 +57,15 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
 
   // Get the current currency symbol
   const currentCurrencySymbol = currencies.find(c => c.code === searchCurrency)?.symbol || '';
+  
+  // Format dates for display
+  const formatDisplayDate = (date: Date | null) => {
+    if (!date) return '';
+    return date.toLocaleDateString();
+  };
+
+  // Check if search results are available
+  const hasSearchResults = rooms.length > 0 && returnedStartDate && returnedEndDate;
 
   return (
     <div>
@@ -127,6 +138,14 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
           </Button>
         </Col>
       </Row>
+
+      {/* Display search period and currency when search results are available */}
+      {hasSearchResults && (
+        <div className="alert alert-info mb-3">
+          <strong>Período pesquisado:</strong> {formatDisplayDate(returnedStartDate)} a {formatDisplayDate(returnedEndDate)} | 
+          <strong> Moeda:</strong> {currencies.find(c => c.code === searchCurrency)?.name || searchCurrency} ({currentCurrencySymbol})
+        </div>
+      )}
 
       {/* Só exibe o erro de intervalo de datas se as datas foram modificadas */}
       {datesModified && formErrors.dateRange && (

@@ -48,7 +48,7 @@ export interface RoomFormTemplateProps {
   onClose: () => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-} 
+}
 
 export interface RoomAvailabilityManagementTemplateProps {
   startDate: string;
@@ -68,11 +68,14 @@ export interface RoomAvailabilityManagementTemplateProps {
   onSave: () => void;
   onCancel: () => void;
   onSearch: () => void;
-   searchCurrency: string;
-   onSearchCurrencyChange: (currency: string) => void;
+  searchCurrency: string;
+  onSearchCurrencyChange: (currency: string) => void;
+  // existing props
+  returnedStartDate?: Date;
+  returnedEndDate?: Date;
 }
 
-export  interface RoomAvailabilityPrice {
+export interface RoomAvailabilityPrice {
   id: number;
   name: string;
   quantity: number;
