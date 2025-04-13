@@ -5,9 +5,9 @@ import { ISecurityService } from '../../interfaces/services/ISecurityService';
 import LocalStorageService from './localStorageService';
 
 class SecurityService implements ISecurityService {
-    isTokenValid(storageKey: string, token: string | null): boolean {
-        if (token) {
-            token = this.getToken(storageKey);
+    isTokenValid(storageKey: string, token: string  ): boolean {
+        if (token === null) {
+            token = this.getToken(storageKey) ?? '';
         }
         try {
             if (token !== null) {
