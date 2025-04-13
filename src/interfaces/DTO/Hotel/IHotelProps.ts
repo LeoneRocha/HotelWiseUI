@@ -74,9 +74,11 @@ export interface RoomAvailabilityManagementTemplateProps {
   returnedStartDate?: Date;
   returnedEndDate?: Date;
   hasSearchResults: boolean;
+  onNewPeriod: () => void;
 }
 
 export interface RoomAvailabilityPrice {
+  key: number;
   id: number;
   roomId: number;
   roomAvailabilityId: number;

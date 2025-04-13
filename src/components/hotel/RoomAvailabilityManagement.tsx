@@ -117,12 +117,12 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       const response = await RoomService.getRoomsByHotelId(hotelId);
 
       if (response.success && response.data) {
-        const defaultCurrency = searchCurrency || CurrencyService.getDefaultCurrency().code;
-
-        const formattedRooms: RoomAvailabilityPrice[] = response.data.map(room => ({
+        const defaultCurrency = searchCurrency || CurrencyService.getDefaultCurrency().code; 
+        const formattedRooms: RoomAvailabilityPrice[] = response.data.map((room, index) => ({
+          key: index, // Add sequential key 
           roomId: room.id,
           id: room.id,
-          roomAvailabilityId: 0, 
+          roomAvailabilityId: 0,
           name: room.name,
           quantity: 0,
           currency: defaultCurrency,
@@ -131,8 +131,11 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
             return acc;
           }, {} as { [key: string]: number })
         }));
-
-        setRooms(formattedRooms);
+        // Sort rooms by name before setting state
+        const sortedRooms = formattedRooms.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        ); 
+        setRooms(sortedRooms);
       } else {
         toast.error('Erro ao carregar quartos do hotel');
       }
@@ -157,9 +160,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
         endDate: moment(endDate).toDate(),
         currency: searchCurrency
       };
-
       const response = await RoomAvailabilityService.getAvailabilitiesBySearchCriteria(searchCriteria);
-
       if (response.success && response.data) {
         // Map existing availabilities to rooms
         const updatedRooms = [...rooms];
@@ -174,7 +175,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
         setReturnedEndDate(moment(response.data[0].endDate).toDate());
 
         response.data.forEach(availability => {
-          const roomIndex = updatedRooms.findIndex(r => r.id === availability.roomId);
+          const roomIndex = updatedRooms.findIndex(r => r.roomId === availability.roomId);
           if (roomIndex !== -1) {
             // Set currency from first availability item or from search currency
             if (availability.availabilityWithPrice.length > 0) {
@@ -198,13 +199,14 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
             });
           }
         });
-        console.log(updatedRooms);
         setRooms(updatedRooms);
         toast.success('Disponibilidades carregadas com sucesso!');
       } else {
+        setHasSearchResults(false);
         toast.error(response.message || 'Falha ao carregar disponibilidades. Verifique os parâmetros de busca.');
       }
     } catch (error) {
+      setHasSearchResults(false);
       console.error('Erro ao carregar disponibilidades:', error);
       toast.error('Erro ao carregar disponibilidades dos quartos. Verifique sua conexão ou tente novamente mais tarde.');
     } finally {
@@ -272,8 +274,10 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       setIsLoading(true);
 
       // Use returnedStartDate and returnedEndDate if available, otherwise use the form dates
-      const startDateToUse = returnedStartDate || startDate;
-      const endDateToUse = returnedEndDate || endDate;
+      // For new periods (when hasSearchResults is false), use the form dates
+      // Otherwise, use the returned dates from the search
+      const startDateToUse = hasSearchResults ? returnedStartDate : startDate ?? new Date();
+      const endDateToUse = hasSearchResults ? returnedEndDate : endDate ?? new Date();
 
       // Prepare data for batch creation
       const availabilities: IRoomAvailability[] = rooms
@@ -288,7 +292,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
           }));
 
           return {
-            id: room.roomAvailabilityId,   
+            id: room.roomAvailabilityId,
             roomId: room.roomId,
             startDate: startDateToUse,
             endDate: endDateToUse,
@@ -333,6 +337,28 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
     toast.info('Buscando disponibilidades...');
     loadAvailabilities();
   };
+  const handleNewPeriod = () => {
+    // Reset dates
+    setStartDate(null);
+    setEndDate(null);
+
+    // Reset returned dates
+    setReturnedStartDate(new Date());
+    setReturnedEndDate(new Date());
+
+    // Reset search results flag
+    setHasSearchResults(false);
+
+
+    // Explicitly clear the rooms array first
+    setRooms([]);
+
+    // Reset rooms to initial state
+    if (hotelId) {
+      loadRooms(hotelId);
+    }
+    toast.info('Formulário limpo para cadastro de novo período');
+  };
 
   // Convert Date objects to strings for the template component 
 
@@ -360,6 +386,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
       returnedStartDate={returnedStartDate}
       returnedEndDate={returnedEndDate}
       hasSearchResults={hasSearchResults}
+      onNewPeriod={handleNewPeriod}
     />
   );
 };

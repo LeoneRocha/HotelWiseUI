@@ -29,7 +29,8 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
   onSearchCurrencyChange,
   returnedStartDate,
   returnedEndDate,
-  hasSearchResults
+  hasSearchResults,
+  onNewPeriod
 }) => {
   // Estado para rastrear se as datas foram alteradas
   const [datesModified, setDatesModified] = useState<boolean>(false);
@@ -63,11 +64,12 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
   const formatDisplayDate = (date: Date | null) => {
     if (!date) return '';
     return date.toLocaleDateString();
-  }; 
+  };
 
   return (
     <div>
       <h3 className="mb-0">Cadastro de Disponibilidade de Quartos - {hotel?.hotelName}</h3>
+
       <Row className="mb-4">
         <Col md={3}>
           <Form.Group>
@@ -136,7 +138,6 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
           </Button>
         </Col>
       </Row>
-
       {/* Display search period and currency when search results are available */}
       {hasSearchResults && (
         <div className="alert alert-info mb-3">
@@ -144,6 +145,17 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
           <strong> Moeda:</strong> {currencies.find(c => c.code === searchCurrency)?.name ?? searchCurrency} ({currentCurrencySymbol})
         </div>
       )}
+      <Row className="mb-4">
+        <Col md={3} className="d-flex align-items-end">
+          <Button
+            variant="primary"
+            onClick={onNewPeriod}
+            disabled={isLoading}
+          > Novo Período
+          </Button>
+        </Col>
+      </Row>
+
 
       {/* Só exibe o erro de intervalo de datas se as datas foram modificadas */}
       {datesModified && formErrors.dateRange && (
@@ -164,8 +176,14 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
           </thead>
           <tbody>
             {rooms.map((room) => (
-              <tr key={room.id}>
-                <td>{room.name}</td>
+              <tr key={room.key}>
+                <td>{room.name}  <span
+                  className="ms-1 text-muted"
+                  style={{ fontSize: '0.8rem', cursor: 'help' }}
+                  title={`ID do quarto: ${room.id}`}
+                >
+                  <i className="bi bi-info-circle"></i> 
+                </span></td>
                 <td>
                   <Form.Control
                     type="number"
@@ -205,6 +223,7 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
       </div>
 
       <div className="d-flex justify-content-end mt-3">
+
         <Button variant="secondary" onClick={onCancel} className="me-2">
           Cancelar
         </Button>
