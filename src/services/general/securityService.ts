@@ -6,7 +6,7 @@ import LocalStorageService from './localStorageService';
 
 class SecurityService implements ISecurityService {
     isTokenValid(storageKey: string, token: string | null): boolean {
-        if (token === null) {
+        if (token ?? '' == '') {
             token = this.getToken(storageKey);
         }
         try {
