@@ -17,7 +17,7 @@ const Login: React.FC = () => {
   const { instance } = useMsal();
 
   useEffect(() => {
-    const token = SecurityService.getToken(nameStorageTokenJWT) || '';
+    const token = SecurityService.getToken(nameStorageTokenJWT);
     const isvalidToken = SecurityService.isTokenValid(nameStorageTokenJWT, token);
 
     if (token && isvalidToken) {
@@ -42,7 +42,7 @@ const Login: React.FC = () => {
       if (response.success) {
         SecurityService.setToken(nameStorageTokenJWT, response.data.tokenAuth.accessToken);
 
-        if (rememberMe) { 
+        if (rememberMe) {
           LocalStorageService.setItem('rememberMeUsername', sanitizedUsername);
         } else {
           LocalStorageService.removeItem('rememberMeUsername');

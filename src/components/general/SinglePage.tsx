@@ -45,7 +45,7 @@ const SinglePage: React.FC = () => {
 };
 
 const isLoggedIn = (): boolean => {
-    return LocalStorageService.hasItem(nameStorageTokenJWT) && SecurityService.isTokenValid(nameStorageTokenJWT, '');
+    return LocalStorageService.hasItem(nameStorageTokenJWT) && SecurityService.isTokenValid(nameStorageTokenJWT, null);
 };
 
 export default SinglePage;
