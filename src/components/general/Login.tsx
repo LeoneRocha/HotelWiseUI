@@ -17,7 +17,7 @@ const Login: React.FC = () => {
   const { instance } = useMsal();
 
   useEffect(() => {
-    const token = SecurityService.getToken(nameStorageTokenJWT);
+    const token = SecurityService.getToken(nameStorageTokenJWT) || '';
     const isvalidToken = SecurityService.isTokenValid(nameStorageTokenJWT, token);
 
     if (token && isvalidToken) {
