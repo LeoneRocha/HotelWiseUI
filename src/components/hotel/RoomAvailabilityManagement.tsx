@@ -114,10 +114,9 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
   const loadRooms = async (hotelId: number) => {
     try {
       setIsLoading(true);
-      const response = await RoomService.getRoomsByHotelId(hotelId);
-
+      const response = await RoomService.getRoomsByHotelId(hotelId); 
       if (response.success && response.data) {
-        const defaultCurrency = searchCurrency || CurrencyService.getDefaultCurrency().code; 
+        const defaultCurrency = searchCurrency || CurrencyService.getDefaultCurrency().code;
         const formattedRooms: RoomAvailabilityPrice[] = response.data.map((room, index) => ({
           key: index, // Add sequential key 
           roomId: room.id,
@@ -134,10 +133,11 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
         // Sort rooms by name before setting state
         const sortedRooms = formattedRooms.sort((a, b) =>
           a.name.localeCompare(b.name)
-        ); 
+        );
         setRooms(sortedRooms);
       } else {
-        toast.error('Erro ao carregar quartos do hotel');
+        toast.warning(response.message || 'Nenhum quarto encontrado para este hotel');
+        setRooms([]); // Clear rooms if no data found
       }
     } catch (error) {
       console.error('Erro ao carregar quartos:', error);

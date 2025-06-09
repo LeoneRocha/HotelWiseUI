@@ -29,7 +29,10 @@ const RoomList: React.FC<RoomListProps> = ({ hotelId, hotel }) => {
   };
 
   useEffect(() => {
-    loadRooms();
+    const fetchRooms = async () => {
+      await loadRooms();
+    };
+    fetchRooms();
   },  [hotelId, hotel]);
 
   const handleAddRoom = () => {
