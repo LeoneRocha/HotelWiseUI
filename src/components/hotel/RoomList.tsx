@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Badge } from 'react-bootstrap';
 import { IRoom } from '../../interfaces/model/Hotel/IRoom';
 import RoomService from '../../services/hotel/RoomService';
@@ -14,7 +14,9 @@ const RoomList: React.FC<RoomListProps> = ({ hotelId, hotel }) => {
   const [showForm, setShowForm] = useState<boolean>(false);
   const [selectedRoom, setSelectedRoom] = useState<IRoom | null>(null);
 
-  const loadRooms = async () => {
+  const loadedOnce = useRef(false);
+
+  const loadRoomsList = useCallback(async () => {
     try {
       setLoading(true);
       const response = await RoomService.getRoomsByHotelId(hotelId);
@@ -26,14 +28,15 @@ const RoomList: React.FC<RoomListProps> = ({ hotelId, hotel }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [hotelId]);
+
 
   useEffect(() => {
-    const fetchRooms = async () => {
-      await loadRooms();
-    };
-    fetchRooms();
-  },  [hotelId, hotel]);
+    if (!loadedOnce.current) {
+      loadRoomsList();
+      loadedOnce.current = true;
+    }
+ }, [hotelId, loadRoomsList]);
 
   const handleAddRoom = () => {
     setSelectedRoom(null);
@@ -50,7 +53,7 @@ const RoomList: React.FC<RoomListProps> = ({ hotelId, hotel }) => {
       try {
         const response = await RoomService.delete(roomId);
         if (response.success) {
-          loadRooms();
+          await loadRoomsList();
         }
       } catch (error) {
         console.error('Erro ao excluir quarto:', error);
@@ -58,9 +61,9 @@ const RoomList: React.FC<RoomListProps> = ({ hotelId, hotel }) => {
     }
   };
 
-  const handleFormClose = () => {
+  const handleFormClose = async () => {
     setShowForm(false);
-    loadRooms();
+    await loadRoomsList();
   };
 
   function getRoomTypeName(roomType: number): string {

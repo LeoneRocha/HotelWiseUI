@@ -44,10 +44,10 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
     // Set default currency
     setSearchCurrency(CurrencyService.getDefaultCurrency().code);
 
-    if (hotelId) {
-      loadRooms(hotelId);
+    if (hotelId && !isLoading) {
+      loadRoomsForAvailability(hotelId);
     }
-  }, [hotelId, hotel]);
+  }, [hotelId]);
 
   // Validate form and update save button state
   useEffect(() => {
@@ -111,10 +111,10 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
     );
   };
 
-  const loadRooms = async (hotelId: number) => {
+  const loadRoomsForAvailability = async (hotelId: number) => {
     try {
       setIsLoading(true);
-      const response = await RoomService.getRoomsByHotelId(hotelId); 
+      const response = await RoomService.getRoomsByHotelId(hotelId);
       if (response.success && response.data) {
         const defaultCurrency = searchCurrency || CurrencyService.getDefaultCurrency().code;
         const formattedRooms: RoomAvailabilityPrice[] = response.data.map((room, index) => ({
@@ -136,12 +136,13 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
         );
         setRooms(sortedRooms);
       } else {
-        toast.warning(response.message || 'Nenhum quarto encontrado para este hotel');
+        toast.warning(response.message + ' Para a disponibilidade.' || 'Nenhum quarto encontrado para este hotel para a disponibilidade.');
         setRooms([]); // Clear rooms if no data found
       }
     } catch (error) {
       console.error('Erro ao carregar quartos:', error);
-      toast.error('Erro ao carregar quartos do hotel');
+      toast.error('Erro ao carregar quartos do hotel para a disponibilidade. Verifique sua conexão ou tente novamente mais tarde.');
+      setRooms([]); // Clear rooms on error
     } finally {
       setIsLoading(false);
     }
@@ -354,8 +355,8 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
     setRooms([]);
 
     // Reset rooms to initial state
-    if (hotelId) {
-      loadRooms(hotelId);
+    if (hotelId && !isLoading) {
+      loadRoomsForAvailability(hotelId);
     }
     toast.info('Formulário limpo para cadastro de novo período');
   };
