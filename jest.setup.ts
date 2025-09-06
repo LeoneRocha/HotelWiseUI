@@ -9,3 +9,11 @@ window.matchMedia = window.matchMedia || function() {
     removeListener: function() {}
   };
 };
+// Corrige ReferenceError: TextEncoder/TextDecoder is not defined em ambiente Node
+import { TextEncoder, TextDecoder } from 'util';
+if (typeof global.TextEncoder === 'undefined') {
+  global.TextEncoder = TextEncoder;
+}
+if (typeof global.TextDecoder === 'undefined') {
+  global.TextDecoder = TextDecoder;
+}

@@ -13,14 +13,21 @@ const config: Config = {
   ],
   transform: {
     '^.+\\.(ts|tsx)$': ['ts-jest', {
-      tsconfig: '<rootDir>/tsconfig.spec.json' // Referência ao tsconfig.spec.json
+      tsconfig: '<rootDir>/tsconfig.spec.json'
     }],
+    '^.+\\.(js|jsx)$': 'babel-jest',
   },
   moduleNameMapper: {
+    "^uuid$": "<rootDir>/__mocks__/uuid.js",
+    "^react-date-picker$": "<rootDir>/__mocks__/react-date-picker.js",
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
     "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js",
     "\\.(css|less|scss|sass)$": "identity-obj-proxy"
-  }, collectCoverageFrom: [
+  },
+  transformIgnorePatterns: [
+    '/node_modules/(?!(uuid|nanoid|@?react|@?redux|@?testing-library)/)',
+  ],
+  collectCoverageFrom: [
     'src/**/*.ts',
     'src/**/*.tsx',
     // Excluir

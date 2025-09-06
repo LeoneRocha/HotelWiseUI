@@ -16,9 +16,12 @@ jest.mock('../../../services/iainteference/assistantService', () => ({
   getChatCompletion: jest.fn(),
 }));
 
-jest.mock('../../../services/general/LocalStorageService', () => ({
-  getItem: jest.fn(),
-  setItem: jest.fn(),
+jest.mock('../../../services/general/localStorageService', () => ({
+  __esModule: true,
+  default: {
+    getItem: jest.fn(),
+    setItem: jest.fn(),
+  },
 }));
  
 describe('CookieConsent component', () => {
@@ -28,7 +31,7 @@ describe('CookieConsent component', () => {
 
   test('renders CookieConsent when consent is not given', async () => {
     // Simula que o consentimento não foi dado
-    (LocalStorageService.getItem as jest.Mock).mockReturnValue(null);
+  (LocalStorageService.getItem as jest.Mock).mockReturnValue(null);
 
     render(<CookieConsent />);
 
@@ -43,7 +46,7 @@ describe('CookieConsent component', () => {
 
   test('does not render CookieConsent when consent is given', () => {
     // Simula que o consentimento foi dado
-    (LocalStorageService.getItem as jest.Mock).mockReturnValue('true');
+  (LocalStorageService.getItem as jest.Mock).mockReturnValue('true');
 
     render(<CookieConsent />);
 
@@ -53,7 +56,7 @@ describe('CookieConsent component', () => {
 
   test('sets consent in local storage and hides banner when accept is clicked', async () => {
     // Simula que o consentimento não foi dado
-    (LocalStorageService.getItem as jest.Mock).mockReturnValue(null);
+  (LocalStorageService.getItem as jest.Mock).mockReturnValue(null);
 
     render(<CookieConsent />);
 
@@ -61,7 +64,7 @@ describe('CookieConsent component', () => {
     fireEvent.click(screen.getByText('Aceitar'));
 
     // Verifica se o consentimento foi salvo no local storage
-    expect(LocalStorageService.setItem).toHaveBeenCalledWith('cookieConsent', 'true');
+  expect(LocalStorageService.setItem).toHaveBeenCalledWith('cookieConsent', 'true');
 
     // Verifica se o banner de consentimento foi escondido
     await waitFor(() => {
@@ -71,7 +74,7 @@ describe('CookieConsent component', () => {
 
   test('hides banner when decline is clicked', async () => {
     // Simula que o consentimento não foi dado
-    (LocalStorageService.getItem as jest.Mock).mockReturnValue(null);
+  (LocalStorageService.getItem as jest.Mock).mockReturnValue(null);
 
     render(<CookieConsent />);
 
