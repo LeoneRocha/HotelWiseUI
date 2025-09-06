@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Button, Form, Col, Row, Table, Spinner } from 'react-bootstrap';
 import { RoomAvailabilityManagementTemplateProps } from '../../interfaces/DTO/Hotel/IHotelProps';
 import DatePicker from 'react-date-picker';
-import { Value } from 'react-calendar/dist/esm/shared/types.js';
+type ValuePiece = Date | null;
+type Value = ValuePiece | [ValuePiece, ValuePiece];
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-date-picker/dist/DatePicker.css';
 import '../../css/datepicker.css'; // Add this line  

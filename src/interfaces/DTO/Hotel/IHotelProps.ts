@@ -29,7 +29,7 @@ export interface RoomListTemplateProps {
   onDeleteRoom: (roomId: number) => void;
   onFormClose: () => void;
   getRoomTypeName: (type: number) => string;
-  getRoomStatusBadge: (status: RoomStatus) => JSX.Element;
+  getRoomStatusBadge: (status: RoomStatus) => React.ReactElement;
 }
 
 export interface RoomListProps {

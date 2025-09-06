@@ -1,3 +1,3 @@
 export interface IAuthGuardProps {
-    children: JSX.Element;
+  children: React.ReactNode;
   }
