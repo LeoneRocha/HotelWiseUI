@@ -1,6 +1,6 @@
 // Chatbot.tsx
 import React, { useState, useEffect, useCallback } from 'react';
-import Draggable from 'react-draggable';
+// import Draggable from 'react-draggable';
 import ChatHistoryManager from '../../services/iainteference/chatHistoryManager';
 import AssistantService from '../../services/iainteference/assistantService';
 import Button from 'react-bootstrap/Button';
@@ -137,18 +137,16 @@ const Chatbot: React.FC = () => {
           toggleModal={toggleModal}
         />
       ) : (
-        <Draggable>
-          <ChatbotModal
-            messages={messages}
-            isTyping={isTyping}
-            showAlert={showAlert}
-            input={input}
-            handleSubmit={handleSubmit}
-            handleClearHistory={handleClearHistory}
-            setInput={setInput}
-            toggleModal={toggleModal}
-          />
-        </Draggable>
+        <ChatbotModal
+          messages={messages}
+          isTyping={isTyping}
+          showAlert={showAlert}
+          input={input}
+          handleSubmit={handleSubmit}
+          handleClearHistory={handleClearHistory}
+          setInput={setInput}
+          toggleModal={toggleModal}
+        />
       ))}
     </div>
   );
