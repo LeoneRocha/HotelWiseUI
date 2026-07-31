@@ -1,3 +1,4 @@
+import { type Mock } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router'; 
 import HotelService from '../../../services/hotel/hotelService';
@@ -6,17 +7,19 @@ import { IHotel } from '../../../interfaces/model/Hotel/IHotel';
 import HotelForm from '../../../components/hotel/HotelForm';
 
 // Mock do arquivo CSS para evitar problemas durante o teste
-jest.mock('../../../css/HotelFormTemplate.css', () => ({}));
+vi.mock('../../../css/HotelFormTemplate.css', async () => ({}));
 
 // Mock dos serviços
-jest.mock('../../../services/hotel/hotelService', () => ({
-  getAll: jest.fn(),
-  delete: jest.fn(),
-  getById: jest.fn(),
-  create: jest.fn(),
-  update: jest.fn(),
-  generateHotelByIA: jest.fn(),
-  addVectorById: jest.fn(),
+vi.mock('../../../services/hotel/hotelService', async () => ({
+  default: {
+  getAll: vi.fn(),
+  delete: vi.fn(),
+  getById: vi.fn(),
+  create: vi.fn(),
+  update: vi.fn(),
+  generateHotelByIA: vi.fn(),
+  addVectorById: vi.fn(),
+  },
 }));
 
 const mockHotel: IServiceResponse<IHotel> = {
@@ -84,15 +87,15 @@ const mockUpdateResponse: IServiceResponse<IHotel> = {
 
 describe('HotelForm component', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    jest.spyOn(console, 'warn').mockImplementation(() => {});
+    vi.clearAllMocks();
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
   });
 
   const renderComponent = (initialEntries = ['/new']) => {
     render(
       <MemoryRouter initialEntries={initialEntries}>
         <Routes>
-          <Route path="/:id" element={<HotelForm onSave={jest.fn()} />} />
+          <Route path="/:id" element={<HotelForm onSave={vi.fn()} />} />
         </Routes>
       </MemoryRouter>
     );
@@ -105,7 +108,7 @@ describe('HotelForm component', () => {
   });
 
   test('loads hotel data for editing', async () => {
-    (HotelService.getById as jest.Mock).mockResolvedValue(mockHotel);
+    (HotelService.getById as Mock).mockResolvedValue(mockHotel);
 
     renderComponent(['/1']);
 
@@ -116,7 +119,7 @@ describe('HotelForm component', () => {
   });
 
   test('creates a new hotel', async () => {
-    (HotelService.create as jest.Mock).mockResolvedValue(mockCreateResponse);
+    (HotelService.create as Mock).mockResolvedValue(mockCreateResponse);
 
     renderComponent();
 
@@ -132,8 +135,8 @@ describe('HotelForm component', () => {
   });
 
   test('updates an existing hotel', async () => {
-    (HotelService.getById as jest.Mock).mockResolvedValue(mockHotel);
-    (HotelService.update as jest.Mock).mockResolvedValue(mockUpdateResponse);
+    (HotelService.getById as Mock).mockResolvedValue(mockHotel);
+    (HotelService.update as Mock).mockResolvedValue(mockUpdateResponse);
 
     renderComponent(['/1']);
 
@@ -150,7 +153,7 @@ describe('HotelForm component', () => {
   });
 
   test('handles errors during form submission', async () => {
-    (HotelService.create as jest.Mock).mockRejectedValue(new Error('Create Hotel Error'));
+    (HotelService.create as Mock).mockRejectedValue(new Error('Create Hotel Error'));
 
     renderComponent();
 

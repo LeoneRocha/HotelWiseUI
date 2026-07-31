@@ -20,7 +20,7 @@
     "noUncheckedSideEffectImports": true,
     "rootDir": "./src",
     "outDir": "./out-tsc/spec",
-    "types": ["jest", "@testing-library/jest-dom", "node"],
+    "types": ["vitest/globals", "@testing-library/jest-dom", "node"],
     "esModuleInterop": true
   },
   "include": [

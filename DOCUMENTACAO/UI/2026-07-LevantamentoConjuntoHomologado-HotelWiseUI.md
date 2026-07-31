@@ -1,7 +1,7 @@
 # Levantamento e Conjunto Homologado — HotelWiseUI (React)
 
 **Documento:** Inventário + Conjunto Homologado do ciclo  
-**Projeto:** `HotelWiseUI/` (Vite + React + Jest)  
+**Projeto:** `HotelWiseUI/` (Vite + React + Vitest)  
 **Data do inventário:** 2026-07-31  
 **Node no ambiente:** `v24.16.0` / npm `11.14.1`  
 **Processo-base:** `HotelWiseAPI/DOCUMENTACAO/GuiaGenericoAtualizacaoPacotes.md` (blocos F–I npm)  
@@ -58,7 +58,7 @@ Este documento **não implementa** a atualização — apenas homologa o conjunt
 | Auth | `@azure/msal-browser` + `@azure/msal-react` |
 | Router | `react-router-dom` v7 |
 | UI | Bootstrap 5 + `react-bootstrap` + Font Awesome / Bootstrap Icons |
-| Testes | Jest 30 + `ts-jest` + Testing Library + jsdom |
+| Testes | **Vitest 4.1.10** + Testing Library + jsdom (Jest removido) |
 | Suites | **30** arquivos sob `src/tests/` |
 | Config teste | `jest.config.ts`, `jest.setup.ts`, mocks em `__mocks__/` |
 | Scripts | `dev`/`start`/`run` → vite; `build` → `tsc -b && vite build`; `test` → jest; `lint` → eslint |
@@ -349,7 +349,7 @@ Incluir `minimatch` em override **somente** se o audit pós-ESLint 10 ainda repo
 | Pin react-router-dom **7.11.0** | Abre highs ≤7.17 | **react-router@8.3.0** |
 | Manter só 7.18.2 | Residual audit npm | **react-router@8.3.0** |
 | `react-router@8` + `react-router-dom@7` juntos | Grafo inconsistente | Só `react-router@8.3.0` |
-| Reintroduzir vite-jest | Pacote abandonado | Removido; Jest = ts-jest |
+| Reintroduzir vite-jest | Pacote abandonado | Removido; testes = **Vitest** |
 | Remover mocks uuid/date-picker | Quebra suites | Manter/ajustar |
 
 ---
@@ -359,7 +359,8 @@ Incluir `minimatch` em override **somente** se o audit pós-ESLint 10 ainda repo
 | Item | v1 (executado) | v2 |
 | ---- | -------------- | -- |
 | react-router | **8.3.0** (sem react-router-dom; audit 0) | Manter linha 8.x patched |
-| typescript | **6.0.3** (peer eslint `<6.1`) | **7** quando typescript-eslint liberar |
+| typescript | **6.0.3** ESLint + **7.0.2** build (`typescript7` alias) | Unificar **7** quando typescript-eslint liberar peer |
+| Testes | **Vitest 4.1.10** (Jest removido) | Manter Vitest |
 | vite-jest | **removido** | — |
 | react-hooks Compiler rules | **reativadas** + refatoração componentes | Manter |
 

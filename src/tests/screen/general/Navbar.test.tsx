@@ -1,3 +1,4 @@
+import { type Mock } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter, useNavigate } from 'react-router'; 
 import LocalStorageService from '../../../services/general/localStorageService';
@@ -5,33 +6,37 @@ import { nameStorageTokenJWT } from '../../../auth-config';
 import Navbar from '../../../components/general/Navbar';
  
 // Mock do arquivo CSS para evitar problemas durante o teste
-jest.mock('../../../css/Navbar.css', () => ({}));
+vi.mock('../../../css/Navbar.css', async () => ({}));
 
 // Mock dos serviços
-jest.mock('../../../services/iainteference/assistantService', () => ({
-  getChatCompletion: jest.fn(),
+vi.mock('../../../services/iainteference/assistantService', async () => ({
+  default: {
+  getChatCompletion: vi.fn(),
+  },
 }));
-jest.mock('../../../services/general/localStorageService', () => ({
-  removeItem: jest.fn(),
+vi.mock('../../../services/general/localStorageService', async () => ({
+  default: {
+  removeItem: vi.fn(),
+  },
 }));
 
 // Mock do `useNavigate`
-jest.mock('react-router', () => ({
-  ...jest.requireActual('react-router'),
-  useNavigate: jest.fn(),
+vi.mock('react-router', async () => ({
+  ...await vi.importActual('react-router'),
+  useNavigate: vi.fn(),
 }));
 
 // Suprimir logs de erro no console
 beforeAll(() => {
-  jest.spyOn(console, 'error').mockImplementation(() => {});
+  vi.spyOn(console, 'error').mockImplementation(() => {});
 });  
 describe('Navbar component', () => {
-  const mockNavigate = jest.fn();
+  const mockNavigate = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    jest.spyOn(console, 'warn').mockImplementation(() => {});
-    (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
+    vi.clearAllMocks();
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+    (useNavigate as Mock).mockReturnValue(mockNavigate);
   });
 
   test('handles logout', async () => {

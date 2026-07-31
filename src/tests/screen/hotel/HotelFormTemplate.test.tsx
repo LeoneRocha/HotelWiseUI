@@ -3,7 +3,7 @@ import { IHotelFormTemplateProps } from '../../../interfaces/DTO/Hotel/IHotelFor
 import HotelFormTemplate from '../../../components/hotel/HotelFormTemplate';
 
 // Mock do arquivo CSS para evitar problemas durante o teste
-jest.mock('../../css/HotelFormTemplate.css', () => ({}));
+vi.mock('../../css/HotelFormTemplate.css', async () => ({}));
 
 const mockFormData = {
     hotelId: 0,
@@ -23,12 +23,12 @@ const mockFormData = {
 const renderComponent = (props: Partial<IHotelFormTemplateProps> = {}) => {
     const defaultProps: IHotelFormTemplateProps = {
         formData: mockFormData,
-        handleChange: jest.fn(),
-        handleSubmit: jest.fn(),
-        handleCancel: jest.fn(),
-        handleAutoFill: jest.fn(),
-        handleAddToVectorStore: jest.fn(),
-        setFormData: jest.fn(),
+        handleChange: vi.fn(),
+        handleSubmit: vi.fn(),
+        handleCancel: vi.fn(),
+        handleAutoFill: vi.fn(),
+        handleAddToVectorStore: vi.fn(),
+        setFormData: vi.fn(),
         ...props,
     };
 
@@ -37,9 +37,9 @@ const renderComponent = (props: Partial<IHotelFormTemplateProps> = {}) => {
 
 describe('HotelFormTemplate component', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
         // Mock do console.warn para suprimir os avisos durante os testes
-        jest.spyOn(console, 'warn').mockImplementation(() => { });
+        vi.spyOn(console, 'warn').mockImplementation(() => { });
     });
     test('renders the form with default values', () => {
         renderComponent();
@@ -49,7 +49,7 @@ describe('HotelFormTemplate component', () => {
     });
 
     test('handles tag addition and removal', () => {
-        const setFormData = jest.fn();
+        const setFormData = vi.fn();
         const formData = { ...mockFormData, tags: ['tag1'] };
 
         renderComponent({ formData, setFormData });
@@ -69,7 +69,7 @@ describe('HotelFormTemplate component', () => {
     });
 
     test('calls handleSubmit when the form is submitted', () => {
-        const handleSubmit = jest.fn();
+        const handleSubmit = vi.fn();
 
         renderComponent({ handleSubmit });
 
@@ -81,7 +81,7 @@ describe('HotelFormTemplate component', () => {
     });
 
     test('calls handleCancel when cancel button is clicked', () => {
-        const handleCancel = jest.fn();
+        const handleCancel = vi.fn();
 
         renderComponent({ handleCancel });
 
@@ -93,7 +93,7 @@ describe('HotelFormTemplate component', () => {
     });
 
     test('calls handleAutoFill when auto fill button is clicked', () => {
-        const handleAutoFill = jest.fn();
+        const handleAutoFill = vi.fn();
 
         renderComponent({ handleAutoFill });
 

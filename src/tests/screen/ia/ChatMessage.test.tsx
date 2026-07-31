@@ -5,26 +5,32 @@ import { IMessage } from '../../../interfaces/model/IA/IAskAssistantResponse';
 
 
 // Mock the chat history manager and assistant service
-jest.mock('../../../services/iainteference/chatHistoryManager', () => ({
-    saveMessage: jest.fn(),
-    getChatHistory: jest.fn(() => []),
-    clearChatHistory: jest.fn(),
+vi.mock('../../../services/iainteference/chatHistoryManager', async () => ({
+  default: {
+    saveMessage: vi.fn(),
+    getChatHistory: vi.fn(() => []),
+    clearChatHistory: vi.fn(),
+  },
 }));
 
-jest.mock('../../../services/iainteference/assistantService', () => ({
-    getChatCompletion: jest.fn(),
+vi.mock('../../../services/iainteference/assistantService', async () => ({
+  default: {
+    getChatCompletion: vi.fn(),
+  },
 }));
 
-jest.mock('../../../services/general/LocalStorageService', () => ({
-    getItem: jest.fn(),
+vi.mock('../../../services/general/LocalStorageService', async () => ({
+  default: {
+    getItem: vi.fn(),
+  },
 }));
 
 describe('ChatMessage component', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
         // Mock do console.warn para suprimir os avisos durante os testes
-        jest.spyOn(console, 'warn').mockImplementation(() => { });
-        jest.spyOn(console, 'error').mockImplementation(() => { });
+        vi.spyOn(console, 'warn').mockImplementation(() => { });
+        vi.spyOn(console, 'error').mockImplementation(() => { });
     });
     test('renders user message correctly', () => {
         const message: IMessage = { sender: 'user', text: 'Hello!', id: '1', token: '' };   

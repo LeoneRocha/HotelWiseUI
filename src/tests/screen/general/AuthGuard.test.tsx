@@ -1,3 +1,4 @@
+import { type Mock } from 'vitest';
 import { render } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import AuthGuard from '../../../components/general/AuthGuard'; // Ajuste o caminho conforme necessário
@@ -5,27 +6,31 @@ import LocalStorageService from '../../../services/general/localStorageService';
 import SecurityService from '../../../services/general/securityService';
 
 // Mock dos serviços de LocalStorage e Segurança
-jest.mock('../../../services/general/localStorageService', () => ({
-    getItem: jest.fn(),
+vi.mock('../../../services/general/localStorageService', async () => ({
+  default: {
+    getItem: vi.fn(),
+  },
 }));
-jest.mock('../../../services/general/securityService', () => ({
-    isTokenExpired: jest.fn(),
+vi.mock('../../../services/general/securityService', async () => ({
+  default: {
+    isTokenExpired: vi.fn(),
+  },
 }));
 
 describe('AuthGuard component', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
         // Mock do console.warn para suprimir os avisos durante os testes
-        jest.spyOn(console, 'warn').mockImplementation(() => { });
+        vi.spyOn(console, 'warn').mockImplementation(() => { });
     });
 
     afterEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     test('renders children when token is valid', () => {
-        (LocalStorageService.getItem as jest.Mock).mockReturnValue('valid-token');
-        (SecurityService.isTokenExpired as jest.Mock).mockReturnValue(false);
+        (LocalStorageService.getItem as Mock).mockReturnValue('valid-token');
+        (SecurityService.isTokenExpired as Mock).mockReturnValue(false);
 
         const { getByText } = render(
             <MemoryRouter initialEntries={['/']}>
@@ -40,8 +45,8 @@ describe('AuthGuard component', () => {
     });
 
     test('redirects to login when token is expired', () => {
-        (LocalStorageService.getItem as jest.Mock).mockReturnValue('expired-token');
-        (SecurityService.isTokenExpired as jest.Mock).mockReturnValue(true);
+        (LocalStorageService.getItem as Mock).mockReturnValue('expired-token');
+        (SecurityService.isTokenExpired as Mock).mockReturnValue(true);
 
         const { getByText } = render(
             <MemoryRouter initialEntries={['/']}>
@@ -57,7 +62,7 @@ describe('AuthGuard component', () => {
     });
 
     test('redirects to access denied when token is not present', () => {
-        (LocalStorageService.getItem as jest.Mock).mockReturnValue(null);
+        (LocalStorageService.getItem as Mock).mockReturnValue(null);
 
         const { getByText } = render(
             <MemoryRouter initialEntries={['/']}>

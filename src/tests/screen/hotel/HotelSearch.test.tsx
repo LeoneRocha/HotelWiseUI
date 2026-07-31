@@ -1,3 +1,4 @@
+import { type Mock } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import HotelService from '../../../services/hotel/hotelService';
 import { IServiceResponse } from '../../../interfaces/GeneralInterfaces';
@@ -5,13 +6,15 @@ import { IHotelSemanticResult } from '../../../interfaces/model/Hotel/IHotelSema
 import HotelSearch from '../../../components/hotel/HotelSearch';
 
 // Mock do arquivo CSS para evitar problemas durante o teste
-jest.mock('../../../css/HotelSearch.css', () => ({}));
-jest.mock('../../../css/HotelSearchTemplate.css', () => ({}));
+vi.mock('../../../css/HotelSearch.css', async () => ({}));
+vi.mock('../../../css/HotelSearchTemplate.css', async () => ({}));
 
 // Mock dos serviços
-jest.mock('../../../services/hotel/hotelService', () => ({
-  semanticSearch: jest.fn(),
-  getTags: jest.fn(),
+vi.mock('../../../services/hotel/hotelService', async () => ({
+  default: {
+  semanticSearch: vi.fn(),
+  getTags: vi.fn(),
+  },
 }));
 
 const mockTags: string[] = ['Tag1', 'Tag2', 'Tag3'];
@@ -33,9 +36,9 @@ const mockServiceResponse: IServiceResponse<IHotelSemanticResult> = {
 
 describe('HotelSearch component', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    (HotelService.getTags as jest.Mock).mockResolvedValue(mockTags);
-    jest.spyOn(console, 'warn').mockImplementation(() => { });
+    vi.clearAllMocks();
+    (HotelService.getTags as Mock).mockResolvedValue(mockTags);
+    vi.spyOn(console, 'warn').mockImplementation(() => { });
   });
 
   test('fetches and displays tags', async () => {
@@ -63,7 +66,7 @@ describe('HotelSearch component', () => {
   });
 
   test('performs a search and displays results', async () => {
-    (HotelService.semanticSearch as jest.Mock).mockResolvedValue(mockServiceResponse);
+    (HotelService.semanticSearch as Mock).mockResolvedValue(mockServiceResponse);
 
     render(<HotelSearch />);
 
@@ -81,7 +84,7 @@ describe('HotelSearch component', () => {
   });
 
   test('displays error message when no hotels are found', async () => {
-    (HotelService.semanticSearch as jest.Mock).mockResolvedValue({
+    (HotelService.semanticSearch as Mock).mockResolvedValue({
       data: { hotelsVectorResult: [], hotelsIAResult: [], promptResultContent: '' },
       success: true,
       message: '',
@@ -104,7 +107,7 @@ describe('HotelSearch component', () => {
   });
 
   test('displays error message on search failure', async () => {
-    (HotelService.semanticSearch as jest.Mock).mockRejectedValue(new Error('Search Error'));
+    (HotelService.semanticSearch as Mock).mockRejectedValue(new Error('Search Error'));
 
     render(<HotelSearch />);
 

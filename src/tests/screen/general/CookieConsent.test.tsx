@@ -1,37 +1,42 @@
+import { type Mock } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'; 
 import LocalStorageService from '../../../services/general/localStorageService';
 import CookieConsent from '../../../components/general/CookieConsent';
 
 // Mock do arquivo CSS para evitar problemas durante o teste
-jest.mock('../../../css/CookieConsent.css', () => ({}));
+vi.mock('../../../css/CookieConsent.css', async () => ({}));
  
 // Mock the chat history manager and assistant service
-jest.mock('../../../services/iainteference/chatHistoryManager', () => ({
-  saveMessage: jest.fn(),
-  getChatHistory: jest.fn(() => []),
-  clearChatHistory: jest.fn(),
+vi.mock('../../../services/iainteference/chatHistoryManager', async () => ({
+  default: {
+  saveMessage: vi.fn(),
+  getChatHistory: vi.fn(() => []),
+  clearChatHistory: vi.fn(),
+  },
 }));
 
-jest.mock('../../../services/iainteference/assistantService', () => ({
-  getChatCompletion: jest.fn(),
+vi.mock('../../../services/iainteference/assistantService', async () => ({
+  default: {
+  getChatCompletion: vi.fn(),
+  },
 }));
 
-jest.mock('../../../services/general/localStorageService', () => ({
+vi.mock('../../../services/general/localStorageService', async () => ({
   __esModule: true,
   default: {
-    getItem: jest.fn(),
-    setItem: jest.fn(),
+    getItem: vi.fn(),
+    setItem: vi.fn(),
   },
 }));
  
 describe('CookieConsent component', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('renders CookieConsent when consent is not given', async () => {
     // Simula que o consentimento não foi dado
-  (LocalStorageService.getItem as jest.Mock).mockReturnValue(null);
+  (LocalStorageService.getItem as Mock).mockReturnValue(null);
 
     render(<CookieConsent />);
 
@@ -46,7 +51,7 @@ describe('CookieConsent component', () => {
 
   test('does not render CookieConsent when consent is given', () => {
     // Simula que o consentimento foi dado
-  (LocalStorageService.getItem as jest.Mock).mockReturnValue('true');
+  (LocalStorageService.getItem as Mock).mockReturnValue('true');
 
     render(<CookieConsent />);
 
@@ -56,7 +61,7 @@ describe('CookieConsent component', () => {
 
   test('sets consent in local storage and hides banner when accept is clicked', async () => {
     // Simula que o consentimento não foi dado
-  (LocalStorageService.getItem as jest.Mock).mockReturnValue(null);
+  (LocalStorageService.getItem as Mock).mockReturnValue(null);
 
     render(<CookieConsent />);
 
@@ -74,7 +79,7 @@ describe('CookieConsent component', () => {
 
   test('hides banner when decline is clicked', async () => {
     // Simula que o consentimento não foi dado
-  (LocalStorageService.getItem as jest.Mock).mockReturnValue(null);
+  (LocalStorageService.getItem as Mock).mockReturnValue(null);
 
     render(<CookieConsent />);
 

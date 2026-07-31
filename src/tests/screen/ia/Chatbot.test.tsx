@@ -1,5 +1,6 @@
+import { type Mock } from 'vitest';
 // Mock do Draggable para evitar problemas de ambiente de teste
-jest.mock('react-draggable', () => ({
+vi.mock('react-draggable', async () => ({
     __esModule: true,
     default: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
@@ -13,18 +14,24 @@ import LocalStorageService from '../../../services/general/localStorageService';
 import { IMessage } from '../../../interfaces/model/IA/IAskAssistantResponse';
 
 // Mock the chat history manager and assistant service
-jest.mock('../../../services/iainteference/chatHistoryManager', () => ({
-    saveMessage: jest.fn(),
-    getChatHistory: jest.fn(() => []),
-    clearChatHistory: jest.fn(),
+vi.mock('../../../services/iainteference/chatHistoryManager', async () => ({
+  default: {
+    saveMessage: vi.fn(),
+    getChatHistory: vi.fn(() => []),
+    clearChatHistory: vi.fn(),
+  },
 }));
 
-jest.mock('../../../services/iainteference/assistantService', () => ({
-    getChatCompletion: jest.fn(),
+vi.mock('../../../services/iainteference/assistantService', async () => ({
+  default: {
+    getChatCompletion: vi.fn(),
+  },
 }));
 
-jest.mock('../../../services/general/localStorageService', () => ({
-    getItem: jest.fn(),
+vi.mock('../../../services/general/localStorageService', async () => ({
+  default: {
+    getItem: vi.fn(),
+  },
 }));
 
 describe('Chatbot component', () => {
@@ -36,10 +43,10 @@ describe('Chatbot component', () => {
     // const nameChat = /fale com o assistente/i;
 
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
         // Mock do console.warn para suprimir os avisos durante os testes
-        jest.spyOn(console, 'warn').mockImplementation(() => { });
-        jest.spyOn(console, 'error').mockImplementation(() => { });
+        vi.spyOn(console, 'warn').mockImplementation(() => { });
+        vi.spyOn(console, 'error').mockImplementation(() => { });
     });
 
     test('renders chat messages from history', async () => {
@@ -47,7 +54,7 @@ describe('Chatbot component', () => {
             { sender: 'user', text: 'Hello', id: '1', token: '' },
             { sender: 'bot', text: 'Hi there!', id: '2', token: '' },
         ];
-        (ChatHistoryManager.getChatHistory as jest.Mock).mockReturnValue(messages);
+        (ChatHistoryManager.getChatHistory as Mock).mockReturnValue(messages);
 
         render(<Chatbot />);
 
@@ -65,8 +72,8 @@ describe('Chatbot component', () => {
     });
  
     test('handles API error and displays error message', async () => {
-        (AssistantService.getChatCompletion as jest.Mock).mockRejectedValue(new Error('Erro na API'));
-        (LocalStorageService.getItem as jest.Mock).mockReturnValue('dummy-token');
+        (AssistantService.getChatCompletion as Mock).mockRejectedValue(new Error('Erro na API'));
+        (LocalStorageService.getItem as Mock).mockReturnValue('dummy-token');
 
         render(<Chatbot />);
 
@@ -88,7 +95,7 @@ describe('Chatbot component', () => {
     });
 
     test('displays authentication alert if user is not authenticated', async () => {
-        (LocalStorageService.getItem as jest.Mock).mockReturnValue(null);
+        (LocalStorageService.getItem as Mock).mockReturnValue(null);
 
         render(<Chatbot />);
 
@@ -129,7 +136,7 @@ describe('Chatbot component', () => {
         const messages: IMessage[] = [
             { sender: 'user', text: 'Hello', id: '1', token: '' },
         ];
-        (ChatHistoryManager.getChatHistory as jest.Mock).mockReturnValue(messages);
+        (ChatHistoryManager.getChatHistory as Mock).mockReturnValue(messages);
 
         render(<Chatbot />);
 
