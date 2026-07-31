@@ -1,5 +1,5 @@
- ### STAGE 1: Build ###  esponsável por gerar o build da nossa aplicação  
-FROM node:20 as node
+### STAGE 1: Build ###  responsável por gerar o build da nossa aplicação
+FROM node:24-bookworm AS node
  
 # Create a directory for the app
 WORKDIR /app
@@ -14,14 +14,13 @@ RUN npm install --legacy-peer-deps
 COPY . .
 
 #environment
-# Define o valor padrão para NODE_ENV
 ARG NODE_ENV=production
-
-# Usa o valor do argumento ou o valor padrão se não for especificado
+ARG VITE_UI_VERSION=
 ENV NODE_ENV=$NODE_ENV
-#docker build --build-arg NODE_ENV=homologation -t minha-imagem .  
+ENV VITE_UI_VERSION=$VITE_UI_VERSION
+# docker build --build-arg VITE_UI_VERSION=2026.07.31.1 -t hotelwiseui .
 
-# Build the app for production
+# Build: incrementa VITE_UI_VERSION (ou usa --build-arg VITE_UI_VERSION=YYYY.MM.DD.N)
 RUN npm run build:prod
   
 ### ESTÁGIO 2: Executar ###   2 - Responsável por expor nossa aplicação *  based on Nginx, to have only the compiled app, ready for production with Nginx

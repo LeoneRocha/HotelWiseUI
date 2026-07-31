@@ -12,6 +12,23 @@ export default defineConfig({
     EnvironmentPlugin({
       VITE_API_BASE_URL: 'http://localhost:3000/api',
       VITE_UI_VERSION: '1.0',
+      VITE_TECHNOLOGIES_JSON: JSON.stringify([
+        {
+          id: 'react',
+          name: 'React',
+          url: 'https://react.dev',
+          image: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
+          layer: 'frontend',
+          featured: true,
+        },
+        {
+          id: 'dotnet',
+          name: '.NET',
+          url: 'https://dotnet.microsoft.com/',
+          image: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dotnetcore/dotnetcore-original.svg',
+          layer: 'backend',
+        },
+      ]),
     }),
   ],
   resolve: {

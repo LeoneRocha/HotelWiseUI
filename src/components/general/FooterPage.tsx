@@ -1,20 +1,32 @@
 import React, { useEffect, useState, useRef } from 'react';
 import AppInformationService from '../../services/appInformationService';
 import EnvironmentService from '../../services/general/EnvironmentService';
-import reactLogo from '../../assets/react.svg'; 
+import TechnologyCatalogService from '../../services/technologyCatalogService';
+import { ITechnologyResource, TechnologyLayer } from '../../interfaces/ITechnologyResource';
 import '../../css/FooterPage.css';
+
+const LAYER_LABELS: Record<TechnologyLayer, string> = {
+  frontend: 'Frontend',
+  backend: 'Backend',
+  resources: 'Recursos',
+};
+
+const LAYER_ORDER: TechnologyLayer[] = ['frontend', 'backend', 'resources'];
 
 const FooterPage: React.FC = () => {
   const [apiVersion, setApiVersion] = useState<string>('');
+  const [technologies, setTechnologies] = useState<ITechnologyResource[]>([]);
+  const [showTextCatalog, setShowTextCatalog] = useState(false);
   const uiVersion = EnvironmentService.getUIVersion();
   const actualYear = new Date().getFullYear();
 
   const hasFetchedData = useRef(false);
 
   useEffect(() => {
-    const fetchApiVersion = async () => {
+    const loadFooterData = async () => {
       if (hasFetchedData.current) return;
       hasFetchedData.current = true;
+
       try {
         const data = await AppInformationService.getAppInformationVersionProduct();
         if (data && data.length > 0) {
@@ -25,71 +37,98 @@ const FooterPage: React.FC = () => {
           console.error('Erro ao buscar a versão da API:', error);
         }
       }
+
+      try {
+        const catalog = await TechnologyCatalogService.getTechnologies();
+        setTechnologies(catalog);
+      } catch (error) {
+        if (EnvironmentService.isNotTestEnvironment()) {
+          console.error('Erro ao carregar catálogo de tecnologias:', error);
+        }
+      }
     };
 
-    fetchApiVersion();
+    loadFooterData();
   }, []);
+
+  const byLayer = (layer: TechnologyLayer) =>
+    technologies.filter((item) => item.layer === layer);
+
+  const renderTechIcon = (item: ITechnologyResource) => (
+    <a
+      key={item.id}
+      href={item.url}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <img
+        src={item.image}
+        className={item.invertIcon ? 'white-icon' : undefined}
+        alt={item.name}
+        title={item.name}
+      />
+    </a>
+  );
 
   return (
     <footer className="footer">
       <div className="container">
-        <br />
         <p> © {actualYear} Pesquisa de Hotel IA. All rights reserved.</p>
-        <br />
         <p><strong>UI Version:</strong> {uiVersion}</p>
         <p><strong>API Version:</strong> {apiVersion || 'Carregando...'}</p>
-        <div>
-          <a href="https://react.dev" target="_blank">
-            <img src={reactLogo} className="logo react" alt="React" title='React' />
-          </a>
-          <a href="https://vite.dev" target="_blank">
-            <img src='/vite.svg' className="logo" alt="Vite" title='Vite' />
-          </a>
-          <div className="server-info">
-            <a href="https://getbootstrap.com/" target="_blank" rel="noopener noreferrer">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap" title="Bootstrap" />
-            </a>
-            <a href="https://www.typescriptlang.org/" target="_blank" rel="noopener noreferrer">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" title="TypeScript" />
-            </a>
-            <a href="https://nodejs.org/" target="_blank" rel="noopener noreferrer">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" title="Node.js" />
-            </a>
-            <a href="https://github.com/LeoneRocha/HotelWiseUI" target="_blank" rel="noopener noreferrer">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg " alt="GitHub" title="GitHub" className="white-icon" />
-            </a>
-            <a href="https://www.nginx.com/" target="_blank" rel="noopener noreferrer">
-              <img src="https://static.cdnlogo.com/logos/n/17/nginx.svg" alt="Nginx Server" title="Nginx Server" />
-            </a>
-            <a href="https://jestjs.io/" target="_blank" rel="noopener noreferrer">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jest/jest-plain.svg" alt="JEST" title="JEST" />
-            </a>
-            <a href="https://sonarcloud.io/summary/new_code?id=lionscorp_hotelwiseui" target="_blank" rel="noopener noreferrer">
-              <img src="https://static.cdnlogo.com/logos/s/13/sonarcloud.svg" alt="SonarCloud" title="SonarCloud" />
-            </a>
-            <a href="https://hub.docker.com/r/leonecr/hotelwiseui" target="_blank" rel="noopener noreferrer">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original-wordmark.svg" alt="Docker Hub" title="Docker Hub" />
-            </a>
-            <a href="https://azure.microsoft.com/" target="_blank" rel="noopener noreferrer">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original-wordmark.svg" alt="Azure Cloud" title="Azure Cloud" />
-            </a>
-            <a href="https://painelbd.host.uol.com.br/main.html?servicetype=mysql" target="_blank" rel="noopener noreferrer">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" alt="MySQL" title="MySQL" />
-            </a>
-            <a href="https://lionscorp.visualstudio.com/VariousStudies/_build" target="_blank" rel="noopener noreferrer">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azuredevops/azuredevops-original.svg" alt="Azure DevOps" title="Azure DevOps" />
-            </a>            
-            <a href="https://qdrant.tech/" target="_blank" rel="noopener noreferrer">
-              <img src="https://qdrant.tech/img/brand-resources-logos/logo.svg" alt="qdrant" title="qdrant" />
-            </a>
-            <a href="https://mistral.ai/" target="_blank" rel="noopener noreferrer">
-              <img src="https://custom.typingmind.com/assets/models/mistralai.png" alt="mistral" title="mistral" />
-            </a>
-            <a href="https://groq.com/" target="_blank" rel="noopener noreferrer">
-              <img src="https://groq.com/wp-content/uploads/2024/03/PBG-mark1-color.svg" alt="Powered by Groq for fast inference." title="Powered by Groq for fast inference." className="white-icon" />
-            </a>
+
+        {technologies.length > 0 && (
+          <div className="footer-tech-icons" data-testid="footer-tech-icons">
+            {LAYER_ORDER.map((layer) => {
+              const items = byLayer(layer);
+              if (items.length === 0) return null;
+              return (
+                <section key={layer} className="footer-tech-icons-section">
+                  <h3>{LAYER_LABELS[layer]}</h3>
+                  <div className="server-info">
+                    {items.map((item) => renderTechIcon(item))}
+                  </div>
+                </section>
+              );
+            })}
           </div>
-        </div>
+        )}
+
+        <button
+          type="button"
+          className="footer-catalog-toggle"
+          aria-expanded={showTextCatalog}
+          onClick={() => setShowTextCatalog((open) => !open)}
+        >
+          {showTextCatalog ? 'Ocultar detalhes textuais' : 'Exibir detalhes textuais'}
+        </button>
+
+        {showTextCatalog && (
+          <div className="footer-catalog" data-testid="footer-tech-text">
+            {LAYER_ORDER.map((layer) => {
+              const items = byLayer(layer);
+              if (items.length === 0) return null;
+              return (
+                <section key={layer} className="footer-catalog-section">
+                  <h3>{LAYER_LABELS[layer]}</h3>
+                  <ul className="footer-tech-text-list">
+                    {items.map((item) => (
+                      <li key={item.id}>
+                        <span className="footer-tech-text-name">{item.name}</span>
+                        {item.version ? (
+                          <span className="footer-tech-text-version"> versão {item.version}</span>
+                        ) : null}
+                        {item.description ? (
+                          <span className="footer-tech-text-description"> — {item.description}</span>
+                        ) : null}
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              );
+            })}
+          </div>
+        )}
         <br />
       </div>
     </footer>

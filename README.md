@@ -77,7 +77,22 @@ npm run build        # TypeScript 7 (tsc -b) + Vite production build
 npm run build:prod
 ```
 
-Environment variables used by Vite (see `.env*`): `VITE_API_BASE_URL`, `VITE_UI_VERSION`.
+Environment variables (see `.env*`): `VITE_API_BASE_URL`, `VITE_UI_VERSION`, `VITE_TECHNOLOGIES_JSON`.
+
+### `VITE_UI_VERSION` (recomendado)
+
+Valor **estático** nos `.env*` durante o `dev` (não muda a cada HMR). Formato CalVer `YYYY.MM.DD.N` (N = um dígito 0–9).
+
+| Situação | Comportamento |
+| -------- | ------------- |
+| `npm run dev` | só lê o valor atual — **não** incrementa |
+| `npm run build` / `build:dev` / `build:prod` | roda `version:ui` e **incrementa** (mesmo dia +1; dia novo → `.1`) |
+| Pipeline / Docker | opcional: `VITE_UI_VERSION=2026.07.31.2` ou `--build-arg` para **fixar** a versão (sem +1) |
+| Só bump | `npm run version:ui` ou `npm run version:ui -- 2026.07.31.3` |
+
+Padrão usual: variável versionada nos `.env*` + bump no build de artefato (local/pipeline), nunca no servidor de desenvolvimento.
+
+`VITE_TECHNOLOGIES_JSON` is a JSON array of footer technologies (`frontend` / `backend` / `resources`), loaded by `technologyCatalogService` (swap later for an external API).
 
 ## Documentation
 
