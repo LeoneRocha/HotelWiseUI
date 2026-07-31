@@ -8,7 +8,7 @@ describe('SimpleButton', () => {
     });
 
     it('calls the onClick handler when clicked', () => {
-        const mockOnClick = jest.fn();
+        const mockOnClick = vi.fn();
         render(<SimpleButton label="Click Me" onClick={mockOnClick} />);
         fireEvent.click(screen.getByText('Click Me'));
         expect(mockOnClick).toHaveBeenCalled();

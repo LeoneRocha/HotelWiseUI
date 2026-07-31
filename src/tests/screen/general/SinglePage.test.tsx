@@ -1,35 +1,36 @@
+import { type Mock } from 'vitest';
 import { act, render, screen } from '@testing-library/react';
-import { MemoryRouter, useNavigate } from 'react-router-dom';
+import { MemoryRouter, useNavigate } from 'react-router';
 import SinglePage from '../../../components/general/SinglePage';  
 
 // Mock do LocalStorageService
-jest.mock('../../../services/general/localStorageService', () => ({
-    hasItem: jest.fn(() => false), // Assume que o usuário não está logado
-    getItem: jest.fn(),
-    setItem: jest.fn(),
-    removeItem: jest.fn(),
+vi.mock('../../../services/general/localStorageService', async () => ({
+  default: {
+    hasItem: vi.fn(() => false), // Assume que o usuário não está logado
+    getItem: vi.fn(),
+    setItem: vi.fn(),
+    removeItem: vi.fn(),
+  },
 }));
 
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useNavigate: jest.fn(),
+vi.mock('react-router', async () => ({
+    ...await vi.importActual('react-router'),
+    useNavigate: vi.fn(),
 }));
 
-jest.mock('../../../components/general/UserProfile', () => {
-    return function DummyUserProfile() {
-      return <div>UserProfile</div>;
-    };
-  });
+vi.mock('../../../components/general/UserProfile', () => ({
+  default: () => <div>UserProfile</div>,
+}));
 
 describe('SinglePage', () => {
-    const mockNavigate = jest.fn();
+    const mockNavigate = vi.fn();
 
     beforeEach(() => {
-        jest.clearAllMocks();
-        (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
+        vi.clearAllMocks();
+        (useNavigate as Mock).mockReturnValue(mockNavigate);
         // Mock do console.warn e console.error para suprimir avisos e erros durante os testes
-        jest.spyOn(console, 'warn').mockImplementation(() => { });
-        jest.spyOn(console, 'error').mockImplementation(() => { });
+        vi.spyOn(console, 'warn').mockImplementation(() => { });
+        vi.spyOn(console, 'error').mockImplementation(() => { });
     });
 
     test('should render HeaderPage when not on the root route', async () => { 

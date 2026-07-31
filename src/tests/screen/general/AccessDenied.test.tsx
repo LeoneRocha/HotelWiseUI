@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import AccessDenied from '../../../components/general/AccessDenied'; // Ajuste o caminho conforme necessário
 
 // Mock do arquivo CSS para evitar problemas durante o teste
-jest.mock('../../css/AccessDenied.css', () => ({}));
+vi.mock('../../css/AccessDenied.css', async () => ({}));
 
 // Interface para as propriedades do ErrorBoundary
 interface ErrorBoundaryProps {
@@ -42,14 +42,14 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 
 describe('AccessDenied component', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     // Mock do console.warn para suprimir os avisos durante os testes
-    jest.spyOn(console, 'warn').mockImplementation(() => {});
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
   });
 
   afterAll(() => {
     // Restaurar a implementação original do console.warn após os testes
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   test('renders the AccessDenied component', () => {

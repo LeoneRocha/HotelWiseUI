@@ -1,7 +1,7 @@
 # Levantamento e Conjunto Homologado — HotelWiseUI (React)
 
 **Documento:** Inventário + Conjunto Homologado do ciclo  
-**Projeto:** `HotelWiseUI/` (Vite + React + Jest)  
+**Projeto:** `HotelWiseUI/` (Vite + React + Vitest)  
 **Data do inventário:** 2026-07-31  
 **Node no ambiente:** `v24.16.0` / npm `11.14.1`  
 **Processo-base:** `HotelWiseAPI/DOCUMENTACAO/GuiaGenericoAtualizacaoPacotes.md` (blocos F–I npm)  
@@ -58,7 +58,7 @@ Este documento **não implementa** a atualização — apenas homologa o conjunt
 | Auth | `@azure/msal-browser` + `@azure/msal-react` |
 | Router | `react-router-dom` v7 |
 | UI | Bootstrap 5 + `react-bootstrap` + Font Awesome / Bootstrap Icons |
-| Testes | Jest 30 + `ts-jest` + Testing Library + jsdom |
+| Testes | **Vitest 4.1.10** + Testing Library + jsdom (Jest removido) |
 | Suites | **30** arquivos sob `src/tests/` |
 | Config teste | `jest.config.ts`, `jest.setup.ts`, mocks em `__mocks__/` |
 | Scripts | `dev`/`start`/`run` → vite; `build` → `tsc -b && vite build`; `test` → jest; `lint` → eslint |
@@ -147,16 +147,15 @@ Mocks que não podem ser removidos sem ajuste:
 2. **Alvo forte:** reduzir as 25 high de dev (eslint/jest/glob) via upgrades + `overrides`  
 3. **Proibido:** `npm audit fix --force` sem fase dedicada + testes verdes
 
-### 5.2 Cadeia A — Produção (2 high) — **prioridade 1**
+### 5.2 Cadeia A — Produção (2 high) — **prioridade 1** → **FECHADA**
 
-| Pacote | Range vulnerável | Atual no projeto | Advisory | Remediação homologada v1 |
-| ------ | ---------------- | ---------------- | -------- | ------------------------- |
-| `react-router` | 7.12.0 – 8.2.0 | puxado por `react-router-dom@7.18.2` | [GHSA-qwww-vcr4-c8h2](https://github.com/advisories/GHSA-qwww-vcr4-c8h2) (RSC CSRF) | Pin **`react-router-dom@7.11.0`** (último 7.x **fora** do range CVE). `react-router@8.3.0` já existe, mas **`react-router-dom@8` ainda não** no npm → major 8 adiada |
-| `react-router-dom` | ≥ 7.12.0-pre (via peer) | 7.18.2 | mesmo | Idem **7.11.0** |
+| Pacote | Remediação **final executada** |
+| ------ | ------------------------------ |
+| `react-router` / `react-router-dom` | Migrar para **`react-router@^8.3.0`**; remover `react-router-dom` (pacote unificado no v8). Imports: `from 'react-router'`. |
 
-**Nota de risco residual:** o app é SPA com `BrowserRouter` (não RSC). A CVE cita modo RSC; ainda assim o audit de produção deve ficar limpo. Ao subir para 7.11.0, **reexecutar todos os testes de router** (AppRoutes, AuthGuard, Navbar, HotelList/Form, NotFound, AccessDenied, SinglePage).
+**Histórico:** inventário v1 propôs pin `7.11.0`; execução intermediária manteve `7.18.2` (patch v7). Residual `npm audit` persistiu (DB stale). **Fechamento:** upgrade para **react-router 8.3.0** (patch oficial ≥ 8.3.0) → `npm audit` / `npm audit --omit=dev` = **0**.
 
-Quando `react-router-dom@8.3.x+` (ou patch 7.19+ corrigido) publicar, promover no Conjunto v2 e sair do pin 7.11.0.
+**Jest:** `react-router@8` é ESM; `jest.config.ts` transforma `react-router|cookie-es` + `babel.config.cjs` (import.meta).
 
 ### 5.3 Cadeia B — Dev tooling (25 high) — brace-expansion / minimatch / glob
 
@@ -193,9 +192,9 @@ Quando `react-router-dom@8.3.x+` (ou patch 7.19+ corrigido) publicar, promover n
 ### 5.5 Ordem de remediação (sem `--force`)
 
 ```text
-1. react-router-dom@7.11.0          → limpa audit --omit=dev
+1. react-router@8.3.0 (remove react-router-dom) → audit produção 0
 2. jest-junit@17 + uuid@14         → fecha moderate uuid
-3. eslint@10 + overrides brace-expansion/minimatch → reduz high de dev
+3. eslint@10 + overrides brace-expansion → reduz high de dev
 4. npm audit / npm audit --omit=dev → evidência no relatório
 5. npm test (30/30) após cada passo
 ```
@@ -208,13 +207,13 @@ Quando `react-router-dom@8.3.x+` (ou patch 7.19+ corrigido) publicar, promover n
 | -- | -------- | ------------------------- |
 | U1 | React já 19.2.8 | Manter |
 | U2 | MSAL 3/4 → 5 | Browser **5.17.3** + React pkg **5.5.4** juntos |
-| U3–U4 | TS 7 bloqueado | TypeScript **~5.9.3** |
-| U5 | vite-jest abandonado | overrides + legacy-peer-deps; não usar no Jest config |
+| U3–U4 | TS 7 bloqueado por typescript-eslint (`<6.1`) | TypeScript **~6.0.3** |
+| U5 | vite-jest abandonado | **Removido** (testes = ts-jest + babel) |
 | U6 | Vite 8 major | Fase dedicada + build/test |
 | U7 | datepicker 9 precisa `date-fns-tz` | Adicionar **3.2.0** |
 | U8 | uuid 14 + mock Jest | Atualizar mock se necessário |
 | U9 | Node engines Vite 8 | Declarar engines |
-| U10 | **27 vulns npm** | Seção 5 — pin router 7.11.0 + overrides + jest-junit 17 |
+| U10 | **27 vulns npm** (inventário) | Seção 5 — router **7.18.2** + overrides + jest-junit 17 |
 | U11 | Testes existentes são a rede de segurança | Gate 30/30 em **toda** fase |
 
 ---
@@ -227,7 +226,7 @@ Quando `react-router-dom@8.3.x+` (ou patch 7.19+ corrigido) publicar, promover n
 flowchart TB
   R[React_19.2.8]
   R --> F[BlocoF_Types]
-  R --> G[BlocoG_MSAL5_Router711_Datepicker9]
+  R --> G[BlocoG_MSAL5_Router718_Datepicker9]
   R --> H[BlocoH_Vite8_ESLint10]
   R --> I[BlocoI_Jest_RTL]
   R --> S[BlocoS_Security_overrides]
@@ -245,9 +244,9 @@ flowchart TB
 | react **19.2.8** | react-dom **19.2.8** + types 19 |
 | msal-react **5.5.4** | msal-browser **^5.17.3** |
 | vite **8.x** | plugin-react **6.x**; Node **^20.19 \|\| >=22.12** |
-| typescript-eslint **8** | TypeScript **&lt; 6.1** → **5.9.3** |
+| typescript-eslint **8** | TypeScript **&lt; 6.1** → **6.0.3** |
 | react-datepicker **9** | date-fns-tz **^3** |
-| Fechar CVE router | react-router-dom **7.11.0** (até patch 7.19+/8.x dom) |
+| Fechar CVE router | **react-router@^8.3.0** (remover `react-router-dom`) |
 | Fechar brace-expansion | override **^5.0.8** e/ou ESLint 10 |
 
 ### 7.3 Bloco F — React
@@ -263,7 +262,8 @@ flowchart TB
 | ------ | ----- | ----------- | ------------- |
 | @azure/msal-browser | 4.30.0 | **5.17.3** | Peer MSAL React 5 |
 | @azure/msal-react | 3.0.29 | **5.5.4** | React ^19.2.1 |
-| react-router-dom | 7.18.2 | **7.11.0** | Sai do range CVE GHSA-qwww-vcr4-c8h2 |
+| react-router-dom | 7.18.2 | **removido** | Unificado em `react-router` no v8 |
+| react-router | (transitivo) | **^8.3.0** | Patch GHSA-qwww ≥ 8.3.0; audit 0 |
 | react-datepicker | 8.10.0 | **9.1.0** | Latest major compatível |
 | date-fns-tz | — | **3.2.0** | Peer datepicker 9 |
 | uuid | 12.0.1 | **14.0.1** | Latest + advisory uuid |
@@ -274,7 +274,7 @@ flowchart TB
 | ------ | ----------- |
 | vite | **8.2.0** |
 | @vitejs/plugin-react | **6.0.5** |
-| typescript | **~5.9.3** |
+| typescript | **~6.0.3** |
 | eslint / @eslint/js | **10.8.0** / **10.0.1** |
 | eslint-plugin-react-hooks / refresh | **7.1.1** / **0.5.3** |
 | globals | **17.8.0** |
@@ -315,7 +315,7 @@ Incluir `minimatch` em override **somente** se o audit pós-ESLint 10 ainda repo
     "react-dom": "^19.2.8",
     "@azure/msal-browser": "^5.17.3",
     "@azure/msal-react": "^5.5.4",
-    "react-router-dom": "7.11.0",
+    "react-router": "^8.3.0",
     "react-datepicker": "^9.1.0",
     "date-fns-tz": "^3.2.0",
     "uuid": "^14.0.1"
@@ -336,7 +336,7 @@ Incluir `minimatch` em override **somente** se o audit pós-ESLint 10 ainda repo
 }
 ```
 
-`react-router-dom` pinado **sem** `^` até existir versão patched na linha desejada.
+`react-router@8.3.0` — `react-router-dom` removido; imports da app/testes usam `from 'react-router'`.
 
 ---
 
@@ -344,23 +344,25 @@ Incluir `minimatch` em override **somente** se o audit pós-ESLint 10 ainda repo
 
 | Tentativa | Motivo | Correto |
 | --------- | ------ | ------- |
-| TypeScript 7 | Peers eslint/ts-jest | ~5.9.3 |
+| TypeScript 7 | Peers typescript-eslint `<6.1` | **~6.0.3** (máx. liberado) |
 | `npm audit fix --force` | Majors não homologadas | Passos da Seção 5.5 |
-| Manter react-router-dom **7.18.2** | CVE produção | **7.11.0** |
-| Rebaixar Jest a 27 por vite-jest | Quebra testes | Jest 30 + overrides |
+| Pin react-router-dom **7.11.0** | Abre highs ≤7.17 | **react-router@8.3.0** |
+| Manter só 7.18.2 | Residual audit npm | **react-router@8.3.0** |
+| `react-router@8` + `react-router-dom@7` juntos | Grafo inconsistente | Só `react-router@8.3.0` |
+| Reintroduzir vite-jest | Pacote abandonado | Removido; testes = **Vitest** |
 | Remover mocks uuid/date-picker | Quebra suites | Manter/ajustar |
-| react-router **8.3** sem react-router-dom 8 | Grafo inconsistente | Esperar DOM 8 ou pin 7.11.0 |
 
 ---
 
 ## 9. Conjunto Homologado v2 — futuro
 
-| Item | v1 | v2 |
-| ---- | -- | -- |
-| react-router-dom | 7.11.0 (pin CVE) | ≥ patched (7.19+ ou 8.3+ DOM) |
-| typescript | 5.9.3 | 6/7 quando peers liberarem |
-| vite-jest | 0.1.4 + overrides | Remover / Vitest |
-| high restantes só em dev | overrides | Remover quando Jest/glob atualizarem |
+| Item | v1 (executado) | v2 |
+| ---- | -------------- | -- |
+| react-router | **8.3.0** (sem react-router-dom; audit 0) | Manter linha 8.x patched |
+| typescript | **6.0.3** ESLint + **7.0.2** build (`typescript7` alias) | Unificar **7** quando typescript-eslint liberar peer |
+| Testes | **Vitest 4.1.10** (Jest removido) | Manter Vitest |
+| vite-jest | **removido** | — |
+| react-hooks Compiler rules | **reativadas** + refatoração componentes | Manter |
 
 ---
 
@@ -379,4 +381,11 @@ Baseline testes: 30 suites / ≥104 tests (revalidar Fase 0)
 
 ## 11. Próximo passo
 
-Executar **`HotelWiseUI/DOCUMENTACAO/UI/PlanoImplementacaoAtualizacaoReact-HotelWiseUI.md`** (fases detalhadas, matriz de testes e remediação de vulns).
+Execução concluída — ver **`HotelWiseUI/DOCUMENTACAO/UI/RelatorioAtualizacaoReact-HotelWiseUI.md`**. Plano operacional: `PlanoImplementacaoAtualizacaoReact-HotelWiseUI.md`.
+
+### Adendo — Router (fechamento CVE)
+
+| Item | Inventário / intermediário | Final | Justificativa |
+| ---- | -------------------------- | ----- | ------------- |
+| Router | pin 7.11.0 → depois 7.18.2 | **`react-router@8.3.0`** | Patch oficial ≥ 8.3.0; `react-router-dom` removido no v8 |
+| `npm audit --omit=dev` | 2 high residual | **0** | Meta obrigatória atingida |

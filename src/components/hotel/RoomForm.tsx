@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { IRoom } from '../../interfaces/model/Hotel/IRoom';
 import { RoomStatus } from '../../enums/hotel/RoomStatus';
 import { RoomType } from '../../enums/hotel/RoomType';
@@ -18,24 +18,24 @@ const RoomForm: React.FC<RoomFormProps> = ({ hotelId, room, onClose }) => {
     status: RoomStatus.Available,
     minimumNights: 1
   }
-  const [formData, setFormData] = useState<IRoom>(initData);
- 
-  useEffect(() => {
-    if (room) {
-      setFormData(room);
-    } else {
-      setFormData({
-        id: 0,
-        hotelId: hotelId,
-        roomType: RoomType.Single,
-        capacity: 1,
-        description: '',
-        name: '',
-        status: RoomStatus.Available,
-        minimumNights: 1
-      });
-    }
-  }, [room, hotelId]);
+  const [formData, setFormData] = useState<IRoom>(room ?? initData);
+  const [syncedRoom, setSyncedRoom] = useState(room);
+  const [syncedHotelId, setSyncedHotelId] = useState(hotelId);
+
+  if (room !== syncedRoom || hotelId !== syncedHotelId) {
+    setSyncedRoom(room);
+    setSyncedHotelId(hotelId);
+    setFormData(room ?? {
+      id: 0,
+      hotelId: hotelId,
+      roomType: RoomType.Single,
+      capacity: 1,
+      description: '',
+      name: '',
+      status: RoomStatus.Available,
+      minimumNights: 1
+    });
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;

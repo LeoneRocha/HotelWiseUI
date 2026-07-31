@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router';
 import './css/App.css' 
 import SinglePage from './components/general/SinglePage';
 import 'bootstrap/dist/css/bootstrap.min.css';

@@ -1,46 +1,53 @@
+import { type Mock } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom'; 
+import { MemoryRouter } from 'react-router';
+import { useNavigate } from 'react-router'; 
 import AuthenticateService from '../../services/authService';
 import SecurityService from '../../services/general/securityService';
 import LocalStorageService from '../../services/general/localStorageService';
 import Login from '../../components/general/Login';
 
 // Mock do arquivo CSS para evitar problemas durante o teste
-jest.mock('../../../css/Login.css', () => ({}));
+vi.mock('../../../css/Login.css', async () => ({}));
 
 // Mock dos serviços
-jest.mock('../../services/authService', () => ({
-  authenticate: jest.fn(),
+vi.mock('../../services/authService', async () => ({
+  default: {
+  authenticate: vi.fn(),
+  },
 }));
-jest.mock('../../services/general/securityService', () => ({
-  getToken: jest.fn(),
-  isTokenValid: jest.fn(),
-  setToken: jest.fn(),
+vi.mock('../../services/general/securityService', async () => ({
+  default: {
+  getToken: vi.fn(),
+  isTokenValid: vi.fn(),
+  setToken: vi.fn(),
+  },
 }));
-jest.mock('../../services/general/localStorageService', () => ({
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  removeItem: jest.fn(),
+vi.mock('../../services/general/localStorageService', async () => ({
+  default: {
+  getItem: vi.fn(),
+  setItem: vi.fn(),
+  removeItem: vi.fn(),
+  },
 }));
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: jest.fn(),
+vi.mock('react-router', async () => ({
+  ...await vi.importActual('react-router'),
+  useNavigate: vi.fn(),
 }));
 
 describe('Login component', () => {
-  const mockNavigate = jest.fn();
+  const mockNavigate = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
+    vi.clearAllMocks();
+    (useNavigate as Mock).mockReturnValue(mockNavigate);
     // Mock do console.warn para suprimir os avisos durante os testes
-    jest.spyOn(console, 'warn').mockImplementation(() => { });
+    vi.spyOn(console, 'warn').mockImplementation(() => { });
   });
 
   test('renders login form and handles login successfully', async () => {
-    (AuthenticateService.authenticate as jest.Mock).mockResolvedValue({
+    (AuthenticateService.authenticate as Mock).mockResolvedValue({
       success: true,
       data: { tokenAuth: { accessToken: 'mockToken' } },
     });
@@ -71,7 +78,7 @@ describe('Login component', () => {
   });
 
   test('displays error message on login failure', async () => {
-    (AuthenticateService.authenticate as jest.Mock).mockResolvedValue({
+    (AuthenticateService.authenticate as Mock).mockResolvedValue({
       success: false,
       data: {},
     });
@@ -96,7 +103,7 @@ describe('Login component', () => {
   });
 
   test('loads remembered username on mount', async () => {
-    (LocalStorageService.getItem as jest.Mock).mockReturnValue('rememberedUser');
+    (LocalStorageService.getItem as Mock).mockReturnValue('rememberedUser');
 
     render(
       <MemoryRouter>
@@ -111,8 +118,8 @@ describe('Login component', () => {
   });
 
   test('redirects to search if token is valid', async () => {
-    (SecurityService.getToken as jest.Mock).mockReturnValue('validToken');
-    (SecurityService.isTokenValid as jest.Mock).mockReturnValue(true);
+    (SecurityService.getToken as Mock).mockReturnValue('validToken');
+    (SecurityService.isTokenValid as Mock).mockReturnValue(true);
 
     render(
       <MemoryRouter>

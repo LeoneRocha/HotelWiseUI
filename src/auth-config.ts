@@ -7,8 +7,7 @@ export const msalConfig: Configuration = {
     redirectUri: 'http://localhost:5173/callback'
   },
   cache: {
-    cacheLocation: 'localStorage',
-    storeAuthStateInCookie: true
+    cacheLocation: 'localStorage'
   }
 };
 

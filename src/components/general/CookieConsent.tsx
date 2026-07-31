@@ -4,25 +4,27 @@ import LocalStorageService from '../../services/general/localStorageService';
 import '../../css/CookieConsent.css'; 
 
 const CookieConsent: React.FC = () => {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(
+    () => !LocalStorageService.getItem('cookieConsent'),
+  );
 
   useEffect(() => {
-    const consent = LocalStorageService.getItem('cookieConsent');
-    if (!consent) {
-      setVisible(true);
-      document.body.style.overflow = 'hidden'; // Previne a rolagem do fundo
+    if (!visible) {
+      return;
     }
-  }, []);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [visible]);
 
   const handleAccept = () => {
     LocalStorageService.setItem('cookieConsent', 'true');
     setVisible(false);
-    document.body.style.overflow = 'auto'; // Libera a rolagem do fundo
   };
 
   const handleDecline = () => { 
     setVisible(false);
-    document.body.style.overflow = 'auto'; // Libera a rolagem do fundo
   };
 
   if (!visible) {

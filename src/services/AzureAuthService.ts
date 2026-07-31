@@ -46,12 +46,8 @@ class AzureAuthService {
   }
 
   public logout(): void {
-    this.msalInstance.logoutRedirect({
-      onRedirectNavigate: () => {
-        LocalStorageService.removeItem(nameStorageTokenAzureAD);
-        return true;
-      }
-    });
+    LocalStorageService.removeItem(nameStorageTokenAzureAD);
+    this.msalInstance.logoutRedirect();
   }
 }
 

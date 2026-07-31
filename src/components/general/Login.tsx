@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import AuthenticateService from '../../services/authService';
 import SecurityService from '../../services/general/securityService';
 import LocalStorageService from '../../services/general/localStorageService';
@@ -9,9 +9,10 @@ import '../../css/Login.css';
 import { loginApiRequest, nameStorageTokenJWT } from '../../auth-config';
 
 const Login: React.FC = () => {
-  const [username, setUsername] = useState('');
+  const savedUsername = LocalStorageService.getItem('rememberMeUsername') ?? '';
+  const [username, setUsername] = useState(savedUsername);
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState<boolean>(false);
+  const [rememberMe, setRememberMe] = useState(Boolean(savedUsername));
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { instance } = useMsal();
@@ -22,12 +23,6 @@ const Login: React.FC = () => {
 
     if (token && isvalidToken) {
       navigate('/search');
-    } else {
-      const savedUsername = LocalStorageService.getItem('rememberMeUsername');
-      if (savedUsername) {
-        setUsername(savedUsername);
-        setRememberMe(true);
-      }
     }
   }, [navigate]);
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import RoomAvailabilityManagementTemplate from './RoomAvailabilityManagementTemplate';
@@ -20,11 +20,11 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
   // Changed from string to Date
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
-  const [searchCurrency, setSearchCurrency] = useState<string>('');
+  const [searchCurrency, setSearchCurrency] = useState<string>(
+    () => CurrencyService.getDefaultCurrency().code,
+  );
   const [rooms, setRooms] = useState<RoomAvailabilityPrice[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
-  const [isSaveEnabled, setIsSaveEnabled] = useState<boolean>(false);
   const [returnedStartDate, setReturnedStartDate] = useState<Date>(new Date());
   const [returnedEndDate, setReturnedEndDate] = useState<Date>(new Date());
   const [hasSearchResults, setHasSearchResults] = useState<boolean>(false);
@@ -37,88 +37,56 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
   // Obter moedas disponíveis usando o serviço
   const currencies = CurrencyService.getAvailableCurrencies();
 
-  useEffect(() => {
-    // Configurar o locale do moment
-    moment.locale(navigator.language || 'pt-br');
+  const formErrors: { [key: string]: string } = {};
+  if (!startDate) {
+    formErrors.startDate = 'Data inicial é obrigatória';
+  }
+  if (!endDate) {
+    formErrors.endDate = 'Data final é obrigatória';
+  }
+  if (!searchCurrency) {
+    formErrors.searchCurrency = 'Moeda é obrigatória';
+  }
+  if (startDate && endDate && moment(startDate).isAfter(moment(endDate))) {
+    formErrors.dateRange = 'A data inicial não pode ser posterior à data final';
+  }
 
-    // Set default currency
-    setSearchCurrency(CurrencyService.getDefaultCurrency().code);
+  let hasConfiguredRoom = false;
+  rooms.forEach((room) => {
+    const roomKey = `room_${room.id}`;
+    const isRoomConfigured = room.quantity > 0 &&
+      weekDays.every(day => room.prices[day] > 0);
 
-    if (hotelId && !isLoading) {
-      loadRoomsForAvailability(hotelId);
-    }
-  }, [hotelId]);
-
-  // Validate form and update save button state
-  useEffect(() => {
-    validateForm();
-  }, [startDate, endDate, searchCurrency, rooms]);
-
-  const validateForm = () => {
-    const errors: { [key: string]: string } = {};
-
-    // Validate dates
-    if (!startDate) {
-      errors.startDate = 'Data inicial é obrigatória';
-    }
-
-    if (!endDate) {
-      errors.endDate = 'Data final é obrigatória';
-    }
-
-    if (!searchCurrency) {
-      errors.searchCurrency = 'Moeda é obrigatória';
-    }
-
-    if (startDate && endDate && moment(startDate).isAfter(moment(endDate))) {
-      errors.dateRange = 'A data inicial não pode ser posterior à data final';
-    }
-
-    // Check if at least one room is fully configured
-    let hasConfiguredRoom = false;
-
-    rooms.forEach((room) => {
-      const roomKey = `room_${room.id}`;
-      const isRoomConfigured = room.quantity > 0 &&
-        weekDays.every(day => room.prices[day] > 0);
-
-      if (isRoomConfigured) {
-        hasConfiguredRoom = true;
-      } else if (room.quantity > 0 || weekDays.some(day => room.prices[day] > 0)) {
-        // If room is partially configured, mark errors
-        if (room.quantity <= 0) {
-          errors[`${roomKey}_quantity`] = 'Quantidade inválida';
-        }
-
-        weekDays.forEach(day => {
-          if (room.prices[day] <= 0) {
-            errors[`${roomKey}_price_${day}`] = 'Preço inválido';
-          }
-        });
+    if (isRoomConfigured) {
+      hasConfiguredRoom = true;
+    } else if (room.quantity > 0 || weekDays.some(day => room.prices[day] > 0)) {
+      if (room.quantity <= 0) {
+        formErrors[`${roomKey}_quantity`] = 'Quantidade inválida';
       }
-    });
 
-    // Update form errors
-    setFormErrors(errors);
+      weekDays.forEach(day => {
+        if (room.prices[day] <= 0) {
+          formErrors[`${roomKey}_price_${day}`] = 'Preço inválido';
+        }
+      });
+    }
+  });
 
-    // Enable save button if no errors and at least one room is configured
-    setIsSaveEnabled(
-      Object.keys(errors).length === 0 &&
-      startDate !== null &&
-      endDate !== null &&
-      searchCurrency !== '' &&
-      hasConfiguredRoom
-    );
-  };
+  const isSaveEnabled =
+    Object.keys(formErrors).length === 0 &&
+    startDate !== null &&
+    endDate !== null &&
+    searchCurrency !== '' &&
+    hasConfiguredRoom;
 
-  const loadRoomsForAvailability = async (hotelId: number) => {
+  const loadRoomsForAvailability = async (id: number) => {
     try {
       setIsLoading(true);
-      const response = await RoomService.getRoomsByHotelId(hotelId);
+      const response = await RoomService.getRoomsByHotelId(id);
       if (response.success && response.data) {
         const defaultCurrency = searchCurrency || CurrencyService.getDefaultCurrency().code;
         const formattedRooms: RoomAvailabilityPrice[] = response.data.map((room, index) => ({
-          key: index, // Add sequential key 
+          key: index,
           roomId: room.id,
           id: room.id,
           roomAvailabilityId: 0,
@@ -130,23 +98,79 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
             return acc;
           }, {} as { [key: string]: number })
         }));
-        // Sort rooms by name before setting state
         const sortedRooms = formattedRooms.sort((a, b) =>
           a.name.localeCompare(b.name)
         );
         setRooms(sortedRooms);
       } else {
         toast.warning(response.message + ' Para a disponibilidade.' || 'Nenhum quarto encontrado para este hotel para a disponibilidade.');
-        setRooms([]); // Clear rooms if no data found
+        setRooms([]);
       }
     } catch (error) {
       console.error('Erro ao carregar quartos:', error);
       toast.error('Erro ao carregar quartos do hotel para a disponibilidade. Verifique sua conexão ou tente novamente mais tarde.');
-      setRooms([]); // Clear rooms on error
+      setRooms([]);
     } finally {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    moment.locale(navigator.language || 'pt-br');
+
+    if (!hotelId) {
+      return;
+    }
+
+    let cancelled = false;
+    (async () => {
+      try {
+        setIsLoading(true);
+        const response = await RoomService.getRoomsByHotelId(hotelId);
+        if (cancelled) {
+          return;
+        }
+        if (response.success && response.data) {
+          const defaultCurrency = searchCurrency || CurrencyService.getDefaultCurrency().code;
+          const formattedRooms: RoomAvailabilityPrice[] = response.data.map((room, index) => ({
+            key: index,
+            roomId: room.id,
+            id: room.id,
+            roomAvailabilityId: 0,
+            name: room.name,
+            quantity: 0,
+            currency: defaultCurrency,
+            prices: weekDays.reduce((acc, day) => {
+              acc[day] = 0;
+              return acc;
+            }, {} as { [key: string]: number })
+          }));
+          const sortedRooms = formattedRooms.sort((a, b) =>
+            a.name.localeCompare(b.name)
+          );
+          setRooms(sortedRooms);
+        } else {
+          toast.warning(response.message + ' Para a disponibilidade.' || 'Nenhum quarto encontrado para este hotel para a disponibilidade.');
+          setRooms([]);
+        }
+      } catch (error) {
+        console.error('Erro ao carregar quartos:', error);
+        toast.error('Erro ao carregar quartos do hotel para a disponibilidade. Verifique sua conexão ou tente novamente mais tarde.');
+        if (!cancelled) {
+          setRooms([]);
+        }
+      } finally {
+        if (!cancelled) {
+          setIsLoading(false);
+        }
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hotelId]);
 
   const loadAvailabilities = async () => {
     if (!hotelId || !startDate || !endDate || !searchCurrency) {

@@ -3,7 +3,7 @@ import { ILoginFormTemplateProps } from '../../interfaces/DTO/ILoginFormTemplate
 import LoginFormTemplate from '../../components/general/LoginFormTemplate';
 
 // Mock do arquivo CSS para evitar problemas durante o teste
-jest.mock('../../css/Login.css', () => ({}));
+vi.mock('../../css/Login.css', async () => ({}));
 
 const renderComponent = (props: Partial<ILoginFormTemplateProps> = {}) => {
   const defaultProps: ILoginFormTemplateProps = {
@@ -11,11 +11,11 @@ const renderComponent = (props: Partial<ILoginFormTemplateProps> = {}) => {
     password: '',
     rememberMe: false,
     error: null,
-    onUsernameChange: jest.fn(),
-    onPasswordChange: jest.fn(),
-    onRememberMeChange: jest.fn(),
-    onSubmit: jest.fn(),
-    onAzureLogin: jest.fn(),
+    onUsernameChange: vi.fn(),
+    onPasswordChange: vi.fn(),
+    onRememberMeChange: vi.fn(),
+    onSubmit: vi.fn(),
+    onAzureLogin: vi.fn(),
     ...props,
   };
 
@@ -35,8 +35,8 @@ describe('LoginFormTemplate component', () => {
   });
 
   test('handles input changes', () => {
-    const onUsernameChange = jest.fn();
-    const onPasswordChange = jest.fn();
+    const onUsernameChange = vi.fn();
+    const onPasswordChange = vi.fn();
     renderComponent({ onUsernameChange, onPasswordChange });
 
     // Altera o valor do campo de usuário
@@ -50,7 +50,7 @@ describe('LoginFormTemplate component', () => {
   });
 
   test('handles remember me change', () => {
-    const onRememberMeChange = jest.fn();
+    const onRememberMeChange = vi.fn();
     renderComponent({ onRememberMeChange });
 
     // Seleciona a opção "Lembrar-me"
@@ -61,7 +61,7 @@ describe('LoginFormTemplate component', () => {
   });
 
   test('submits the form', () => {
-    const onSubmit = jest.fn();
+    const onSubmit = vi.fn();
     renderComponent({ onSubmit });
 
     // Submete o formulário de login
@@ -72,7 +72,7 @@ describe('LoginFormTemplate component', () => {
   });
 
   test('handles Azure login', () => {
-    const onAzureLogin = jest.fn();
+    const onAzureLogin = vi.fn();
     renderComponent({ onAzureLogin });
 
     // Clica no botão de login com Azure

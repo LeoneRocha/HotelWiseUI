@@ -1,17 +1,20 @@
+import { type Mock } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router';
 import HotelService from '../../../services/hotel/hotelService';
 import { IServiceResponse } from '../../../interfaces/GeneralInterfaces';
 import { IHotel } from '../../../interfaces/model/Hotel/IHotel';
 import HotelList from '../../../components/hotel/HotelList';
 
 // Mock do arquivo CSS para evitar problemas durante o teste
-jest.mock('../../../css/HotelList.css', () => ({}));
+vi.mock('../../../css/HotelList.css', async () => ({}));
 
 // Mock dos serviços
-jest.mock('../../../services/hotel/hotelService', () => ({
-  getAll: jest.fn(),
-  delete: jest.fn(),
+vi.mock('../../../services/hotel/hotelService', async () => ({
+  default: {
+  getAll: vi.fn(),
+  delete: vi.fn(),
+  },
 }));
 
 // Mock do retorno esperado do serviço
@@ -62,10 +65,10 @@ const mockDeleteResponse: IServiceResponse<string> = {
 
 describe('HotelList component', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    (HotelService.getAll as jest.Mock).mockResolvedValue(mockServiceResponse);
-    (HotelService.delete as jest.Mock).mockResolvedValue(mockDeleteResponse);
-    jest.spyOn(console, 'warn').mockImplementation(() => {});
+    vi.clearAllMocks();
+    (HotelService.getAll as Mock).mockResolvedValue(mockServiceResponse);
+    (HotelService.delete as Mock).mockResolvedValue(mockDeleteResponse);
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
   });
 
   const renderComponent = () => {
@@ -95,7 +98,7 @@ describe('HotelList component', () => {
   });
 
   test('handles error while fetching hotels', async () => {
-    (HotelService.getAll as jest.Mock).mockRejectedValue(new Error('Fetch Error'));
+    (HotelService.getAll as Mock).mockRejectedValue(new Error('Fetch Error'));
 
     renderComponent();
 
@@ -125,7 +128,7 @@ describe('HotelList component', () => {
   });
 
   test('handles error while deleting a hotel', async () => {
-    (HotelService.delete as jest.Mock).mockRejectedValue(new Error('Delete Error'));
+    (HotelService.delete as Mock).mockRejectedValue(new Error('Delete Error'));
 
     renderComponent();
 

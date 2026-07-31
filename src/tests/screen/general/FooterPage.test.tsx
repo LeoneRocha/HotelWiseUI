@@ -1,30 +1,33 @@
+import { type Mock } from 'vitest';
 import { render, screen, waitFor, act } from '@testing-library/react'; 
 import AppInformationService from '../../../services/appInformationService';
 import FooterPage from '../../../components/general/FooterPage';
 
 // Mock the EnvironmentService
 
-jest.mock('../../../services/general/EnvironmentService', () => ({
+vi.mock('../../../services/general/EnvironmentService', async () => ({
     __esModule: true,
     default: {
-        getUIVersion: jest.fn(() => '1.0'),
-        getApiBaseUrl: jest.fn(() => 'http://localhost:3000/api'),
-        isNotTestEnvironment: jest.fn(() => false),
+        getUIVersion: vi.fn(() => '1.0'),
+        getApiBaseUrl: vi.fn(() => 'http://localhost:3000/api'),
+        isNotTestEnvironment: vi.fn(() => false),
     }
 }));
 
 // Mock the getAppInformationVersionProduct service
-jest.mock('../../../services/appInformationService', () => ({
-    getAppInformationVersionProduct: jest.fn(),
+vi.mock('../../../services/appInformationService', async () => ({
+  default: {
+    getAppInformationVersionProduct: vi.fn(),
+  },
 }));
 
 describe('FooterPage', () => {
     beforeEach(() => {
-        (AppInformationService.getAppInformationVersionProduct as jest.Mock).mockResolvedValue([{ version: '1.2.3' }]);
+        (AppInformationService.getAppInformationVersionProduct as Mock).mockResolvedValue([{ version: '1.2.3' }]);
     });
 
     afterEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     test('should render the footer with the correct UI version', async () => {
@@ -50,7 +53,7 @@ describe('FooterPage', () => {
 
 
     test('should handle errors when fetching the API version', async () => {
-        (AppInformationService.getAppInformationVersionProduct as jest.Mock).mockRejectedValue(new Error('Erro ao buscar a versão da API'));
+        (AppInformationService.getAppInformationVersionProduct as Mock).mockRejectedValue(new Error('Erro ao buscar a versão da API'));
 
         await act(async () => {
             render(<FooterPage />);

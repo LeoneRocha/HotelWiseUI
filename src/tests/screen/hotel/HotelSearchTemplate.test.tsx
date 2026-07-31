@@ -5,7 +5,7 @@ import { IHotelSearchTemplateProps } from '../../../interfaces/DTO/Hotel/IHotelS
 import HotelSearchTemplate from '../../../components/hotel/HotelSearchTemplate';
 
 // Mock do arquivo CSS para evitar problemas durante o teste
-jest.mock('../../css/HotelSearchTemplate.css', () => ({}));
+vi.mock('../../css/HotelSearchTemplate.css', async () => ({}));
 
 const mockServiceResponse: IServiceResponse<IHotelSemanticResult> = {
     data: {
@@ -24,17 +24,17 @@ const mockServiceResponse: IServiceResponse<IHotelSemanticResult> = {
 const renderComponent = (props: Partial<IHotelSearchTemplateProps> = {}) => {
     const defaultProps: IHotelSearchTemplateProps = {
         searchTerm: '',
-        setSearchTerm: jest.fn(),
+        setSearchTerm: vi.fn(),
         serviceResponse: mockServiceResponse,
         searched: false,
         error: null,
         loading: false,
-        handleSearch: jest.fn(),
+        handleSearch: vi.fn(),
         showAlert: false,
-        setShowAlert: jest.fn(),
+        setShowAlert: vi.fn(),
         tags: ['Tag1', 'Tag2', 'Tag3'],
         selectedTags: [],
-        handleTagChange: jest.fn(),
+        handleTagChange: vi.fn(),
         ...props,
     };
 
@@ -43,9 +43,9 @@ const renderComponent = (props: Partial<IHotelSearchTemplateProps> = {}) => {
 
 describe('HotelSearchTemplate component', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
         // Mock do console.warn para suprimir os avisos durante os testes
-        jest.spyOn(console, 'warn').mockImplementation(() => { });
+        vi.spyOn(console, 'warn').mockImplementation(() => { });
     });
     test('renders search form and tags', () => {
         renderComponent();

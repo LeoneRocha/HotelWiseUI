@@ -1,16 +1,16 @@
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import NotFound from '../../../components/general/NotFound';
 
 
 // Mock do arquivo CSS para evitar problemas durante o teste
-jest.mock('../../css/NotFound.css', () => ({}));
+vi.mock('../../css/NotFound.css', async () => ({}));
 
 describe('NotFound component', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
         // Mock do console.warn para suprimir os avisos durante os testes
-        jest.spyOn(console, 'warn').mockImplementation(() => { });
+        vi.spyOn(console, 'warn').mockImplementation(() => { });
     });
     test('renders the NotFound component with correct text and link', () => {
         render(

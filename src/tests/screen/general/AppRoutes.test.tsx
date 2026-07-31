@@ -1,19 +1,17 @@
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import AppRoutes from '../../../routes'; 
 
 // Mock do UserProfile
-jest.mock('../../../components/general/UserProfile', () => {
-  return function DummyUserProfile() {
-    return <div>UserProfile</div>;
-  };
-});
+vi.mock('../../../components/general/UserProfile', () => ({
+  default: () => <div>UserProfile</div>,
+}));
 
 describe('AppRoutes', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
         // Mock do console.warn para suprimir os avisos durante os testes
-        jest.spyOn(console, 'warn').mockImplementation(() => { });
+        vi.spyOn(console, 'warn').mockImplementation(() => { });
     });
 
     test('should render Login component at /', () => {

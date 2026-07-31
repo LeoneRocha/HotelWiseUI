@@ -1,24 +1,27 @@
+import { type Mock } from 'vitest';
 import { IMessage } from "../../interfaces/model/IA/IAskAssistantResponse";
 import ChatHistoryManager from "../../services/iainteference/chatHistoryManager";
 import SessionManagerService from "../../services/general/sessionManagerService";
 
 // chatHistoryManager.test.ts 
-jest.mock('../../services/general/sessionManagerService', () => ({
-    saveToSession: jest.fn(),
-    getFromSession: jest.fn(),
-    removeFromSession: jest.fn(),
+vi.mock('../../services/general/sessionManagerService', async () => ({
+  default: {
+    saveToSession: vi.fn(),
+    getFromSession: vi.fn(),
+    removeFromSession: vi.fn(),
+  },
 }));
 
 describe('chatHistoryManager', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     test('should save a message to session storage', () => {
         const message: IMessage = { sender: 'user', text: 'Hello', id: '1', token: '' };
         const history: IMessage[] = [];
 
-        (SessionManagerService.getFromSession as jest.Mock).mockReturnValue(history);
+        (SessionManagerService.getFromSession as Mock).mockReturnValue(history);
         ChatHistoryManager.saveMessage(message);
 
         expect(SessionManagerService.getFromSession).toHaveBeenCalledWith('chatHistory');
@@ -31,7 +34,7 @@ describe('chatHistoryManager', () => {
             { sender: 'bot', text: 'Hi there!', id : '2', token: '' },  
         ];
 
-        (SessionManagerService.getFromSession as jest.Mock).mockReturnValue(history);
+        (SessionManagerService.getFromSession as Mock).mockReturnValue(history);
         const retrievedHistory = ChatHistoryManager.getChatHistory();
 
         expect(SessionManagerService.getFromSession).toHaveBeenCalledWith('chatHistory');
@@ -39,7 +42,7 @@ describe('chatHistoryManager', () => {
     });
 
     test('should return an empty array if chat history does not exist in session storage', () => {
-        (SessionManagerService.getFromSession as jest.Mock).mockReturnValue(null);
+        (SessionManagerService.getFromSession as Mock).mockReturnValue(null);
         const retrievedHistory = ChatHistoryManager.getChatHistory();
 
         expect(SessionManagerService.getFromSession).toHaveBeenCalledWith('chatHistory');

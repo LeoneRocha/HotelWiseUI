@@ -1,10 +1,10 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom'; 
+import { MemoryRouter } from 'react-router'; 
 import { IHotelListTemplateProps } from '../../../interfaces/DTO/Hotel/IHotelListTemplateProps';
 import HotelListTemplate from '../../../components/hotel/HotelListTemplate';
 
 // Mock do arquivo CSS para evitar problemas durante o teste
-jest.mock('../../css/HotelList.css', () => ({}));
+vi.mock('../../css/HotelList.css', async () => ({}));
 
 const mockHotels = [
     { hotelId: 1, hotelName: 'Hotel One', description: 'Description One', tags: [], stars: 5, initialRoomPrice: 100, zipCode: '', location: '', city: '', stateCode: '', score: 8.9, isHotelInVectorStore: false },
@@ -17,10 +17,10 @@ const renderComponent = (props: Partial<IHotelListTemplateProps> = {}) => {
         totalHotels: mockHotels.length,
         currentPage: 1,
         hotelsPerPage: 6,
-        handleDelete: jest.fn(),
-        paginate: jest.fn(),
+        handleDelete: vi.fn(),
+        paginate: vi.fn(),
         filter: '',
-        handleFilterChange: jest.fn(),
+        handleFilterChange: vi.fn(),
         ...props,
     };
 
@@ -33,9 +33,9 @@ const renderComponent = (props: Partial<IHotelListTemplateProps> = {}) => {
 
 describe('HotelListTemplate component', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
         // Mock do console.warn para suprimir os avisos durante os testes
-        jest.spyOn(console, 'warn').mockImplementation(() => { });
+        vi.spyOn(console, 'warn').mockImplementation(() => { });
     });
     test('renders hotel list and pagination', () => {
         renderComponent();
@@ -49,7 +49,7 @@ describe('HotelListTemplate component', () => {
     });
 
     test('filters hotels based on input', () => {
-        const handleFilterChange = jest.fn();
+        const handleFilterChange = vi.fn();
         renderComponent({ handleFilterChange });
 
         // Aplica um filtro
@@ -60,7 +60,7 @@ describe('HotelListTemplate component', () => {
     });
 
     test('deletes a hotel from the list', () => {
-        const handleDelete = jest.fn();
+        const handleDelete = vi.fn();
         renderComponent({ handleDelete });
 
         // Clica no botão de apagar
@@ -71,7 +71,7 @@ describe('HotelListTemplate component', () => {
     });
 
     test('paginates when a pagination item is clicked', () => {
-        const paginate = jest.fn();
+        const paginate = vi.fn();
         renderComponent({ paginate });
 
         // Clica no item de paginação

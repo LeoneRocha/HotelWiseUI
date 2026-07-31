@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router';
 import HotelList from './components/hotel/HotelList';
 import HotelForm from './components/hotel/HotelForm';
 import HotelSearch from './components/hotel/HotelSearch';

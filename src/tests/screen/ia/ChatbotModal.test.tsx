@@ -12,17 +12,17 @@ describe('ChatbotModal component', () => {
         isTyping: false,
         showAlert: false,
         input: '',
-        handleSubmit: jest.fn(),
-        handleClearHistory: jest.fn(),
-        setInput: jest.fn(),
-        toggleModal: jest.fn()
+        handleSubmit: vi.fn(),
+        handleClearHistory: vi.fn(),
+        setInput: vi.fn(),
+        toggleModal: vi.fn()
     };
 
     beforeEach(() => {
-        jest.clearAllMocks();
+        vi.clearAllMocks();
         // Mock do console.warn para suprimir os avisos durante os testes
-        jest.spyOn(console, 'warn').mockImplementation(() => { });
-        jest.spyOn(console, 'error').mockImplementation(() => { });
+        vi.spyOn(console, 'warn').mockImplementation(() => { });
+        vi.spyOn(console, 'error').mockImplementation(() => { });
     });
     test('renders messages correctly', () => {
         const { getByText } = render(<ChatbotModal {...mockProps} />);
