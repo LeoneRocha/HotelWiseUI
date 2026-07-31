@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { Pagination } from 'react-bootstrap';
 import '../../css/HotelList.css'; // Adicione um arquivo CSS para customizações adicionais
 import { IHotelListTemplateProps } from '../../interfaces/DTO/Hotel/IHotelListTemplateProps';

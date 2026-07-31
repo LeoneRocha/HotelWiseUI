@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router';
 import LocalStorageService from '../../services/general/localStorageService';
 import SecurityService from '../../services/general/securityService';
 import { IAuthGuardProps } from '../../interfaces/DTO/IAuthGuardProps';

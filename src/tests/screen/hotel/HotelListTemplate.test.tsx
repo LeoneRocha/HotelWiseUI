@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom'; 
+import { MemoryRouter } from 'react-router'; 
 import { IHotelListTemplateProps } from '../../../interfaces/DTO/Hotel/IHotelListTemplateProps';
 import HotelListTemplate from '../../../components/hotel/HotelListTemplate';
 

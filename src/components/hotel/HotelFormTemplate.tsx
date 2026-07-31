@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import '../../css/HotelFormTemplate.css';
 import { FaPlusCircle, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import { v4 as uuidv4 } from 'uuid';
@@ -14,11 +14,15 @@ const HotelFormTemplate: React.FC<IHotelFormTemplateProps> = ({
   setFormData,
 }) => {
   const [tagInput, setTagInput] = useState('');
-  const [tags, setTags] = useState<{ id: string, value: string }[]>(formData.tags.map(tag => ({ id: uuidv4(), value: tag })));
+  const [tags, setTags] = useState<{ id: string, value: string }[]>(
+    () => formData.tags.map(tag => ({ id: uuidv4(), value: tag })),
+  );
+  const [syncedTags, setSyncedTags] = useState(formData.tags);
 
-  useEffect(() => {
+  if (formData.tags !== syncedTags) {
+    setSyncedTags(formData.tags);
     setTags(formData.tags.map(tag => ({ id: uuidv4(), value: tag })));
-  }, [formData.tags]);
+  }
 
   const handleTagInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTagInput(e.target.value);

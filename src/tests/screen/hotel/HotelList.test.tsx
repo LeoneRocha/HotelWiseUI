@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router';
 import HotelService from '../../../services/hotel/hotelService';
 import { IServiceResponse } from '../../../interfaces/GeneralInterfaces';
 import { IHotel } from '../../../interfaces/model/Hotel/IHotel';

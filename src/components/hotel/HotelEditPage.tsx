@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { Container } from 'react-bootstrap';
 import HotelTabs from './HotelTabs';
 import '../../css/HotelEditPage.css'; // Adicione um arquivo CSS para estilos personalizados
@@ -9,27 +9,33 @@ import HotelService from '../../services//hotel/hotelService';
 
 const HotelEditPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [hotelId, setHotelId] = useState<number | null>(null);
+  const hotelId = id && !isNaN(Number(id)) ? Number(id) : null;
   const [hotel, setHotel] = useState<IHotel | null>(null);
 
   useEffect(() => {
-    if (id) { 
-      const fetchHotel = async () => {
-        try {
-          const _hotel = await HotelService.getById(Number(hotelId)); // Fetch by ID
+    if (hotelId == null) {
+      return;
+    }
+
+    let cancelled = false;
+    const fetchHotel = async () => {
+      try {
+        const _hotel = await HotelService.getById(hotelId);
+        if (!cancelled) {
           setHotel(_hotel.data);
-        } catch (error) { 
-          if (EnvironmentService.isNotTestEnvironment()) {
-            console.error('Fetch Hotel Error:', error);
-          }
         }
-      };
-      fetchHotel();
-      setHotelId(parseInt(id, 10));
-    } else {
-      setHotelId(null);
-    } 
-  },  [id, hotelId]);
+      } catch (error) {
+        if (EnvironmentService.isNotTestEnvironment()) {
+          console.error('Fetch Hotel Error:', error);
+        }
+      }
+    };
+    fetchHotel();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [hotelId]);
 
   return (
     <Container fluid className="p-0">

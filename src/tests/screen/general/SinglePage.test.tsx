@@ -1,5 +1,5 @@
 import { act, render, screen } from '@testing-library/react';
-import { MemoryRouter, useNavigate } from 'react-router-dom';
+import { MemoryRouter, useNavigate } from 'react-router';
 import SinglePage from '../../../components/general/SinglePage';  
 
 // Mock do LocalStorageService
@@ -10,8 +10,8 @@ jest.mock('../../../services/general/localStorageService', () => ({
     removeItem: jest.fn(),
 }));
 
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+    ...jest.requireActual('react-router'),
     useNavigate: jest.fn(),
 }));
 

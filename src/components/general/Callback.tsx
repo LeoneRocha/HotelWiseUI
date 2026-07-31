@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useMsal } from '@azure/msal-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import LocalStorageService from '../../services/general/localStorageService';
 import { nameStorageTokenAzureAD } from '../../auth-config';
 import EnvironmentService from '../../services/general/EnvironmentService';

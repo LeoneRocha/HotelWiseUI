@@ -118,46 +118,25 @@ flowchart TD
 
 ---
 
-### Fase 1 — Segurança produção (react-router CVE) — **fazer cedo**
+### Fase 1 — Segurança produção (react-router CVE) — **fechada com v8**
 
-**Por quê primeiro:** fecha as **únicas 2 high de produção** e toca router — melhor falhar cedo com testes de rotas.
-
-Advisory: [GHSA-qwww-vcr4-c8h2](https://github.com/advisories/GHSA-qwww-vcr4-c8h2) — range `react-router` **7.12.0–8.2.0**. Atual `react-router-dom@7.18.2` está **dentro** do range. Patch DOM 8.x ainda não publicado; `react-router@8.3.0` sozinho não basta.
+Advisory: [GHSA-qwww-vcr4-c8h2](https://github.com/advisories/GHSA-qwww-vcr4-c8h2). **Final:** `react-router@^8.3.0` + remoção de `react-router-dom` (API unificada no v8).
 
 ```powershell
-npm install react-router-dom@7.11.0
+npm install react-router@8.3.0
+npm uninstall react-router-dom
+# trocar imports: from 'react-router-dom' → from 'react-router'
 ```
 
-No `package.json`, preferir pin **exato** `"react-router-dom": "7.11.0"` (sem `^`) até existir versão patched.
-
-**Arquivos de produto a validar (sem mudança esperada de API):**
-
-- `src/App.tsx` (`BrowserRouter`)
-- `src/routes.tsx`
-- Componentes com `Link` / `useNavigate` / `Navigate` / `MemoryRouter` nos testes
-
-**Testes obrigatórios desta fase (mínimo):**
-
-| Suite | Motivo |
-| ----- | ------ |
-| `AppRoutes.test.tsx` | rotas |
-| `AuthGuard.test.tsx` | Navigate + auth |
-| `Navbar.test.tsx` / `SinglePage.test.tsx` | navegação |
-| `NotFound.test.tsx` / `AccessDenied.test.tsx` | rotas de erro |
-| `HotelList.test.tsx` / `HotelForm.test.tsx` | MemoryRouter + Routes |
-| `Login.test.tsx` | MemoryRouter + navigate |
-
-```powershell
-npm test -- --coverage=false --no-cache
-npm run build
-npm audit --omit=dev
-```
+**Jest:** transformar ESM (`transformIgnorePatterns` + `babel.config.cjs` para `import.meta`).
 
 **Critério de saída:**
 
-- [ ] `npm audit --omit=dev` → **0** vulnerabilidades (ou só residual justificado)  
-- [ ] 30/30 suites  
-- [ ] build OK  
+- [x] `npm audit --omit=dev` → **0**  
+- [x] 30/30 suites  
+- [x] build OK  
+
+Ver `RelatorioAtualizacaoReact-HotelWiseUI.md`.
 
 ---
 
@@ -408,11 +387,11 @@ npm audit --omit=dev
 npm audit
 ```
 
-- [ ] Produção: **0** high/critical  
-- [ ] `react-router-dom` = **7.11.0** (ou patched superior documentado)  
-- [ ] `brace-expansion` override **^5.0.8** aplicado  
-- [ ] `jest-junit` **17** / `uuid` app **14**  
-- [ ] Residual all-dev documentado (se houver)  
+- [x] Produção: **0** high/critical  
+- [x] `react-router` = **8.3.0** (`react-router-dom` removido)  
+- [x] `brace-expansion` override **^5.0.8** aplicado  
+- [x] `jest-junit` **17** / `uuid` app **14**  
+- [x] Residual all-dev documentado (se houver)  
 
 ### 7.4 Build / lint / smoke
 
@@ -426,11 +405,11 @@ npm audit
 npm ls react react-dom react-router-dom vite @azure/msal-react @azure/msal-browser typescript --depth=0
 ```
 
-- [ ] react **19.2.8**  
-- [ ] react-router-dom **7.11.0**  
-- [ ] msal **5.x**  
-- [ ] vite **8.x**  
-- [ ] typescript **5.9.x**  
+- [x] react **19.2.8**  
+- [x] react-router **8.3.0**  
+- [x] msal **5.x**  
+- [x] vite **8.x**  
+- [x] typescript **5.9.x**  
 
 ---
 
@@ -439,7 +418,7 @@ npm ls react react-dom react-router-dom vite @azure/msal-react @azure/msal-brows
 1. **Todos os testes existentes passam** (30/30).  
 2. **`npm audit --omit=dev` limpo** de high/critical.  
 3. React permanece **19.2.8**.  
-4. Conjunto Homologado v1 aplicado (desvios justificados).  
+4. Conjunto Homologado v1 + **migração router 8.3.0**.  
 5. Build prod + lint + smoke OK.  
 6. TypeScript não sobe para 7.  
 7. Sem `audit fix --force` não validado.  
@@ -466,7 +445,7 @@ Restaurar juntos: `package.json`, `package-lock.json`, `.npmrc`, configs Jest/Vi
 
 | Risco | Mitigação |
 | ----- | --------- |
-| Pin router 7.11.0 “atrasa” features 7.18 | Temporário até patched; testes de rota; Conjunto v2 |
+| Pin router 7.11.0 piora highs ≤7.17 | Manter **7.18.2**; documentar residual audit stale; Conjunto v2 = DOM 8 |
 | MSAL 5 quebra login | Fase 3 isolada + Login/AuthGuard + smoke |
 | Vite 8 quebra build | Fase 5 isolada; migration guide; rollback bloco |
 | Override brace-expansion quebra Jest | Revalidar Fase 6 com suíte completa; afrouxar override se preciso e documentar |
@@ -478,7 +457,7 @@ Restaurar juntos: `package.json`, `package-lock.json`, `.npmrc`, configs Jest/Vi
 ## 11. Ordem de commits sugerida
 
 1. `chore(ui): baseline before ecosystem update`  
-2. `fix(ui): pin react-router-dom 7.11.0 for GHSA-qwww-vcr4-c8h2`  
+2. `fix(ui): keep react-router-dom 7.18.2 as GHSA-qwww v7 patch`  
 3. `chore(ui): upgrade MSAL browser/react to v5`  
 4. `chore(ui): upgrade react-datepicker 9, date-fns-tz and uuid 14`  
 5. `chore(ui): upgrade Vite 8 and plugin-react 6`  
@@ -490,18 +469,17 @@ Só commitar quando o responsável pedir.
 
 ---
 
-## 12. Evidências (relatório futuro)
+## 12. Evidências (relatório)
 
-Gerar `HotelWiseUI/DOCUMENTACAO/UI/RelatorioAtualizacaoReact-HotelWiseUI.md`:
+Gerado: `HotelWiseUI/DOCUMENTACAO/UI/RelatorioAtualizacaoReact-HotelWiseUI.md`
 
 ```text
 React: 19.2.8
-react-router-dom: 7.11.0 (CVE prod fechada: sim/não)
-Testes: 30/30 suites, Y/Y tests
-npm audit --omit=dev: 0 high?
-npm audit all: N remaining (lista)
-Build/lint/smoke: OK/FAIL
-Desvios do Conjunto v1: ...
+react-router: 8.3.0 (react-router-dom removido; CVE prod fechada)
+Testes: 30/30 suites, 104/104 tests
+npm audit --omit=dev: 0
+npm audit all: 0
+Build/lint/smoke: OK
 ```
 
 ---

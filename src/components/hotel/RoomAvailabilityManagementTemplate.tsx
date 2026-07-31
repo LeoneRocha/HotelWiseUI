@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Button, Form, Col, Row, Table, Spinner } from 'react-bootstrap';
 import { RoomAvailabilityManagementTemplateProps } from '../../interfaces/DTO/Hotel/IHotelProps';
 import DatePicker from 'react-date-picker';
@@ -33,15 +33,8 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
   hasSearchResults,
   onNewPeriod
 }) => {
-  // Estado para rastrear se as datas foram alteradas
-  const [datesModified, setDatesModified] = useState<boolean>(false);
-
-  // Atualiza o estado quando as datas mudam
-  useEffect(() => {
-    if (startDate || endDate) {
-      setDatesModified(true);
-    }
-  }, [startDate, endDate, rooms]);
+  // Datas alteradas pelo usuário (derivado — sem effect)
+  const datesModified = Boolean(startDate || endDate);
 
   // Handle date changes with the correct type
   const handleStartDateChange = (value: Value) => {

@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { MemoryRouter, useNavigate } from 'react-router-dom'; 
+import { MemoryRouter, useNavigate } from 'react-router'; 
 import LocalStorageService from '../../../services/general/localStorageService';
 import { nameStorageTokenJWT } from '../../../auth-config';
 import Navbar from '../../../components/general/Navbar';
@@ -16,8 +16,8 @@ jest.mock('../../../services/general/localStorageService', () => ({
 }));
 
 // Mock do `useNavigate`
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+  ...jest.requireActual('react-router'),
   useNavigate: jest.fn(),
 }));
 

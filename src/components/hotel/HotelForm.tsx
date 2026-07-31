@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router';
 import HotelService from '../../services//hotel/hotelService';
 import HotelFormTemplate from './HotelFormTemplate';
 import Modal from 'react-bootstrap/Modal';
@@ -27,6 +27,7 @@ const HotelForm: React.FC<IHotelFormProps> = ({ onSave }) => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [formData, setFormData] = useState<IHotel>(initialFormData);
+  const [formId, setFormId] = useState(id);
 
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState<string | null>(null);
@@ -34,29 +35,46 @@ const HotelForm: React.FC<IHotelFormProps> = ({ onSave }) => {
   const isFetching = useRef(false); // Prevents duplicate API calls
   const [countdown, setCountdown] = useState(10); // Countdown state for redirect
 
-  useEffect(() => {
+  if (id !== formId) {
+    setFormId(id);
     if (id === 'new') {
-      setFormData(initialFormData); // Clears the form
-    } else if (id && !isNaN(Number(id)) && !isFetching.current) {
-      const currentHotelId = Number(id);
-      isFetching.current = true;
-      const fetchHotel = async () => {
-        try {
-          const hotel = await HotelService.getById(currentHotelId); // Fetch by ID
+      setFormData(initialFormData);
+    }
+  }
+
+  useEffect(() => {
+    if (!id || id === 'new' || isNaN(Number(id)) || isFetching.current) {
+      return;
+    }
+
+    const currentHotelId = Number(id);
+    isFetching.current = true;
+    let cancelled = false;
+
+    const fetchHotel = async () => {
+      try {
+        const hotel = await HotelService.getById(currentHotelId);
+        if (!cancelled) {
           setFormData(hotel.data);
-        } catch (error) {
-          if (EnvironmentService.isNotTestEnvironment()) {
-            console.error('Fetch Hotel Error:', error);
-          }
+        }
+      } catch (error) {
+        if (EnvironmentService.isNotTestEnvironment()) {
+          console.error('Fetch Hotel Error:', error);
+        }
+        if (!cancelled) {
           setModalMessage('Erro ao buscar dados do hotel. Por favor, tente novamente.');
           setModalType('danger');
           setShowModal(true);
-        } finally {
-          isFetching.current = false;
         }
-      };
-      fetchHotel();
-    }
+      } finally {
+        isFetching.current = false;
+      }
+    };
+    fetchHotel();
+
+    return () => {
+      cancelled = true;
+    };
   }, [id]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

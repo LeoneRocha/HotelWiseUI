@@ -15,7 +15,7 @@ const config: Config = {
     '^.+\\.(ts|tsx)$': ['ts-jest', {
       tsconfig: '<rootDir>/tsconfig.spec.json'
     }],
-    '^.+\\.(js|jsx)$': 'babel-jest',
+    '^.+\\.(js|jsx|mjs)$': 'babel-jest',
   },
   moduleNameMapper: {
     "^uuid$": "<rootDir>/__mocks__/uuid.js",
@@ -24,8 +24,9 @@ const config: Config = {
     "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js",
     "\\.(css|less|scss|sass)$": "identity-obj-proxy"
   },
+  // react-router@8 is ESM-only; must be transformed for Jest (CJS)
   transformIgnorePatterns: [
-    '/node_modules/(?!(uuid|nanoid|@?react|@?redux|@?testing-library)/)',
+    'node_modules/(?!(react-router|cookie-es)/)',
   ],
   collectCoverageFrom: [
     'src/**/*.ts',

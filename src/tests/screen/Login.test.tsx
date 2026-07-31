@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom'; 
+import { MemoryRouter } from 'react-router';
+import { useNavigate } from 'react-router'; 
 import AuthenticateService from '../../services/authService';
 import SecurityService from '../../services/general/securityService';
 import LocalStorageService from '../../services/general/localStorageService';
@@ -24,8 +24,8 @@ jest.mock('../../services/general/localStorageService', () => ({
   removeItem: jest.fn(),
 }));
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+jest.mock('react-router', () => ({
+  ...jest.requireActual('react-router'),
   useNavigate: jest.fn(),
 }));
 
