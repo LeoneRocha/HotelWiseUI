@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import HotelService from '../../services//hotel/hotelService';
 import HotelFormTemplate from './HotelFormTemplate';
@@ -23,37 +23,48 @@ const initialFormData: IHotel = {
   isHotelInVectorStore: false,
 };
 
-const HotelForm: React.FC<IHotelFormProps> = ({ onSave }) => {
-  const { id } = useParams<{ id: string }>();
+const HotelForm: React.FC<IHotelFormProps> = ({ onSave, hotelId: hotelIdProp, hotel: hotelProp }) => {
+  const { id, new: newParam } = useParams<{ id?: string; new?: string }>();
   const navigate = useNavigate();
-  const [formData, setFormData] = useState<IHotel>(initialFormData);
-  const [formId, setFormId] = useState(id);
+
+  const routeId = hotelIdProp && hotelIdProp > 0
+    ? String(hotelIdProp)
+    : (id ?? (newParam === 'new' ? 'new' : newParam));
+
+  const isNewHotel = !routeId || routeId === 'new' || isNaN(Number(routeId));
+  const resolvedHotelId = isNewHotel ? null : Number(routeId);
+
+  const [formData, setFormData] = useState<IHotel>(() => {
+    if (hotelProp && hotelProp.hotelId > 0) {
+      return hotelProp;
+    }
+    if (resolvedHotelId != null) {
+      return { ...initialFormData, hotelId: resolvedHotelId };
+    }
+    return initialFormData;
+  });
 
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState<string | null>(null);
   const [modalType, setModalType] = useState<'success' | 'danger' | null>(null);
-  const isFetching = useRef(false); // Prevents duplicate API calls
-  const [countdown, setCountdown] = useState(10); // Countdown state for redirect
-
-  if (id !== formId) {
-    setFormId(id);
-    if (id === 'new') {
-      setFormData(initialFormData);
-    }
-  }
+  const [countdown, setCountdown] = useState(10);
 
   useEffect(() => {
-    if (!id || id === 'new' || isNaN(Number(id)) || isFetching.current) {
+    if (hotelProp && hotelProp.hotelId > 0) {
+      setFormData(hotelProp);
       return;
     }
 
-    const currentHotelId = Number(id);
-    isFetching.current = true;
+    if (isNewHotel) {
+      setFormData(initialFormData);
+      return;
+    }
+
     let cancelled = false;
 
     const fetchHotel = async () => {
       try {
-        const hotel = await HotelService.getById(currentHotelId);
+        const hotel = await HotelService.getById(resolvedHotelId!);
         if (!cancelled) {
           setFormData(hotel.data);
         }
@@ -66,8 +77,6 @@ const HotelForm: React.FC<IHotelFormProps> = ({ onSave }) => {
           setModalType('danger');
           setShowModal(true);
         }
-      } finally {
-        isFetching.current = false;
       }
     };
     fetchHotel();
@@ -75,7 +84,7 @@ const HotelForm: React.FC<IHotelFormProps> = ({ onSave }) => {
     return () => {
       cancelled = true;
     };
-  }, [id]);
+  }, [hotelProp, isNewHotel, resolvedHotelId]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -86,11 +95,11 @@ const HotelForm: React.FC<IHotelFormProps> = ({ onSave }) => {
     e.preventDefault();
     try {
       if (formData.hotelId === 0) {
-        await HotelService.create(formData); // Create hotel using generic method
+        await HotelService.create(formData);
         setModalMessage('Hotel criado com sucesso!');
         setModalType('success');
       } else {
-        await HotelService.update(formData.hotelId, formData); // Update hotel using generic method
+        await HotelService.update(formData.hotelId, formData);
         setModalMessage('Hotel atualizado com sucesso!');
         setModalType('success');
       }
@@ -124,7 +133,7 @@ const HotelForm: React.FC<IHotelFormProps> = ({ onSave }) => {
 
   const handleAutoFill = async () => {
     try {
-      const generatedHotel = await HotelService.generateHotelByIA(); // Generate hotel by IA
+      const generatedHotel = await HotelService.generateHotelByIA();
       setFormData(generatedHotel.data);
     } catch (error) {
       if (EnvironmentService.isNotTestEnvironment()) {
@@ -139,7 +148,7 @@ const HotelForm: React.FC<IHotelFormProps> = ({ onSave }) => {
   const handleAddToVectorStore = async () => {
     try {
       if (formData.hotelId > 0) {
-        await HotelService.addVectorById(formData.hotelId); // Add hotel to vector store
+        await HotelService.addVectorById(formData.hotelId);
         navigate('/list');
       }
     } catch (error) {

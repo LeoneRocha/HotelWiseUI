@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 import AuthenticateService from '../../services/authService';
 import SecurityService from '../../services/general/securityService';
 import LocalStorageService from '../../services/general/localStorageService';
@@ -15,16 +15,25 @@ const Login: React.FC = () => {
   const [rememberMe, setRememberMe] = useState(Boolean(savedUsername));
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();
   const { instance } = useMsal();
+
+  const getReturnPath = () => {
+    const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname;
+    if (from && from !== '/Login' && from !== '/login' && from !== '/') {
+      return from;
+    }
+    return '/search';
+  };
 
   useEffect(() => {
     const token = SecurityService.getToken(nameStorageTokenJWT);
     const isvalidToken = SecurityService.isTokenValid(nameStorageTokenJWT, token);
 
     if (token && isvalidToken) {
-      navigate('/search');
+      navigate(getReturnPath(), { replace: true });
     }
-  }, [navigate]);
+  }, [navigate, location.state]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,7 +52,7 @@ const Login: React.FC = () => {
           LocalStorageService.removeItem('rememberMeUsername');
         }
 
-        navigate('/search');
+        navigate(getReturnPath(), { replace: true });
       } else {
         setError('Autenticação falhou. Por favor, verifique suas credenciais.');
       }

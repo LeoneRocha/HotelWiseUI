@@ -113,9 +113,44 @@ describe('HotelForm component', () => {
     renderComponent(['/1']);
 
     await waitFor(() => {
+      expect(screen.getByText('Editar Hotel')).toBeInTheDocument();
       expect(screen.getByDisplayValue('Test Hotel')).toBeInTheDocument();
       expect(screen.getByDisplayValue('Test description')).toBeInTheDocument();
     });
+  });
+
+  test('loads hotel data from /tabs/:id style route', async () => {
+    (HotelService.getById as Mock).mockResolvedValue(mockHotel);
+
+    render(
+      <MemoryRouter initialEntries={['/tabs/9']}>
+        <Routes>
+          <Route path="/tabs/:id" element={<HotelForm onSave={vi.fn()} hotelId={9} />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Editar Hotel')).toBeInTheDocument();
+      expect(screen.getByDisplayValue('Test Hotel')).toBeInTheDocument();
+    });
+  });
+
+  test('hydrates from hotel prop without refetch race', async () => {
+    render(
+      <MemoryRouter initialEntries={['/tabs/1']}>
+        <Routes>
+          <Route
+            path="/tabs/:id"
+            element={<HotelForm onSave={vi.fn()} hotelId={1} hotel={mockHotel.data} />}
+          />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText('Editar Hotel')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('Test Hotel')).toBeInTheDocument();
+    expect(HotelService.getById).not.toHaveBeenCalled();
   });
 
   test('creates a new hotel', async () => {

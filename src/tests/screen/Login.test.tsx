@@ -73,7 +73,28 @@ describe('Login component', () => {
     // Verifica se o token foi definido e o redirecionamento ocorreu
     await waitFor(() => {
       expect(SecurityService.setToken).toHaveBeenCalledWith('token', 'mockToken');
-      expect(mockNavigate).toHaveBeenCalledWith('/search');
+      expect(mockNavigate).toHaveBeenCalledWith('/search', { replace: true });
+    });
+  });
+
+  test('redirects to return path from location state after login', async () => {
+    (AuthenticateService.authenticate as Mock).mockResolvedValue({
+      success: true,
+      data: { tokenAuth: { accessToken: 'mockToken' } },
+    });
+
+    render(
+      <MemoryRouter initialEntries={[{ pathname: '/Login', state: { from: { pathname: '/tabs/9' } } }]}>
+        <Login />
+      </MemoryRouter>
+    );
+
+    fireEvent.change(screen.getByLabelText(/usuário/i), { target: { value: 'testUser' } });
+    fireEvent.change(screen.getByLabelText(/senha/i), { target: { value: 'testPassword' } });
+    fireEvent.click(screen.getAllByRole('button', { name: /entrar/i })[0]);
+
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith('/tabs/9', { replace: true });
     });
   });
 
@@ -129,7 +150,7 @@ describe('Login component', () => {
 
     // Verifica se ocorreu o redirecionamento para a página de busca
     await waitFor(() => {
-      expect(mockNavigate).toHaveBeenCalledWith('/search');
+      expect(mockNavigate).toHaveBeenCalledWith('/search', { replace: true });
     });
   });
 });

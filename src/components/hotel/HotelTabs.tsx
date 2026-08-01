@@ -20,7 +20,7 @@ const HotelTabs: React.FC<HotelTabsProps> = ({ hotelId, hotel }) => {
         className="mb-3"
       >
         <Tab eventKey="details" title="Detalhes do Hotel">
-          <HotelForm hotelId={hotelId ?? 0} onSave={handleSave} />
+          <HotelForm hotelId={hotelId ?? 0} hotel={hotel ?? undefined} onSave={handleSave} />
         </Tab>
         {hotelId && (
           <Tab eventKey="rooms" title="Quartos">
