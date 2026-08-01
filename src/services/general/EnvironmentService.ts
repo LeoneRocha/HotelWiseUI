@@ -3,11 +3,13 @@
 import { IEnvironmentService } from "../../interfaces/services/IEnvironmentService";
 class EnvironmentService implements IEnvironmentService {
   public getUIVersion(): string {
-    return process.env.VITE_UI_VERSION ?? '1.0';
+    const version = process.env.VITE_UI_VERSION?.trim();
+    return version || '1.0';
   }
 
   public getApiBaseUrl(): string {
-    return process.env.VITE_API_BASE_URL ?? 'http://localhost:3000/api';
+    const url = process.env.VITE_API_BASE_URL?.trim();
+    return url || 'http://localhost:3000/api';
   }
 
   public isNotTestEnvironment(): boolean {

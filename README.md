@@ -37,7 +37,7 @@ A pilot project showcasing the concept of AI integration both for semantic searc
 
 ### Backend
 - C#
-- .NET 8
+- .NET 10
 - Entity Framework Core
 - MySql
 - Swagger
@@ -61,7 +61,7 @@ A pilot project showcasing the concept of AI integration both for semantic searc
 ## Prerequisites
 - Node.js `^20.19.0` or `>=22.12.0`
 - Docker (optional, for containers)
-- .NET SDK 8 (backend)
+- .NET SDK 10 (backend)
 - MySQL (backend)
 
 ## Frontend — quick start

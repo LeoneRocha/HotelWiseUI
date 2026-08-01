@@ -15,13 +15,14 @@ COPY . .
 
 #environment
 ARG NODE_ENV=production
-ARG VITE_UI_VERSION=
+# Sem default vazio: ARG vazio sobrescreve .env e deixa UI Version em branco no bundle.
+# docker build --build-arg VITE_UI_VERSION=2026.08.01.1 -t hotelwiseui .
+ARG VITE_UI_VERSION
 ENV NODE_ENV=$NODE_ENV
-ENV VITE_UI_VERSION=$VITE_UI_VERSION
-# docker build --build-arg VITE_UI_VERSION=2026.07.31.1 -t hotelwiseui .
 
-# Build: incrementa VITE_UI_VERSION (ou usa --build-arg VITE_UI_VERSION=YYYY.MM.DD.N)
-RUN npm run build:prod
+# Se build-arg vier vazio/ausente, remove do ambiente para o Vite usar .env.production
+RUN if [ -n "${VITE_UI_VERSION}" ]; then export VITE_UI_VERSION="${VITE_UI_VERSION}"; else unset VITE_UI_VERSION; fi \
+  && npm run build:prod
   
 ### ESTÁGIO 2: Executar ###   2 - Responsável por expor nossa aplicação *  based on Nginx, to have only the compiled app, ready for production with Nginx
 FROM nginx:latest 

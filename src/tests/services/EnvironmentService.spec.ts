@@ -13,6 +13,12 @@ describe('EnvironmentService', () => {
     expect(uiVersion).toBe('1.0');
   });
 
+  test('should return default UI version if VITE_UI_VERSION is empty', () => {
+    process.env.VITE_UI_VERSION = '   ';
+    const uiVersion = EnvironmentService.getUIVersion();
+    expect(uiVersion).toBe('1.0');
+  });
+
   test('should return UI version from environment variable', () => {
     process.env.VITE_UI_VERSION = '2.1';
     const uiVersion = EnvironmentService.getUIVersion();

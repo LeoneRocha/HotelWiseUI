@@ -46,8 +46,8 @@ describe('FooterPage', () => {
         url: 'https://dotnet.microsoft.com/',
         image: 'https://example.com/dotnet.svg',
         layer: 'backend',
-        version: '8',
-        description: 'API',
+        version: '10',
+        description: 'SDK / runtime HotelWiseAPI',
       },
     ]);
   });
@@ -114,8 +114,8 @@ describe('FooterPage', () => {
     expect(screen.getByTestId('footer-tech-text')).toHaveTextContent('React');
     expect(screen.getByTestId('footer-tech-text')).toHaveTextContent('versão 19.2.8');
     expect(screen.getByTestId('footer-tech-text')).toHaveTextContent('.NET');
-    expect(screen.getByTestId('footer-tech-text')).toHaveTextContent('versão 8');
-    expect(screen.getByTestId('footer-tech-text')).toHaveTextContent('API');
+    expect(screen.getByTestId('footer-tech-text')).toHaveTextContent('versão 10');
+    expect(screen.getByTestId('footer-tech-text')).toHaveTextContent('SDK / runtime HotelWiseAPI');
     expect(screen.getByTestId('footer-tech-text').querySelector('a')).toBeNull();
     expect(screen.getByRole('button', { name: /Ocultar detalhes textuais/i })).toBeInTheDocument();
   });

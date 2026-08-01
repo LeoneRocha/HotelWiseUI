@@ -8,11 +8,9 @@ import EnvironmentPlugin from 'vite-plugin-environment';
  * Não regenerar em todo `vite`/`dev`.
  */
 function resolveUiVersion(env: Record<string, string>): string {
-  return (
-    process.env.VITE_UI_VERSION ||
-    env.VITE_UI_VERSION ||
-    '0.0.0.0'
-  );
+  const fromProcess = process.env.VITE_UI_VERSION?.trim();
+  const fromFile = env.VITE_UI_VERSION?.trim();
+  return fromProcess || fromFile || '0.0.0.0';
 }
 
 // https://vitejs.dev/config/
