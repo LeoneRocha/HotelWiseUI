@@ -61,13 +61,26 @@ describe('LoginFormTemplate component', () => {
   });
 
   test('submits the form', () => {
-    const onSubmit = vi.fn();
-    renderComponent({ onSubmit });
+    const onSubmit = vi.fn((e: React.SubmitEvent<HTMLFormElement>) => e.preventDefault());
+    const { container } = render(
+      <LoginFormTemplate
+        username="user"
+        password="pass"
+        rememberMe={false}
+        error={null}
+        onUsernameChange={vi.fn()}
+        onPasswordChange={vi.fn()}
+        onRememberMeChange={vi.fn()}
+        onSubmit={onSubmit}
+        onAzureLogin={vi.fn()}
+      />
+    );
 
-    // Submete o formulário de login
-    fireEvent.submit(screen.getByRole('form'));
+    // Submete o <form> nativo (sem role="form" — a11y Sonar)
+    const form = container.querySelector('form');
+    expect(form).not.toBeNull();
+    fireEvent.submit(form!);
 
-    // Verifica se a função onSubmit foi chamada
     expect(onSubmit).toHaveBeenCalled();
   });
 
