@@ -56,7 +56,7 @@ flowchart TD
 | **`typescript:S1128`** | *Unused / Duplicated imports should be removed* | Múltiplos imports do mesmo módulo no mesmo arquivo | Agrupar imports em uma única declaração e remover referências obsoletas. |
 | **`typescript:S1488`** | *Local variables should not be declared and immediately returned* | `const result = format(data); return result;` | Retornar diretamente a expressão: `return format(data);`. |
 | **`typescript:S3317`** | *Top-level declarations should be in separate files* | Múltiplos componentes ou interfaces grandes no mesmo arquivo | Separar cada componente, serviço ou modelo em seu próprio arquivo correspondente. |
-| **`@typescript-eslint/no-explicit-any`** | *Unexpected any. Specify a different type* | Tipagem genérica `any` em retornos de APIs ou estados | Definir interfaces/tipos estritos em `src/interfaces/`. |
+| **array clone / performance** | *Unnecessarily cloning an array* | `[...new Array(n)].map(...)` clona à toa | Preferir `Array.from({ length: n }, mapFn)` sem spread intermediário. |
 
 ---
 

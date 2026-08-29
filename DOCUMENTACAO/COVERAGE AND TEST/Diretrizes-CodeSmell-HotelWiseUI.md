@@ -157,7 +157,14 @@ npm run build:prod
 
 ---
 
-## 5. Checklist de Homologação
+## 5. Playbook rápido — arrays de comprimento fixo
+
+- **Problema:** `[...new Array(stars)].map(...)` gera clone desnecessário (Sonar: *Unnecessarily cloning an array*).
+- **Padrão Homologado:** `Array.from({ length: stars }, () => <i ... />)` em `HotelSearchTemplate.renderStars`.
+
+---
+
+## 6. Checklist de Homologação
 
 - [ ] `npm run lint` concluído com 0 erros e 0 warnings.
 - [ ] Compilação TypeScript (`tsc -b`) sem erros de tipagem.
@@ -169,7 +176,7 @@ npm run build:prod
 
 ---
 
-## 6. Referências Internas
+## 7. Referências Internas
 
 - [package.json](file:///c:/git/HotelWise/HotelWiseUI/package.json) — Manifesto de dependências e scripts do HotelWiseUI
 - [vitest.config.ts](file:///c:/git/HotelWise/HotelWiseUI/vitest.config.ts) — Configurações da suíte de testes Vitest

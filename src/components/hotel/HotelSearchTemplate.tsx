@@ -32,7 +32,7 @@ const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
     : [];
 
   const renderStars = (stars: number) => {
-    return [...new Array(stars)].map(() => (
+    return Array.from({ length: stars }, () => (
       <i key={uuidv4()} className="fas fa-star star-gold"></i>
     ));
   };
