@@ -47,7 +47,7 @@ export interface RoomFormTemplateProps {
   validated: boolean;
   onClose: () => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  onSubmit: (e: React.SubmitEvent<HTMLFormElement>) => void;
 }
 
 export interface RoomAvailabilityManagementTemplateProps {

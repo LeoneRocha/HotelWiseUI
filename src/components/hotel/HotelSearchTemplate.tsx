@@ -32,7 +32,7 @@ const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
     : [];
 
   const renderStars = (stars: number) => {
-    return [...Array(stars)].map(() => (
+    return [...new Array(stars)].map(() => (
       <i key={uuidv4()} className="fas fa-star star-gold"></i>
     ));
   };
@@ -58,9 +58,9 @@ const HotelSearchTemplate: React.FC<IHotelSearchTemplateProps> = ({
 
   const renderLoading = loading && (
     <div className="text-center my-4">
-      <div className="spinner-border text-primary" role="status">
+      <output className="spinner-border text-primary">
         <span className="visually-hidden">Pesquisando...</span>
-      </div>
+      </output>
     </div>
   );
 

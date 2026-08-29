@@ -17,25 +17,15 @@ const Chatbot: React.FC = () => {
   const [show, setShow] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
 
   // Inicializar nextId com o valor do maior ID + 1
   const getNextId = () => {
     if (messages.length === 0) return 1;
-    const maxId = Math.max(...messages.map((msg) => parseInt(msg.id)));
+    const maxId = Math.max(...messages.map((msg) => Number.parseInt(msg.id, 10)));
     return maxId + 1;
   };
 
   const [nextId, setNextId] = useState(getNextId());
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 600);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   useEffect(() => {
     const chatContainer = document.getElementById('chat-container');
@@ -57,7 +47,7 @@ const Chatbot: React.FC = () => {
     setNextId((prevId) => prevId + 1); // Incrementa o ID para a próxima mensagem
   }, [nextId]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setShowAlert(false);
     if (!input.trim()) return; // Ignora se o campo de entrada estiver vazio.
@@ -125,7 +115,7 @@ const Chatbot: React.FC = () => {
       <Button variant="primary" onClick={toggleModal} className="chatbot-toggle" aria-controls="chat-container" aria-expanded={show}>
         {show ? 'Fechar' : 'Fale com o assistente'}
       </Button>
-      {show && (isMobile ? (
+      {show && (
         <ChatbotModal
           messages={messages}
           isTyping={isTyping}
@@ -136,18 +126,7 @@ const Chatbot: React.FC = () => {
           setInput={setInput}
           toggleModal={toggleModal}
         />
-      ) : (
-        <ChatbotModal
-          messages={messages}
-          isTyping={isTyping}
-          showAlert={showAlert}
-          input={input}
-          handleSubmit={handleSubmit}
-          handleClearHistory={handleClearHistory}
-          setInput={setInput}
-          toggleModal={toggleModal}
-        />
-      ))}
+      )}
     </div>
   );
 };

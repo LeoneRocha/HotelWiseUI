@@ -35,7 +35,7 @@ const Login: React.FC = () => {
     }
   }, [navigate, location.state]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const sanitizedUsername = username.replace(/[^a-zA-Z0-9]/g, '');

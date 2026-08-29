@@ -9,7 +9,7 @@ export const getEnumDescription = <T>(_enumObject: T, value: number | string, de
   ): Array<{ value: string | number; label: string; description: string }> {
     // Filtrar mapeamentos reversos que o TypeScript adiciona a enums numéricos
     const entries = Object.entries(enumObject).filter(
-      ([key, value]) => typeof value !== "number" || !isNaN(Number(key))
+      ([key, value]) => typeof value !== "number" || !Number.isNaN(Number(key))
     );
   
     return entries.map(([key, value]) => {

@@ -8,7 +8,7 @@ export interface IHotelSearchTemplateProps {
   searched: boolean;
   error: string | null;
   loading: boolean;
-  handleSearch: (e: React.FormEvent) => void;
+  handleSearch: (e: React.SubmitEvent<HTMLFormElement>) => void;
   showAlert: boolean;
   setShowAlert: React.Dispatch<React.SetStateAction<boolean>>;
   tags: string[];

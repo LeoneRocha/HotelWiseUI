@@ -27,11 +27,18 @@ const HotelForm: React.FC<IHotelFormProps> = ({ onSave, hotelId: hotelIdProp, ho
   const { id, new: newParam } = useParams<{ id?: string; new?: string }>();
   const navigate = useNavigate();
 
-  const routeId = hotelIdProp && hotelIdProp > 0
-    ? String(hotelIdProp)
-    : (id ?? (newParam === 'new' ? 'new' : newParam));
+  let routeId: string | undefined;
+  if (hotelIdProp && hotelIdProp > 0) {
+    routeId = String(hotelIdProp);
+  } else if (id != null && id !== '') {
+    routeId = id;
+  } else if (newParam === 'new') {
+    routeId = 'new';
+  } else {
+    routeId = newParam;
+  }
 
-  const isNewHotel = !routeId || routeId === 'new' || isNaN(Number(routeId));
+  const isNewHotel = !routeId || routeId === 'new' || Number.isNaN(Number(routeId));
   const resolvedHotelId = isNewHotel ? null : Number(routeId);
 
   const [formData, setFormData] = useState<IHotel>(() => {
@@ -91,7 +98,7 @@ const HotelForm: React.FC<IHotelFormProps> = ({ onSave, hotelId: hotelIdProp, ho
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       if (formData.hotelId === 0) {

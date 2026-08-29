@@ -43,7 +43,7 @@ const HotelSearch: React.FC = () => {
     );
   };
 
-  const handleSearch = async (e: React.FormEvent) => {
+  const handleSearch = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSearched(true);
     setError(null);

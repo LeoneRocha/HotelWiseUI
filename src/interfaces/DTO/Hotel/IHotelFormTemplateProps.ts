@@ -3,7 +3,7 @@ import { IHotel } from "../../model/Hotel/IHotel";
 export interface IHotelFormTemplateProps {
     formData: IHotel;
     handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    handleSubmit: (e: React.FormEvent) => void;
+    handleSubmit: (e: React.SubmitEvent<HTMLFormElement>) => void;
     handleCancel: () => void;
     handleAutoFill: () => void;
     handleAddToVectorStore: () => void;

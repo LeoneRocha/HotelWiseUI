@@ -8,7 +8,7 @@ const ChatbotModal: React.FC<IChatbotModalProps> = ({
   messages, isTyping, showAlert, input,
   handleSubmit, handleClearHistory, setInput, toggleModal
 }) => (
-  <div className="chatbot-modal" role="dialog" aria-labelledby="chatbot-title" aria-modal="true">
+  <dialog className="chatbot-modal" open aria-labelledby="chatbot-title">
     <div className="chatbot-modal-header">
       <span id="chatbot-title">Assistente</span>
       <Button variant="link" onClick={toggleModal} className="chatbot-close" aria-label="Fechar">&times;</Button>
@@ -44,7 +44,7 @@ const ChatbotModal: React.FC<IChatbotModalProps> = ({
     <Button onClick={handleClearHistory} className="clear-history-button" variant="light">
       Limpar Histórico
     </Button>
-  </div>
+  </dialog>
 );
 
 export default ChatbotModal;

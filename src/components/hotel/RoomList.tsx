@@ -8,6 +8,10 @@ import { RoomListProps } from '../../interfaces/DTO/Hotel/IHotelProps';
 import RoomListTemplate from './RoomListTemplate';
 import { getEnumLabel } from '../../enums/extensions/enumHelper';
 
+function getRoomTypeName(roomType: number): string {
+  return getEnumLabel(RoomType, roomType);
+}
+
 const RoomList: React.FC<RoomListProps> = ({ hotelId, hotel }) => {
   const [rooms, setRooms] = useState<IRoom[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -65,10 +69,6 @@ const RoomList: React.FC<RoomListProps> = ({ hotelId, hotel }) => {
     setShowForm(false);
     await loadRoomsList();
   };
-
-  function getRoomTypeName(roomType: number): string {
-    return getEnumLabel(RoomType, roomType);
-  }
 
   const getRoomStatusBadge = (status: RoomStatus) => {
     switch (status) {

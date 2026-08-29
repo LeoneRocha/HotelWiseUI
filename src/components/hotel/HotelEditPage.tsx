@@ -9,7 +9,7 @@ import HotelService from '../../services//hotel/hotelService';
 
 const HotelEditPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const hotelId = id && !isNaN(Number(id)) ? Number(id) : null;
+  const hotelId = id && !Number.isNaN(Number(id)) ? Number(id) : null;
   const [hotel, setHotel] = useState<IHotel | null>(null);
   const [loading, setLoading] = useState(hotelId != null);
   const [error, setError] = useState<string | null>(null);

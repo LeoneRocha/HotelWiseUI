@@ -6,9 +6,7 @@ import LocalStorageService from './localStorageService';
 
 class SecurityService implements ISecurityService {
     isTokenValid(storageKey: string, token: string | null ): boolean {
-        if (token === null) {
-            token = this.getToken(storageKey) ?? '';
-        }
+        token ??= this.getToken(storageKey) ?? '';
         try {
             if (token !== null) {
                 const decoded = jwtDecode<JwtPayload>(token);

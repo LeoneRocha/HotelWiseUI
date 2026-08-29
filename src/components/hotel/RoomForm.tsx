@@ -43,12 +43,12 @@ const RoomForm: React.FC<RoomFormProps> = ({ hotelId, room, onClose }) => {
     setFormData(prev => ({
       ...prev,
       [name]: name === 'roomType' || name === 'status' || name === 'capacity' || name === 'minimumNights'
-        ? parseInt(value, 10)
+        ? Number.parseInt(value, 10)
         : value
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const form = e.currentTarget;

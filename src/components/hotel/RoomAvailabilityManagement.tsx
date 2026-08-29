@@ -98,7 +98,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
             return acc;
           }, {} as { [key: string]: number })
         }));
-        const sortedRooms = formattedRooms.sort((a, b) =>
+        const sortedRooms = [...formattedRooms].sort((a, b) =>
           a.name.localeCompare(b.name)
         );
         setRooms(sortedRooms);
@@ -145,7 +145,7 @@ const RoomAvailabilityManagement: React.FC<RoomListProps> = ({ hotelId, hotel })
               return acc;
             }, {} as { [key: string]: number })
           }));
-          const sortedRooms = formattedRooms.sort((a, b) =>
+          const sortedRooms = [...formattedRooms].sort((a, b) =>
             a.name.localeCompare(b.name)
           );
           setRooms(sortedRooms);

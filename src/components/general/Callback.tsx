@@ -11,7 +11,7 @@ const Callback: React.FC = () => {
 
   useEffect(() => {
     instance.handleRedirectPromise().then((response) => {
-      if (response && response.accessToken) {
+      if (response?.accessToken) {
         // Armazenando o token no LocalStorage
         LocalStorageService.setItem(nameStorageTokenAzureAD, response.accessToken);
         // Redirecionar para a página de perfil

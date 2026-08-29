@@ -183,7 +183,7 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
                     type="number"
                     min="0"
                     value={room.quantity}
-                    onChange={(e) => onQuantityChange(room.id, parseInt(e.target.value) || 0)}
+                    onChange={(e) => onQuantityChange(room.id, Number.parseInt(e.target.value, 10) || 0)}
                     className={formErrors[`room_${room.id}_quantity`] ? 'is-invalid' : ''}
                   />
                   {formErrors[`room_${room.id}_quantity`] && (
@@ -201,7 +201,7 @@ const RoomAvailabilityManagementTemplate: React.FC<RoomAvailabilityManagementTem
                         min="0"
                         step="0.01"
                         value={room.prices[day] || 0}
-                        onChange={(e) => onPriceChange(room.id, day, parseFloat(e.target.value) || 0)}
+                        onChange={(e) => onPriceChange(room.id, day, Number.parseFloat(e.target.value) || 0)}
                         className={formErrors[`room_${room.id}_price_${day}`] ? 'is-invalid' : ''}
                       />
                       {formErrors[`room_${room.id}_price_${day}`] && (

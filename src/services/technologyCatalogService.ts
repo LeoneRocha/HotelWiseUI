@@ -9,7 +9,7 @@ import EnvironmentService from './general/EnvironmentService';
  */
 class TechnologyCatalogService implements ITechnologyCatalogService {
   async getTechnologies(): Promise<ITechnologyResource[]> {
-    // TODO: substituir por chamada HTTP (ex.: `${EnvironmentService.getApiBaseUrl()}/technologies`)
+    // Futuro: GET em API (ex.: `${EnvironmentService.getApiBaseUrl()}/technologies`)
     return this.getFromEnvironment();
   }
 
@@ -22,7 +22,7 @@ class TechnologyCatalogService implements ITechnologyCatalogService {
     try {
       const parsed = JSON.parse(raw) as ITechnologyResource[];
       if (!Array.isArray(parsed)) {
-        throw new Error('VITE_TECHNOLOGIES_JSON deve ser um array JSON');
+        throw new TypeError('VITE_TECHNOLOGIES_JSON deve ser um array JSON');
       }
       return parsed;
     } catch (error) {

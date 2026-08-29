@@ -5,7 +5,7 @@ export interface IChatbotModalProps {
     isTyping: boolean;
     showAlert: boolean;
     input: string;
-    handleSubmit: (e: React.FormEvent) => void;
+    handleSubmit: (e: React.SubmitEvent<HTMLFormElement>) => void;
     handleClearHistory: () => void;
     setInput: (input: string) => void;
     toggleModal: () => void;
