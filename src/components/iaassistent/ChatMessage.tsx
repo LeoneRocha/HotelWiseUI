@@ -7,12 +7,16 @@ const ChatMessage: React.FC<IChatMessageProps> = ({ message }) => (
   <div className={`chat-message ${message.sender}`} role="alert" aria-live="assertive">
     {message.sender === 'bot' ? (
       <div className="bot-message">
-        <FaRobot className="message-icon" aria-label="Mensagem do assistente" />
+        <div className="message-icon-wrapper bot-icon-wrapper">
+          <FaRobot className="message-icon" aria-label="Mensagem do assistente" />
+        </div>
         <div className="message-content" dangerouslySetInnerHTML={{ __html: message.text }} />
       </div>
     ) : (
       <div className="user-message">
-        <FaUser className="message-icon" aria-label="Mensagem do usuário" />
+        <div className="message-icon-wrapper user-icon-wrapper">
+          <FaUser className="message-icon" aria-label="Mensagem do usuário" />
+        </div>
         <div className="message-content">{message.text}</div>
       </div>
     )}

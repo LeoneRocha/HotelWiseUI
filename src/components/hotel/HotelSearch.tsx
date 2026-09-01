@@ -51,7 +51,7 @@ const HotelSearch: React.FC = () => {
     setShowAlert(false); // Reseta o estado do alerta antes de uma nova pesquisa
     try {
       const criteria: ISearchCriteria = {
-        maxHotelRetrieve: 3,
+        maxHotelRetrieve: 100,
         searchTextCriteria: searchTerm,
         tagsCriteria: selectedTags,
       };

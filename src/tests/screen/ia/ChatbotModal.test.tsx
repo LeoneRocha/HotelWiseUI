@@ -1,3 +1,7 @@
+vi.mock('react-draggable', async () => ({
+  __esModule: true,
+  default: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+}));
 import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import ChatbotModal from '../../../components/iaassistent/ChatbotModal';
