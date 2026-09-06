@@ -50,8 +50,9 @@ const HotelSearch: React.FC = () => {
     setLoading(true);
     setShowAlert(false); // Reseta o estado do alerta antes de uma nova pesquisa
     try {
+      // 0 = backend usa ApplicationIAConfig:Rag:SearchSettings:MaxRetrieve (appsettings)
       const criteria: ISearchCriteria = {
-        maxHotelRetrieve: 100,
+        maxHotelRetrieve: 0,
         searchTextCriteria: searchTerm,
         tagsCriteria: selectedTags,
       };
