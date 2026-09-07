@@ -13,15 +13,69 @@ const HotelListTemplate: React.FC<IHotelListTemplateProps> = ({
   paginate = () => { }, // Função vazia por padrão
   filter = '', // Fallback para string vazia
   handleFilterChange = () => { }, // Função vazia por padrão
+  handleSyncAllToVectorStore,
+  isSyncing = false,
+  syncFeedback = null,
+  onDismissSyncFeedback,
 }) => {
   return (
     <div className="container-fluid mt-5">
       <h1 className="text-left">Lista de Hotéis</h1>
-      <div className="d-flex align-items-center mb-4">
-        <Link to="/new/:new" className="btn btn-success">
+      <div className="d-flex align-items-center mb-4 gap-2 flex-wrap">
+        <Link to="/new/:new" className="btn btn-success" id="btn-add-hotel">
           <i className="fas fa-plus"></i> Adicionar Novo Hotel
         </Link>
+        {handleSyncAllToVectorStore && (
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleSyncAllToVectorStore}
+            disabled={isSyncing}
+            id="btn-sync-all-vector"
+            title="Sincronizar todos os hotéis no Vector Store (Qdrant)"
+          >
+            {isSyncing ? (
+              <>
+                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                Sincronizando no Vetor...
+              </>
+            ) : (
+              <>
+                <i className="fas fa-sync-alt me-2"></i>
+                Sincronizar Hotéis no Vetor
+              </>
+            )}
+          </button>
+        )}
       </div>
+      {syncFeedback && (
+        <div
+          role="status"
+          className={`alert alert-${syncFeedback.type} alert-dismissible fade show mb-4`}
+        >
+          <div className="d-flex align-items-center justify-content-between">
+            <div>
+              <i className={`fas fa-${syncFeedback.type === 'success' ? 'check-circle' : syncFeedback.type === 'warning' ? 'exclamation-triangle' : 'times-circle'} me-2`}></i>
+              <strong>{syncFeedback.message}</strong>
+            </div>
+            {onDismissSyncFeedback && (
+              <button
+                type="button"
+                className="btn-close"
+                aria-label="Close"
+                onClick={onDismissSyncFeedback}
+              ></button>
+            )}
+          </div>
+          {syncFeedback.details && syncFeedback.details.length > 0 && (
+            <ul className="mt-2 mb-0 small">
+              {syncFeedback.details.map((detail, idx) => (
+                <li key={idx}>{detail}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
       {/* Campo de filtro */}
       <div className="mb-4">
         <input

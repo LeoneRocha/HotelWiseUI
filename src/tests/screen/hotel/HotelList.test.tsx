@@ -12,8 +12,9 @@ vi.mock('../../../css/HotelList.css', async () => ({}));
 // Mock dos serviços
 vi.mock('../../../services/hotel/hotelService', async () => ({
   default: {
-  getAll: vi.fn(),
-  delete: vi.fn(),
+    getAll: vi.fn(),
+    delete: vi.fn(),
+    syncAllToVectorStore: vi.fn(),
   },
 }));
 
@@ -143,4 +144,62 @@ describe('HotelList component', () => {
       expect(screen.getByRole('alert')).toHaveTextContent('Ocorreu um erro ao excluir o hotel.');
     });
   });
+
+  test('triggers syncAllToVectorStore and displays success feedback', async () => {
+    (HotelService.syncAllToVectorStore as Mock).mockResolvedValue({
+      success: true,
+      data: {
+        totalHotels: 2,
+        synchronizedCount: 2,
+        failedCount: 0,
+        allProcessed: true,
+        errors: [],
+      },
+      message: 'Todos os 2 hotéis foram sincronizados com sucesso no vetor.',
+    });
+
+    renderComponent();
+
+    await waitFor(() => {
+      expect(screen.getByText('Hotel One')).toBeInTheDocument();
+    });
+
+    const syncButton = screen.getByRole('button', { name: /sincronizar hotéis no vetor/i });
+    expect(syncButton).toBeInTheDocument();
+    fireEvent.click(syncButton);
+
+    await waitFor(() => {
+      expect(HotelService.syncAllToVectorStore).toHaveBeenCalled();
+      expect(screen.getByRole('status')).toHaveTextContent('Todos os 2 hotéis foram sincronizados com sucesso no vetor.');
+    });
+  });
+
+  test('displays detailed error message when API returns structured error', async () => {
+    const apiError = {
+      response: {
+        status: 500,
+        data: {
+          correlationId: 'trace-xyz-999',
+          errors: [
+            {
+              code: 'UNHANDLED_EXCEPTION',
+              description: 'Database query failed.',
+            },
+          ],
+        },
+      },
+    };
+    (HotelService.getAll as Mock).mockRejectedValue(apiError);
+
+    renderComponent();
+
+    await waitFor(() => {
+      const alert = screen.getByRole('alert');
+      expect(alert).toHaveTextContent('Ocorreu um erro ao buscar os hotéis.');
+      expect(alert).toHaveTextContent('[UNHANDLED_EXCEPTION] Database query failed.');
+      expect(alert).toHaveTextContent('TraceId: trace-xyz-999');
+      expect(alert).toHaveTextContent('HTTP 500');
+    });
+  });
 });
+

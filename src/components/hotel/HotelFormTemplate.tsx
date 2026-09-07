@@ -11,6 +11,7 @@ const HotelFormTemplate: React.FC<IHotelFormTemplateProps> = ({
   handleCancel,
   handleAutoFill,
   handleAddToVectorStore,
+  isAddingToVector = false,
   setFormData,
 }) => {
   const [tagInput, setTagInput] = useState('');
@@ -61,8 +62,19 @@ const HotelFormTemplate: React.FC<IHotelFormTemplateProps> = ({
             )}
             <span className="ms-2">{formData.isHotelInVectorStore ? 'No Vector Store' : 'Not in Vector Store'}</span>
             {!formData.isHotelInVectorStore && (
-              <button type="button" className="btn btn-link ms-2" onClick={handleAddToVectorStore}>
-                <FaPlusCircle className="text-primary" />
+              <button
+                type="button"
+                className="btn btn-link ms-2 p-0"
+                onClick={handleAddToVectorStore}
+                disabled={isAddingToVector}
+                title="Sincronizar este hotel no Vector Store (Qdrant)"
+                aria-label="Adicionar ao Vector Store"
+              >
+                {isAddingToVector ? (
+                  <span className="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></span>
+                ) : (
+                  <FaPlusCircle className="text-primary" />
+                )}
               </button>
             )}
           </div>

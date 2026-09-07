@@ -201,4 +201,29 @@ describe('HotelForm component', () => {
       expect(screen.getByText('Ocorreu um erro ao salvar o hotel. Por favor, tente novamente.')).toBeInTheDocument();
     });
   });
+
+  test('adds hotel to vector store successfully and updates state', async () => {
+    (HotelService.getById as Mock).mockResolvedValue(mockHotel);
+    (HotelService.addVectorById as Mock).mockResolvedValue({
+      data: { ...mockHotel.data, isHotelInVectorStore: true },
+      success: true,
+      message: 'Added to vector store',
+    });
+
+    renderComponent(['/1']);
+
+    await waitFor(() => {
+      expect(screen.getByText('Not in Vector Store')).toBeInTheDocument();
+    });
+
+    const addVectorBtn = screen.getByRole('button', { name: /adicionar ao vector store/i });
+    expect(addVectorBtn).toBeInTheDocument();
+    fireEvent.click(addVectorBtn);
+
+    await waitFor(() => {
+      expect(HotelService.addVectorById).toHaveBeenCalledWith(1);
+      expect(screen.getByText('Hotel indexado na base vetorial com sucesso!')).toBeInTheDocument();
+      expect(screen.getByText('No Vector Store')).toBeInTheDocument();
+    });
+  });
 });

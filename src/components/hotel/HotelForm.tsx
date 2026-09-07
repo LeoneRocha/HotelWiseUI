@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import EnvironmentService from '../../services/general/EnvironmentService';
 import { IHotel } from '../../interfaces/model/Hotel/IHotel';
 import { IHotelFormProps } from '../../interfaces/DTO/Hotel/IHotelFormProps';
+import { extractErrorMessage } from '../../utils/errorUtils';
 
 const initialFormData: IHotel = {
   hotelId: 0,
@@ -55,6 +56,7 @@ const HotelForm: React.FC<IHotelFormProps> = ({ onSave, hotelId: hotelIdProp, ho
   const [modalMessage, setModalMessage] = useState<string | null>(null);
   const [modalType, setModalType] = useState<'success' | 'danger' | null>(null);
   const [countdown, setCountdown] = useState(10);
+  const [isAddingToVector, setIsAddingToVector] = useState(false);
 
   useEffect(() => {
     if (hotelProp && hotelProp.hotelId > 0) {
@@ -155,16 +157,29 @@ const HotelForm: React.FC<IHotelFormProps> = ({ onSave, hotelId: hotelIdProp, ho
   const handleAddToVectorStore = async () => {
     try {
       if (formData.hotelId > 0) {
-        await HotelService.addVectorById(formData.hotelId);
-        navigate('/list');
+        setIsAddingToVector(true);
+        const response = await HotelService.addVectorById(formData.hotelId);
+        if (response.success) {
+          setFormData((prev) => ({ ...prev, isHotelInVectorStore: true }));
+          setModalMessage('Hotel indexado na base vetorial com sucesso!');
+          setModalType('success');
+          setShowModal(true);
+        } else {
+          setModalMessage(response.message || 'Erro ao gravar no vetor.');
+          setModalType('danger');
+          setShowModal(true);
+        }
       }
     } catch (error) {
       if (EnvironmentService.isNotTestEnvironment()) {
         console.error('Add to Vector Store Error:', error);
       }
-      setModalMessage('Erro ao gravar no vetor. Por favor, tente novamente.');
+      const detailedMessage = extractErrorMessage(error, 'Erro ao gravar no vetor.');
+      setModalMessage(detailedMessage);
       setModalType('danger');
       setShowModal(true);
+    } finally {
+      setIsAddingToVector(false);
     }
   };
 
@@ -178,6 +193,7 @@ const HotelForm: React.FC<IHotelFormProps> = ({ onSave, hotelId: hotelIdProp, ho
         setFormData={setFormData}
         handleAutoFill={handleAutoFill}
         handleAddToVectorStore={handleAddToVectorStore}
+        isAddingToVector={isAddingToVector}
       />
 
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>

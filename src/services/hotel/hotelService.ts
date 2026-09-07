@@ -6,6 +6,8 @@ import EnvironmentService from '../general/EnvironmentService';
 import { IHotel } from '../../interfaces/model/Hotel/IHotel';
 import { IHotelSemanticResult } from '../../interfaces/model/Hotel/IHotelSemanticResult';
 
+import { IHotelVectorSyncResult } from '../../interfaces/DTO/Hotel/IHotelVectorSyncResult';
+
 const BASE_URL = EnvironmentService.getApiBaseUrl();
 
 class HotelService extends GenericService<IHotel> implements IHotelService {
@@ -19,6 +21,14 @@ class HotelService extends GenericService<IHotel> implements IHotelService {
       return response.data;
     }
     throw new Error(response.data.message || 'Erro ao adicionar vetor');
+  }
+
+  async syncAllToVectorStore(): Promise<IServiceResponse<IHotelVectorSyncResult>> {
+    const response = await this.api.post<IServiceResponse<IHotelVectorSyncResult>>(`${this.endpoint}/syncvectors`);
+    if (response.data.success) {
+      return response.data;
+    }
+    throw new Error(response.data.message || 'Erro ao sincronizar hotéis no vetor');
   }
 
   async semanticSearch(criteria: ISearchCriteria): Promise<IServiceResponse<IHotelSemanticResult>> {

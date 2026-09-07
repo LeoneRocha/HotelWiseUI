@@ -7,6 +7,7 @@ export interface IHotelFormTemplateProps {
     handleCancel: () => void;
     handleAutoFill: () => void;
     handleAddToVectorStore: () => void;
+    isAddingToVector?: boolean;
     setFormData: React.Dispatch<React.SetStateAction<IHotel>>;
   }
   

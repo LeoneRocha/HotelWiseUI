@@ -2,6 +2,7 @@ import { IServiceResponse } from "../../GeneralInterfaces";
 import { IHotel } from "../../model/Hotel/IHotel";
 import { IHotelSemanticResult } from "../../model/Hotel/IHotelSemanticResult";
 import { ISearchCriteria } from "../../model/IA/ISearchCriteria";
+import { IHotelVectorSyncResult } from "../../DTO/Hotel/IHotelVectorSyncResult";
 
 export interface IHotelService {
   getAll(): Promise<IServiceResponse<IHotel[]>>;                // Busca todos os hotéis
@@ -10,6 +11,7 @@ export interface IHotelService {
   update(id: number, item: IHotel): Promise<IServiceResponse<IHotel>>; // Atualiza um hotel pelo ID
   delete(id: number): Promise<IServiceResponse<string>>;        // Exclui um hotel pelo ID
   addVectorById(id: number): Promise<IServiceResponse<IHotel>>; // Adiciona hotel ao vetor
+  syncAllToVectorStore(): Promise<IServiceResponse<IHotelVectorSyncResult>>; // Sincroniza todos os hotéis no vetor em lote
   semanticSearch(criteria: ISearchCriteria): Promise<IServiceResponse<IHotelSemanticResult>>; // Busca semântica
   generateHotelByIA(): Promise<IServiceResponse<IHotel>>;       // Gera hotel com IA
   getTags(): Promise<string[]>;               // Busca tags
