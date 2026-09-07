@@ -4,6 +4,12 @@ import { Pagination } from 'react-bootstrap';
 import '../../css/HotelList.css'; // Adicione um arquivo CSS para customizações adicionais
 import { IHotelListTemplateProps } from '../../interfaces/DTO/Hotel/IHotelListTemplateProps';
 
+const getFeedbackIcon = (type?: string): string => {
+  if (type === 'success') return 'check-circle';
+  if (type === 'warning') return 'exclamation-triangle';
+  return 'times-circle';
+};
+
 const HotelListTemplate: React.FC<IHotelListTemplateProps> = ({
   hotels = [], // Garante que `hotels` tenha um valor padrão como array vazio
   totalHotels = 0, // Valor padrão para evitar erros de cálculo
@@ -18,6 +24,9 @@ const HotelListTemplate: React.FC<IHotelListTemplateProps> = ({
   syncFeedback = null,
   onDismissSyncFeedback,
 }) => {
+  const totalPages = Math.ceil(totalHotels / hotelsPerPage);
+  const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
+
   return (
     <div className="container-fluid mt-5">
       <h1 className="text-left">Lista de Hotéis</h1>
@@ -36,12 +45,12 @@ const HotelListTemplate: React.FC<IHotelListTemplateProps> = ({
           >
             {isSyncing ? (
               <>
-                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                <output className="spinner-border spinner-border-sm me-2" aria-hidden="true"></output>{' '}
                 Sincronizando no Vetor...
               </>
             ) : (
               <>
-                <i className="fas fa-sync-alt me-2"></i>
+                <i className="fas fa-sync-alt me-2"></i>{' '}
                 Sincronizar Hotéis no Vetor
               </>
             )}
@@ -49,13 +58,12 @@ const HotelListTemplate: React.FC<IHotelListTemplateProps> = ({
         )}
       </div>
       {syncFeedback && (
-        <div
-          role="status"
-          className={`alert alert-${syncFeedback.type} alert-dismissible fade show mb-4`}
+        <output
+          className={`alert alert-${syncFeedback.type} alert-dismissible fade show mb-4 d-block`}
         >
           <div className="d-flex align-items-center justify-content-between">
             <div>
-              <i className={`fas fa-${syncFeedback.type === 'success' ? 'check-circle' : syncFeedback.type === 'warning' ? 'exclamation-triangle' : 'times-circle'} me-2`}></i>
+              <i className={`fas fa-${getFeedbackIcon(syncFeedback.type)} me-2`}></i>
               <strong>{syncFeedback.message}</strong>
             </div>
             {onDismissSyncFeedback && (
@@ -69,12 +77,12 @@ const HotelListTemplate: React.FC<IHotelListTemplateProps> = ({
           </div>
           {syncFeedback.details && syncFeedback.details.length > 0 && (
             <ul className="mt-2 mb-0 small">
-              {syncFeedback.details.map((detail, idx) => (
-                <li key={idx}>{detail}</li>
+              {syncFeedback.details.map((detail) => (
+                <li key={detail}>{detail}</li>
               ))}
             </ul>
           )}
-        </div>
+        </output>
       )}
       {/* Campo de filtro */}
       <div className="mb-4">
@@ -132,13 +140,13 @@ const HotelListTemplate: React.FC<IHotelListTemplateProps> = ({
         )}
       </div>
       <Pagination className="justify-content-center mt-4">
-        {Array.from({ length: Math.ceil(totalHotels / hotelsPerPage) }, (_, index) => (
+        {pageNumbers.map((pageNumber) => (
           <Pagination.Item
-            key={index + 1}
-            active={index + 1 === currentPage}
-            onClick={() => paginate(index + 1)}
+            key={`page-${pageNumber}`}
+            active={pageNumber === currentPage}
+            onClick={() => paginate(pageNumber)}
           >
-            {index + 1}
+            {pageNumber}
           </Pagination.Item>
         ))}
       </Pagination>

@@ -80,4 +80,33 @@ describe('HotelListTemplate component', () => {
         // Verifica se a função paginate foi chamada
         expect(paginate).toHaveBeenCalledWith(1);
     });
+
+    test('renders syncFeedback with details and handles dismiss button', () => {
+        const onDismissSyncFeedback = vi.fn();
+        renderComponent({
+            syncFeedback: {
+                message: 'Sincronização concluída com sucesso',
+                type: 'success',
+                details: ['Hotel 1 sincronizado', 'Hotel 2 sincronizado'],
+            },
+            onDismissSyncFeedback,
+        });
+
+        expect(screen.getByText('Sincronização concluída com sucesso')).toBeInTheDocument();
+        expect(screen.getByText('Hotel 1 sincronizado')).toBeInTheDocument();
+        expect(screen.getByText('Hotel 2 sincronizado')).toBeInTheDocument();
+
+        const closeBtn = screen.getByLabelText('Close');
+        fireEvent.click(closeBtn);
+        expect(onDismissSyncFeedback).toHaveBeenCalled();
+    });
+
+    test('renders syncing spinner when isSyncing is true', () => {
+        renderComponent({
+            handleSyncAllToVectorStore: vi.fn(),
+            isSyncing: true,
+        });
+
+        expect(screen.getByText(/Sincronizando no Vetor.../i)).toBeInTheDocument();
+    });
 });

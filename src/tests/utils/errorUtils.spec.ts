@@ -74,4 +74,48 @@ describe('errorUtils', () => {
     const message = extractErrorMessage(error, 'Falha:');
     expect(message).toBe('Falha: Network timeout');
   });
+
+  it('strips Portuguese stack traces with "em " without backtracking', () => {
+    const errorResponse = {
+      response: {
+        status: 500,
+        data: {
+          errors: [
+            'Ocorreu uma falha no cálculo.\r\n   em HotelWise.Service.CalculationService.Compute()',
+          ],
+        },
+      },
+    };
+    const info = extractErrorInfo(errorResponse, 'Erro:');
+    expect(info.userMessage).toContain('Ocorreu uma falha no cálculo.');
+    expect(info.userMessage).not.toContain('HotelWise.Service');
+  });
+
+  it('handles errors array containing strings and code-only objects and title fallback', () => {
+    const errorResponse = {
+      response: {
+        status: 400,
+        data: {
+          errors: [
+            'Erro de validação 1',
+            { code: 'VALIDATION_CODE_ONLY' },
+          ],
+        },
+      },
+    };
+    const info = extractErrorInfo(errorResponse);
+    expect(info.userMessage).toContain('Erro de validação 1');
+    expect(info.userMessage).toContain('[VALIDATION_CODE_ONLY]');
+    expect(info.code).toBe('VALIDATION_CODE_ONLY');
+
+    const titleErrorResponse = {
+      response: {
+        status: 400,
+        data: {
+          title: 'Título do erro da API',
+        },
+      },
+    };
+    expect(extractErrorMessage(titleErrorResponse, 'Aviso:')).toBe('Aviso: Título do erro da API');
+  });
 });

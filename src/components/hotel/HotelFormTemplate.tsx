@@ -71,7 +71,7 @@ const HotelFormTemplate: React.FC<IHotelFormTemplateProps> = ({
                 aria-label="Adicionar ao Vector Store"
               >
                 {isAddingToVector ? (
-                  <span className="spinner-border spinner-border-sm text-primary" role="status" aria-hidden="true"></span>
+                  <output className="spinner-border spinner-border-sm text-primary" aria-hidden="true"></output>
                 ) : (
                   <FaPlusCircle className="text-primary" />
                 )}
