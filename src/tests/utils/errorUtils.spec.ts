@@ -7,7 +7,7 @@ describe('errorUtils', () => {
     expect(extractErrorMessage(undefined)).toBe('Ocorreu um erro na operação.');
   });
 
-  it('extracts error from responseData.errors array', () => {
+  it('extracts error from responseData.errors array and omits UNHANDLED_EXCEPTION banner', () => {
     const errorResponse = {
       response: {
         status: 500,
@@ -15,8 +15,8 @@ describe('errorUtils', () => {
           correlationId: 'test-trace-123',
           errors: [
             {
-              code: 'UNHANDLED_EXCEPTION',
-              description: 'An unexpected error occurred.',
+              code: 'InvalidOperationException',
+              description: 'Database connection failed.',
             },
           ],
         },
@@ -25,11 +25,34 @@ describe('errorUtils', () => {
 
     const info = extractErrorInfo(errorResponse, 'Ocorreu um erro ao buscar os hotéis.');
     expect(info.userMessage).toContain('Ocorreu um erro ao buscar os hotéis.');
-    expect(info.userMessage).toContain('[UNHANDLED_EXCEPTION] An unexpected error occurred.');
+    expect(info.userMessage).toContain('[InvalidOperationException] Database connection failed.');
     expect(info.statusCode).toBe(500);
     expect(info.traceId).toBe('test-trace-123');
     expect(info.technicalDetails).toContain('HTTP 500');
     expect(info.technicalDetails).toContain('TraceId: test-trace-123');
+    expect(info.technicalDetails).toContain('Verifique os logs para mais detalhes.');
+  });
+
+  it('replaces UNHANDLED_EXCEPTION and strips stack trace', () => {
+    const errorResponse = {
+      response: {
+        status: 500,
+        data: {
+          correlationId: 'test-trace-legacy',
+          errors: [
+            {
+              code: 'UNHANDLED_EXCEPTION',
+              description: 'An unexpected error occurred.\n   at Microsoft.EntityFrameworkCore.Query.Internal...',
+            },
+          ],
+        },
+      },
+    };
+
+    const info = extractErrorInfo(errorResponse, 'Erro:');
+    expect(info.userMessage).not.toContain('UNHANDLED_EXCEPTION');
+    expect(info.userMessage).not.toContain('Microsoft.EntityFrameworkCore');
+    expect(info.userMessage).toContain('Ocorreu um erro no servidor. Verifique os logs para mais detalhes.');
   });
 
   it('extracts simple message from responseData.message', () => {

@@ -8,7 +8,23 @@ export interface IExtractedErrorInfo {
 }
 
 /**
- * Extrai informações detalhadas de erro a partir de exceções do Axios ou da API.
+ * Remove traces técnicos extensos (stack trace C#/JS com quebras de linha e "at ")
+ * para não poluir a interface do usuário.
+ */
+const sanitizeMessage = (msg?: string | null): string => {
+  if (!msg) return '';
+  // Se contiver stack trace com quebras de linha seguidas de "at " ou "em ", remove o trace
+  const withoutTrace = msg.split(/\r?\n\s*(at|em)\s+/i)[0].trim();
+  // Trata mensagem genérica legada de exceção não tratada
+  if (withoutTrace === 'An unexpected error occurred.') {
+    return 'Ocorreu um erro no servidor. Verifique os logs para mais detalhes.';
+  }
+  return withoutTrace;
+};
+
+/**
+ * Extrai informações detalhadas de erro a partir de exceções do Axios ou da API,
+ * priorizando a mensagem real do erro do servidor e ocultando traces completos no frontend.
  */
 export const extractErrorInfo = (err: unknown, defaultMessage = 'Ocorreu um erro na operação.'): IExtractedErrorInfo => {
   if (!err) {
@@ -27,17 +43,29 @@ export const extractErrorInfo = (err: unknown, defaultMessage = 'Ocorreu um erro
   if (Array.isArray(responseData?.errors) && responseData.errors.length > 0) {
     for (const item of responseData.errors) {
       if (typeof item === 'string') {
-        errorList.push(item);
+        const sanitized = sanitizeMessage(item);
+        if (sanitized) errorList.push(sanitized);
       } else if (item && typeof item === 'object') {
         const itemCode = item.code || item.errorCode || item.name;
-        const itemMsg = item.description || item.message || item.defaultMessage || item.fullMessage;
+        // Prioriza a mensagem do erro sem o trace completo (não usa fullMessage com stack trace)
+        const rawMsg = item.description || item.message || item.defaultMessage;
+        const sanitizedMsg = sanitizeMessage(rawMsg);
+
         if (itemCode && !mainCode) {
           mainCode = itemCode;
         }
-        if (itemCode && itemMsg && !itemMsg.includes(itemCode)) {
-          errorList.push(`[${itemCode}] ${itemMsg}`);
-        } else if (itemMsg) {
-          errorList.push(itemMsg);
+
+        // Em vez de UNHANDLED_EXCEPTION, exibir a mensagem real do erro ocorrido no servidor
+        if (itemCode === 'UNHANDLED_EXCEPTION' || itemCode === 'UnhandledException') {
+          if (sanitizedMsg) {
+            errorList.push(sanitizedMsg);
+          } else {
+            errorList.push('Ocorreu um erro no servidor. Verifique os logs para mais detalhes.');
+          }
+        } else if (itemCode && sanitizedMsg && !sanitizedMsg.includes(itemCode)) {
+          errorList.push(`[${itemCode}] ${sanitizedMsg}`);
+        } else if (sanitizedMsg) {
+          errorList.push(sanitizedMsg);
         } else if (itemCode) {
           errorList.push(`[${itemCode}]`);
         }
@@ -47,15 +75,18 @@ export const extractErrorInfo = (err: unknown, defaultMessage = 'Ocorreu um erro
 
   // 2. Mensagem simples no responseData
   if (errorList.length === 0 && responseData?.message) {
-    errorList.push(responseData.message);
+    const sanitized = sanitizeMessage(responseData.message);
+    if (sanitized) errorList.push(sanitized);
   }
   if (errorList.length === 0 && responseData?.title) {
-    errorList.push(responseData.title);
+    const sanitized = sanitizeMessage(responseData.title);
+    if (sanitized) errorList.push(sanitized);
   }
 
   // 3. Se ainda não achou detalhes na resposta, verifica erro do Axios / JS Error
   if (errorList.length === 0 && anyErr?.message) {
-    errorList.push(anyErr.message);
+    const sanitized = sanitizeMessage(anyErr.message);
+    if (sanitized) errorList.push(sanitized);
   }
 
   // Monta a mensagem para exibição ao usuário
@@ -65,9 +96,9 @@ export const extractErrorInfo = (err: unknown, defaultMessage = 'Ocorreu um erro
   if (errorList.length > 0) {
     const combinedErrors = errorList.join(' | ');
     userMessage = `${defaultMessage} ${combinedErrors}`;
-    technicalParts.push(`Detalhes: ${combinedErrors}`);
   }
 
+  // Detalhes técnicos resumidos (sem stack trace completo)
   if (statusCode) {
     technicalParts.push(`HTTP ${statusCode}`);
   }
@@ -76,9 +107,11 @@ export const extractErrorInfo = (err: unknown, defaultMessage = 'Ocorreu um erro
     technicalParts.push(`TraceId: ${traceId}`);
   }
 
+  technicalParts.push('Verifique os logs para mais detalhes.');
+
   return {
     userMessage,
-    technicalDetails: technicalParts.length > 0 ? technicalParts.join(' • ') : undefined,
+    technicalDetails: technicalParts.join(' • '),
     statusCode,
     traceId,
     code: mainCode,

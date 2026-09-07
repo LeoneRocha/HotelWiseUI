@@ -196,9 +196,11 @@ describe('HotelList component', () => {
     await waitFor(() => {
       const alert = screen.getByRole('alert');
       expect(alert).toHaveTextContent('Ocorreu um erro ao buscar os hotéis.');
-      expect(alert).toHaveTextContent('[UNHANDLED_EXCEPTION] Database query failed.');
+      expect(alert).toHaveTextContent('Database query failed.');
+      expect(alert).not.toHaveTextContent('UNHANDLED_EXCEPTION');
       expect(alert).toHaveTextContent('TraceId: trace-xyz-999');
       expect(alert).toHaveTextContent('HTTP 500');
+      expect(alert).toHaveTextContent('Verifique os logs para mais detalhes.');
     });
   });
 });
